@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Học liệu số — Bài 4. Giao thức mạng</title>
+<style>
+  :root{
+    --c1:#2E86AB; --c1-l:#DCEBF3;
+    --c2:#A23B72; --c2-l:#F1DDE9;
+    --c3:#F18F01; --c3-l:#FDEAC9;
+    --ink:#1F2937; --sub:#5B6472; --bg:#F7F8FA; --card:#FFFFFF; --line:#E1E5EA;
+    --ok:#1E7B45; --bad:#B3261E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5;}
+  header{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;padding:16px 14px;position:relative;}
+  header h1{margin:0 0 2px;font-size:1.15rem;padding-right:80px;}
+  header p{margin:0;font-size:.85rem;opacity:.9;}
+  #print-btn{position:absolute;top:14px;right:14px;min-height:40px;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;}
+  nav.tabs{position:sticky;top:0;z-index:20;display:flex;background:var(--card);border-bottom:1px solid var(--line);overflow-x:auto;}
+  nav.tabs button{flex:1 0 auto;min-width:25%;min-height:44px;border:none;background:none;padding:10px 6px;font-size:.85rem;font-weight:600;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent;}
+  nav.tabs button.active{color:var(--c1);border-bottom-color:var(--c1);}
+  main{max-width:760px;margin:0 auto;padding:14px 14px 40px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  h2.block-title{font-size:1.05rem;margin:4px 0 12px;color:var(--ink);}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  button.btn{min-height:40px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.85rem;font-weight:600;cursor:pointer;}
+  button.btn.primary{background:var(--c1);border-color:var(--c1);color:#fff;}
+  button.btn.ghost{background:transparent;}
+  button.btn:active{transform:scale(.98);}
+  button.btn:disabled{opacity:.6;}
+  .counter{align-self:center;font-size:.82rem;color:var(--sub);margin-left:auto;}
+
+  /* ===== Khối 1 — SƠ Đồ tư duy ===== */
+  .mindmap{display:flex;flex-direction:column;gap:10px;}
+  .center-node{background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:1rem;}
+  .branch{border-radius:10px;overflow:hidden;border:1px solid var(--line);}
+  .branch-head{width:100%;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;color:#fff;font-weight:700;font-size:.92rem;border:none;cursor:pointer;text-align:left;}
+  .branch-head .mark{font-weight:800;font-size:1rem;background:rgba(255,255,255,.25);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .branch-body{max-height:0;overflow:hidden;transition:max-height .25s ease;background:var(--card);}
+  .branch.open .branch-body{max-height:600px;}
+  .branch-body ul{margin:0;padding:10px 16px 12px 30px;}
+  .branch-body li{margin:6px 0;font-size:.9rem;}
+  .b1 .branch-head{background:var(--c1);} .b1 .branch-body{background:var(--c1-l);}
+  .b2 .branch-head{background:var(--c2);} .b2 .branch-body{background:var(--c2-l);}
+  .b3 .branch-head{background:var(--c3);} .b3 .branch-body{background:var(--c3-l);}
+  .b4 .branch-head{background:#3B8686;} .b4 .branch-body{background:#DBEFEE;}
+  .b5 .branch-head{background:#7A5195;} .b5 .branch-body{background:#E9E0F1;}
+  .b6 .branch-head{background:#C0587E;} .b6 .branch-body{background:#F5DEE6;}
+
+  /* ===== Khối 2 — Phiếu học tập ===== */
+  .task{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+  .task h3{margin:0 0 6px;font-size:.95rem;}
+  .task .tag{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--c1);border-radius:6px;padding:2px 8px;margin-bottom:6px;}
+  .task .tag.mo-rong{background:var(--c3);}
+  .task .hint{margin-top:8px;font-size:.85rem;color:var(--sub);border-left:3px solid var(--c1);padding-left:8px;}
+  .task .data-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.85rem;}
+  .task .data-table td,.task .data-table th{border:1px solid var(--line);padding:6px 8px;text-align:center;}
+  .answer-space{border:1px dashed var(--line);border-radius:6px;min-height:50px;margin-top:8px;}
+  .checklist label{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:.88rem;}
+  .checklist input{width:20px;height:20px;flex-shrink:0;margin-top:1px;}
+  .dien-ngan{width:100%;min-height:40px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);}
+  textarea.dien-dai{width:100%;min-height:90px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);resize:vertical;}
+  .dien-ngan:focus,textarea.dien-dai:focus{outline:none;border-style:solid;border-color:var(--c1);}
+  .lua-chon-item{margin-top:10px;}
+  .lua-chon-item .lc-stem{font-weight:600;font-size:.9rem;margin-bottom:6px;}
+  .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
+  .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .dap-an-goi-y{margin-top:10px;}
+  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:34px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:6px;cursor:pointer;font-weight:600;}
+  .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 6px 6px 0;padding:8px 10px;}
+  .dap-an-goi-y.hien .noi-dung-dap-an{display:block;}
+  .dap-an-goi-y.hien .nut-xem-dap-an{background:var(--c1);color:#fff;}
+
+  /* ===== Khối 3 — Thẻ ghi nhớ ===== */
+  .fc-status{font-size:.82rem;color:var(--sub);margin-bottom:8px;}
+  .fc-stage{perspective:1000px;height:190px;margin-bottom:12px;}
+  .fc-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .4s;cursor:pointer;}
+  .fc-card.flipped{transform:rotateY(180deg);}
+  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;font-size:1.05rem;font-weight:600;border:1px solid var(--line);}
+  .fc-face.front{background:var(--card);}
+  .fc-face.back{background:var(--c1-l);transform:rotateY(180deg);font-weight:500;font-size:.95rem;}
+  .fc-face .dir{position:absolute;top:8px;left:10px;font-size:.68rem;font-weight:700;color:var(--sub);text-transform:uppercase;}
+  .fc-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .fc-mark{display:flex;gap:8px;margin-bottom:10px;}
+  .fc-mark button.known{border-color:var(--ok);color:var(--ok);}
+  .fc-mark button.review{border-color:var(--bad);color:var(--bad);}
+  .fc-filter{display:flex;align-items:center;gap:8px;font-size:.85rem;margin-bottom:10px;}
+  .test-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center;}
+  .test-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  /* ===== Khối 4 — Quiz ===== */
+  .qz-progress{font-size:.85rem;color:var(--sub);margin-bottom:10px;}
+  .qz-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+  .qz-item .ctx{font-size:.85rem;color:var(--sub);background:#F2F4F6;border-radius:6px;padding:8px;margin-bottom:8px;}
+  .qz-item .stem{font-weight:600;margin-bottom:8px;font-size:.92rem;}
+  .qz-item label{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid transparent;}
+  .qz-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .qz-item.graded label.correct{background:#E7F5EC;border-color:var(--ok);}
+  .qz-item.graded label.wrong-pick{background:#FBEAE9;border-color:var(--bad);}
+  .qz-explain{display:none;margin-top:8px;font-size:.84rem;background:#F2F4F6;border-radius:6px;padding:8px;}
+  .qz-item.graded .qz-explain{display:block;}
+  .qz-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px;display:none;}
+  .qz-result.show{display:block;}
+  .qz-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px;}
+
+  /* ===== In ===== */
+  .print-only{display:none;}
+  @media print{
+    nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,footer,button{display:none !important;}
+    section.panel{display:block !important;page-break-after:always;}
+    .branch-body{max-height:none !important;}
+    .print-only{display:block;}
+    .fc-stage{display:none;}
+    body{background:#fff;font-size:12px;}
+    header{background:#fff !important;color:#000 !important;border-bottom:2px solid #000;}
+    .branch-head{color:#000 !important;background:#eee !important;border:1px solid #000;}
+    .qz-item label{border:1px solid #999;}
+    h2.block-title{border-bottom:1px solid #000;padding-bottom:4px;}
+    .dap-an-goi-y .noi-dung-dap-an{display:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== ỨNG DỤNG ===================== -->
+<div id="app-shell">
+
+<header>
+  <button id="print-btn" type="button">🖨 In / Lưu PDF</button>
+  <h1>Bài 4. Giao thức mạng</h1>
+  <p>Tin học 12 · Trường THCS & THPT Vĩnh Hưng · Học liệu số dùng offline</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="p1">Sơ đồ tư duy</button>
+  <button class="tab-btn" data-panel="p2">Phiếu học tập</button>
+  <button class="tab-btn" data-panel="p3">Thẻ ghi nhớ</button>
+  <button class="tab-btn" data-panel="p4">Quiz</button>
+</nav>
+<main>
+
+  <!-- ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== -->
+  <section id="p1" class="panel active">
+    <h2 class="block-title">1. Sơ đồ tư duy</h2>
+    <div class="toolbar">
+      <button class="btn primary" id="mm-open-all">Mở tất cả</button>
+      <button class="btn" id="mm-close-all">Đóng tất cả</button>
+      <span class="counter" id="mm-counter"></span>
+    </div>
+    <div class="mindmap" id="mindmap"></div>
+  </section>
+
+  <!-- ===================== KHỐI 2 — PHIẾU HỌC TẬP ===================== -->
+  <section id="p2" class="panel">
+    <h2 class="block-title">2. Phiếu học tập / thực hành</h2>
+    <div class="toolbar">
+      <button class="btn ghost" id="p2-reset" type="button">Xóa câu trả lời đã lưu</button>
+    </div>
+    <p class="print-only" style="font-size:.85rem;color:#555;">Họ tên: .................................... Lớp: ............. Nhóm: ............</p>
+    <div id="p2-content"></div>
+  </section>
+
+  <!-- ===================== KHỐI 3 — THẻ GHI NHỚ ===================== -->
+  <section id="p3" class="panel">
+    <h2 class="block-title">3. Thẻ ghi nhớ</h2>
+    <div class="toolbar">
+      <button class="btn" id="fc-shuffle">Xáo trộn</button>
+      <button class="btn" id="fc-test">Tự kiểm tra</button>
+      <button class="btn ghost" id="fc-reset">Xóa tiến độ</button>
+    </div>
+    <div class="fc-filter">
+      <input type="checkbox" id="fc-filter-unknown">
+      <label for="fc-filter-unknown">Chỉ hiện thẻ chưa thuộc</label>
+    </div>
+    <p class="fc-status" id="fc-status"></p>
+    <div id="fc-view">
+      <div class="fc-stage">
+        <div class="fc-card" id="fc-card">
+          <div class="fc-face front"><span class="dir" id="fc-dir-f"></span><span id="fc-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fc-back-text"></span></div>
+        </div>
+      </div>
+      <div class="fc-nav">
+        <button class="btn" id="fc-prev">← Trước</button>
+        <span class="counter" id="fc-counter" style="align-self:center;"></span>
+        <button class="btn" id="fc-next">Sau →</button>
+      </div>
+      <div class="fc-mark">
+        <button class="btn review" id="fc-mark-review">Cần ôn lại</button>
+        <button class="btn known" id="fc-mark-known">Đã thuộc</button>
+      </div>
+    </div>
+    <div id="fc-test-view" style="display:none;">
+      <div class="fc-stage">
+        <div class="fc-card" id="fct-card">
+          <div class="fc-face front"><span class="dir" id="fct-dir-f"></span><span id="fct-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fct-back-text"></span></div>
+        </div>
+      </div>
+      <p class="fc-status" id="fct-progress"></p>
+      <div class="fc-mark">
+        <button class="btn review" id="fct-wrong">Chưa biết</button>
+        <button class="btn known" id="fct-right">Biết rồi</button>
+      </div>
+    </div>
+    <div id="fc-result-view" style="display:none;">
+      <div class="test-result">
+        <p>Kết quả tự kiểm tra</p>
+        <div class="score" id="fc-score"></div>
+        <button class="btn primary" id="fc-test-again" style="margin-top:10px;">Kiểm tra lại</button>
+        <button class="btn" id="fc-test-exit">Quay lại thẻ</button>
+      </div>
+    </div>
+    <!-- Bản in: toàn bộ thẻ dạng lưới có đường cắt -->
+    <div class="print-only" id="fc-print-grid"></div>
+  </section>
+
+  <!-- ===================== KHỐI 4 — QUIZ ===================== -->
+  <section id="p4" class="panel">
+    <h2 class="block-title">4. Quiz tự chấm</h2>
+    <div class="toolbar">
+      <button class="btn" id="qz-shuffle">Xáo trộn câu hỏi</button>
+      <button class="btn" id="qz-reset">Làm lại</button>
+    </div>
+    <p class="qz-progress" id="qz-progress"></p>
+    <div class="qz-result" id="qz-result">
+      <p>Kết quả</p>
+      <div class="score" id="qz-score"></div>
+    </div>
+    <form id="qz-form"></form>
+    <button class="btn primary" id="qz-submit" style="width:100%;">Nộp bài</button>
+  </section>
+
+</main>
+
+<footer>Học liệu số — Bài 4 Tin học 12 ICT — Trường THCS & THPT Vĩnh Hưng. Mở bằng Chrome hoặc Safari, không cần Internet.</footer>
+
+</div><!-- /#app-shell -->
+
+<script type="application/json" id="hls-data">{"worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — cốt lõi<\/span>\n  <h3>Gửi một thư điện tử cần những gì? (Hoạt động 1, SGK trang 21)<\/h3>\n  <p>a) Ngoài nội dung thư, khi gửi thư điện tử cần có thêm những thông tin nào?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"thu-thong-tin\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>b) Ghi tên giao thức tương ứng:<\/p>\n  <table class=\"data-table\">\n    <tr><th>Việc<\/th><th>Giao thức<\/th><\/tr>\n    <tr><td>Gửi thư<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"gt-gui\"><\/td><\/tr>\n    <tr><td>Lấy thư về<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"gt-lay\"><\/td><\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">a) Địa chỉ người gửi, địa chỉ người nhận (dạng &lt;tên tài khoản&gt;@&lt;tên miền của máy chủ thư điện tử&gt;), thông tin tệp đính kèm. Phần mềm soạn thư đóng gói dữ liệu; máy chủ thư lưu thư vào hộp thư người nhận hoặc gửi thư báo lỗi; phần mềm nhận thư tách lại các thành phần. b) Gửi thư: SMTP; lấy thư: POP3 hoặc IMAP.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: điều gì xảy ra khi em gõ sai địa chỉ người nhận?<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — cốt lõi<\/span>\n  <h3>Địa chỉ MAC và địa chỉ IP<\/h3>\n  <p>a) Loại địa chỉ nào đi theo phần cứng, là căn cứ truyền dữ liệu trong mạng cục bộ?<\/p>\n  <div class=\"lua-chon-item\" data-id=\"mac-ip\">\n    <label><input type=\"radio\" name=\"mac-ip\" value=\"mac\"> Địa chỉ MAC<\/label>\n    <label><input type=\"radio\" name=\"mac-ip\" value=\"ip\"> Địa chỉ IP<\/label>\n  <\/div>\n  <p>b) Router tra bảng định tuyến (Bảng 4.1). Nếu địa chỉ đích không có trong bảng, gói dữ liệu được gửi theo cổng nào? Kí hiệu * trong bảng nghĩa là gì?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"dinh-tuyen\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">a) Địa chỉ MAC; địa chỉ IP dùng để dẫn đường giữa các mạng. b) Gửi theo cổng mặc định (cổng 1 trong Bảng 4.1); kí hiệu * được hiểu là bất cứ giá trị nào.<\/div>\n  <\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — cốt lõi<\/span>\n  <h3>Giao thức TCP<\/h3>\n  <p>Một bạn vừa sao chép tệp vào thư mục chia sẻ trên máy bạn khác, vừa chat với bạn đó. Dữ liệu của hai phần mềm có bị chuyển nhầm cho nhau không? Giao thức TCP xử lí việc này thế nào (nêu 3 nội dung chính)?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"tcp\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Không bị nhầm. TCP cấp cổng ứng dụng để không lẫn dữ liệu giữa các ứng dụng; cắt dữ liệu thành các gói có độ dài xác định, đánh số theo từng ứng dụng để ráp lại đúng thứ tự; dùng cơ chế xác nhận để yêu cầu gửi lại gói sai sót hoặc thất lạc.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý: giao thức IP chỉ đưa dữ liệu tới đúng máy, chưa đảm bảo tới đúng ứng dụng trên máy đó.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 4 — luyện tập (SGK trang 25)<\/span>\n  <h3>Đổi địa chỉ IP sang dạng thập phân<\/h3>\n  <p>Trọng số 8 bit: 128 · 64 · 32 · 16 · 8 · 4 · 2 · 1<\/p>\n  <table class=\"data-table\">\n    <tr><th>Dạng nhị phân<\/th><th>Dạng thập phân<\/th><\/tr>\n    <tr><td>11000000 10101000 00001101 11010010<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"ip-1\"><\/td><\/tr>\n    <tr><td>11000000 10101000 00000011 00000111<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"ip-2\"><\/td><\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">192.168.13.210 và 192.168.3.7.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: tách thành 4 nhóm 8 bit, cộng trọng số của các bit bằng 1 trong từng nhóm.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 5 — luyện tập (SGK trang 25)<\/span>\n  <h3>Quy tắc gọi điện thoại bàn<\/h3>\n  <p>Kể ra các quy tắc khi nhấc ống nghe, quay số, phát nhạc chờ, reo chuông, báo lỗi, nói chuyện, kết thúc cuộc gọi. Viết theo dạng \"khi..., nếu... thì...\".<\/p>\n  <textarea class=\"dien-dai\" data-id=\"goi-dien\" rows=\"5\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Nhấc ống nghe thì tổng đài phát tín hiệu mời quay số; chỉ quay số khi đã có tín hiệu này; số hợp lệ và máy nhận rỗi thì máy gọi nghe nhạc chờ, máy nhận reo chuông; số sai hoặc máy nhận bận thì phát tín hiệu báo lỗi hoặc báo bận; bên nhận nhấc máy thì hai bên nói chuyện; một bên đặt ống nghe thì kết thúc cuộc gọi.<\/div>\n  <\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Câu hỏi mở rộng — vận dụng (SGK trang 25)<\/span>\n  <h3>Tên miền DNS và lệnh ping<\/h3>\n  <p>1) Nêu lợi ích của tên miền so với địa chỉ IP, các lớp của tên miền moet.edu.vn và tổ chức cấp tên miền .vn ở Việt Nam.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-dns\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) Thử lệnh <code>ping moet.edu.vn<\/code> trong Command Prompt. Cho biết lệnh ping dùng để làm gì và em đọc kết quả thế nào.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-ping\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý: không có máy ở nhà thì thử trên máy phòng học bộ môn vào giờ ra chơi.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Nêu đủ địa chỉ người gửi, người nhận và tệp đính kèm của thư.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Phân biệt đúng địa chỉ MAC và địa chỉ IP.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Nêu đúng 3 nội dung chính của giao thức TCP.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Đổi đúng cả hai địa chỉ IP sang dạng thập phân.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-5\"> Kể được từ 5 quy tắc gọi điện có điều kiện rõ ràng.<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. Giao thức mạng", "cls": "b1", "items": ["Tập hợp quy định về cách thức giao tiếp để truyền dữ liệu giữa các đối tượng tham gia mạng", "Quy định định dạng, ý nghĩa, cách xử lí dữ liệu → chính xác, tin cậy, hiệu quả", "Thư điện tử: <tên tài khoản>@<tên miền máy chủ thư>", "SMTP: gửi thư; POP3, IMAP: lấy thư", "Ethernet: địa chỉ MAC, mã kiểm tra, khung truyền dữ liệu, xử lí xung đột tín hiệu"]}, {"title": "2. Giao thức TCP/IP", "cls": "b2", "items": ["IP: đánh địa chỉ cho thiết bị tham gia mạng", "IPv4: 4 byte, VD 11000000 10101000 00000001 00000011 = 192.168.1.3", "IP: định tuyến qua router theo bảng định tuyến (Bảng 4.1)", "Định tuyến tĩnh và định tuyến động", "TCP: cổng ứng dụng, đánh số gói dữ liệu, cơ chế xác nhận", "Internet: mạng thông tin toàn cầu hoạt động theo TCP/IP", "HTTP: truyền tải siêu văn bản; DNS: tên miền thay địa chỉ IP"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "Giao thức mạng là gì?", "back": "Tập hợp các quy định về cách thức giao tiếp để truyền dữ liệu giữa các đối tượng tham gia mạng."}, {"id": "fc02", "dir": "Hỏi ngược", "front": "Giao thức nào quy định việc gửi thư điện tử?", "back": "SMTP."}, {"id": "fc03", "dir": "Hỏi ngược", "front": "Hai giao thức nào quy định việc lấy thư về?", "back": "POP3 và IMAP."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "Địa chỉ thư điện tử có dạng thế nào?", "back": "<tên tài khoản>@<tên miền của máy chủ thư điện tử>."}, {"id": "fc05", "dir": "Hỏi xuôi", "front": "Địa chỉ MAC có đặc điểm gì?", "back": "Đi theo phần cứng, là căn cứ truyền dữ liệu trong mạng cục bộ (Ethernet)."}, {"id": "fc06", "dir": "Hỏi xuôi", "front": "Giao thức IP quy định những gì?", "back": "Cách đánh địa chỉ IP cho thiết bị và cách định tuyến gói dữ liệu giữa các mạng."}, {"id": "fc07", "dir": "Hỏi ngược", "front": "11000000 10101000 00000001 00000011 viết dạng thập phân là gì?", "back": "192.168.1.3."}, {"id": "fc08", "dir": "Hỏi xuôi", "front": "Địa chỉ đích không có trong bảng định tuyến thì router gửi theo cổng nào?", "back": "Cổng mặc định."}, {"id": "fc09", "dir": "Hỏi xuôi", "front": "Nêu 3 nội dung chính của giao thức TCP.", "back": "Cấp cổng ứng dụng; chia dữ liệu thành gói đánh số; cơ chế xác nhận để gửi lại khi cần."}, {"id": "fc10", "dir": "Hỏi ngược", "front": "Vì sao nói Internet là mạng toàn cầu hoạt động theo TCP/IP?", "back": "IP và TCP xác định cách kết nối, trao đổi dữ liệu có tính đặc thù của Internet."}, {"id": "fc11", "dir": "Hỏi ngược", "front": "Giao thức nào cho phép dùng tên miền thay địa chỉ IP?", "back": "DNS."}, {"id": "fc12", "dir": "Hỏi xuôi", "front": "HTTP là giao thức gì?", "back": "Giao thức truyền tải siêu văn bản."}, {"id": "fc13", "dir": "Hỏi xuôi", "front": "Lệnh ping dùng để làm gì?", "back": "Gửi yêu cầu (giao thức ICMP) đến máy hoặc thiết bị mạng để kiểm tra có kết nối được không."}], "quiz": [{"id": "q01", "stem": "Giao thức mạng là", "opts": [{"l": "A", "t": "tập hợp các quy định về cách thức giao tiếp để truyền dữ liệu giữa các đối tượng tham gia mạng."}, {"l": "B", "t": "thiết bị dẫn đường cho dữ liệu giữa các mạng."}, {"l": "C", "t": "phần mềm diệt virus cài trên máy chủ."}, {"l": "D", "t": "dây cáp nối các máy tính trong mạng cục bộ."}], "ans": "A", "ngu_canh": null, "explain": "Giao thức mạng là tập hợp các quy định về cách thức giao tiếp để truyền dữ liệu giữa các đối tượng tham gia mạng, liên quan tới định dạng, ý nghĩa và cách xử lí dữ liệu."}, {"id": "q02", "stem": "Giao thức nào quy định việc gửi thư điện tử?", "opts": [{"l": "A", "t": "POP3"}, {"l": "B", "t": "SMTP"}, {"l": "C", "t": "IMAP"}, {"l": "D", "t": "DNS"}], "ans": "B", "ngu_canh": null, "explain": "SMTP quy định việc gửi thư; POP3 và IMAP quy định việc lấy thư về; DNS phục vụ tên miền."}, {"id": "q03", "stem": "Địa chỉ IPv4 như 192.168.1.3 gồm bao nhiêu byte?", "opts": [{"l": "A", "t": "2 byte"}, {"l": "B", "t": "4 byte"}, {"l": "C", "t": "6 byte"}, {"l": "D", "t": "8 byte"}], "ans": "B", "ngu_canh": null, "explain": "Địa chỉ IPv4 gồm 4 byte (32 bit), mỗi byte đổi sang hệ thập phân và viết cách nhau bởi dấu chấm, ví dụ 11000000 10101000 00000001 00000011 là 192.168.1.3."}, {"id": "q04", "stem": "Giao thức nào cho phép dùng tên miền như moet.edu.vn thay cho địa chỉ IP khó nhớ?", "opts": [{"l": "A", "t": "HTTP"}, {"l": "B", "t": "SMTP"}, {"l": "C", "t": "DNS"}, {"l": "D", "t": "Ethernet"}], "ans": "C", "ngu_canh": null, "explain": "DNS (hệ thống tên miền) cho phép dùng tên miền thay cho địa chỉ IP; HTTP là giao thức truyền tải siêu văn bản."}, {"id": "q05", "stem": "Phát biểu nào phân biệt đúng địa chỉ MAC và địa chỉ IP?", "opts": [{"l": "A", "t": "Địa chỉ MAC dùng để dẫn đường giữa các mạng, địa chỉ IP đi theo phần cứng."}, {"l": "B", "t": "Địa chỉ MAC đi theo phần cứng, dùng truyền dữ liệu trong mạng cục bộ; địa chỉ IP dùng để dẫn đường gói dữ liệu giữa các mạng."}, {"l": "C", "t": "Địa chỉ MAC và địa chỉ IP giống hệt nhau."}, {"l": "D", "t": "Địa chỉ IP chỉ dùng trong thư điện tử."}], "ans": "B", "ngu_canh": null, "explain": "Địa chỉ MAC gắn với phần cứng, là căn cứ truyền dữ liệu trong mạng cục bộ (Ethernet); địa chỉ IP dùng để dẫn đường gói dữ liệu từ mạng này sang mạng khác."}, {"id": "q06", "stem": "Giao thức TCP cấp cổng ứng dụng nhằm mục đích gì?", "opts": [{"l": "A", "t": "Tăng tốc độ đường truyền vật lí."}, {"l": "B", "t": "Giúp dữ liệu đến đúng ứng dụng trên máy nhận, không lẫn giữa các ứng dụng."}, {"l": "C", "t": "Đổi địa chỉ IP sang dạng thập phân."}, {"l": "D", "t": "Chuyển tín hiệu số sang tín hiệu tương tự."}], "ans": "B", "ngu_canh": null, "explain": "Giao thức IP chỉ đưa dữ liệu từ mạng này đến mạng kia; TCP cấp cổng ứng dụng để dữ liệu của từng ứng dụng không bị chuyển nhầm cho nhau."}, {"id": "q07", "stem": "Cơ chế xác nhận trong giao thức TCP dùng để", "opts": [{"l": "A", "t": "yêu cầu gửi lại gói dữ liệu bị sai sót hoặc thất lạc."}, {"l": "B", "t": "xác nhận tên đăng nhập của người dùng."}, {"l": "C", "t": "cấp địa chỉ MAC cho máy tính."}, {"l": "D", "t": "chọn cổng gửi trong bảng định tuyến."}], "ans": "A", "ngu_canh": null, "explain": "TCP đánh số các gói dữ liệu và dùng cơ chế xác nhận để yêu cầu gửi lại gói sai sót hoặc thất lạc, đảm bảo dữ liệu chính xác, tin cậy."}, {"id": "q08", "stem": "Địa chỉ IP 11000000 10101000 00000101 00001010 viết ở dạng thập phân là", "opts": [{"l": "A", "t": "192.168.5.10"}, {"l": "B", "t": "192.168.10.5"}, {"l": "C", "t": "192.168.5.12"}, {"l": "D", "t": "192.186.5.10"}], "ans": "A", "ngu_canh": null, "explain": "Tách 4 byte và cộng trọng số: 11000000 = 192; 10101000 = 168; 00000101 = 4 + 1 = 5; 00001010 = 8 + 2 = 10."}, {"id": "q09", "stem": "Router gửi gói dữ liệu này theo cổng nào?", "opts": [{"l": "A", "t": "Không gửi, huỷ gói dữ liệu ngay."}, {"l": "B", "t": "Gửi theo cổng mặc định của bảng định tuyến."}, {"l": "C", "t": "Gửi đồng thời qua tất cả các cổng."}, {"l": "D", "t": "Gửi ngược lại máy gửi."}], "ans": "B", "ngu_canh": "Router tra Bảng 4.1 (SGK trang 24) và thấy địa chỉ đích của gói dữ liệu không có trong bảng định tuyến.", "explain": "Địa chỉ đích không có trong bảng định tuyến thì router gửi gói dữ liệu theo cổng mặc định (cổng 1 trong Bảng 4.1)."}, {"id": "q10", "stem": "Vì sao gọi điện qua Internet có thể thực hiện đồng thời hàng trăm cuộc gọi trên cùng một đường truyền vật lí?", "opts": [{"l": "A", "t": "Mỗi cuộc gọi độc chiếm kênh truyền suốt thời gian nói chuyện."}, {"l": "B", "t": "Dữ liệu được tách thành nhiều gói, nhiều cuộc truyền thực hiện xen kẽ trên cùng đường truyền."}, {"l": "C", "t": "Mỗi cuộc gọi dùng một sợi cáp riêng."}, {"l": "D", "t": "Router tự nén giọng nói thành văn bản."}], "ans": "B", "ngu_canh": null, "explain": "Tách dữ liệu thành các gói có độ dài xác định cho phép nhiều cuộc truyền thực hiện xen kẽ; điện thoại để bàn thì độc chiếm kênh truyền suốt cuộc gọi."}]}</script>
+<script>
+(function(){
+"use strict";
+
+/* ===================== ỨNG DỤNG — DỰNG NGAY, KHÔNG QUA XÁC THỰC ===================== */
+var payload = JSON.parse(document.getElementById("hls-data").textContent);
+buildApp(payload);
+
+function buildApp(payload){
+
+/* ---------- Lưu trữ an toàn (tiến độ thẻ ghi nhớ) ---------- */
+var STORE_KEY = "tin12_bai04";
+function loadStore(){
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    return raw ? JSON.parse(raw) : {known:{}};
+  }catch(e){ return {known:{}}; }
+}
+function saveStore(s){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){ /* im lặng, tệp file:// có thể chặn */ }
+}
+var store = loadStore();
+if(!store.known) store.known = {};
+
+/* ---------- In / Xuất PDF ---------- */
+document.getElementById("print-btn").addEventListener("click", function(){ window.print(); });
+
+/* ---------- Chuyển tab ---------- */
+var tabBtns = document.querySelectorAll(".tab-btn");
+var panels = document.querySelectorAll(".panel");
+tabBtns.forEach(function(btn){
+  btn.addEventListener("click", function(){
+    tabBtns.forEach(function(b){ b.classList.remove("active"); });
+    panels.forEach(function(p){ p.classList.remove("active"); });
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.panel).classList.add("active");
+  });
+});
+
+/* ---------- Phiếu học tập ---------- */
+document.getElementById("p2-content").innerHTML = payload.worksheetHtml || "";
+if(!store.phieu) store.phieu = {};
+enhanceWorksheet();
+
+/* ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== */
+var mindmapData = payload.mindmap || [];
+var branchColorClass = ["b1","b2","b3","b4","b5","b6"];
+
+var mmRoot = document.getElementById("mindmap");
+var center = document.createElement("div");
+center.className = "center-node";
+center.textContent = payload.tieu_de_trung_tam || (document.title.replace("Học liệu số — ",""));
+mmRoot.appendChild(center);
+
+mindmapData.forEach(function(b, idx){
+  var branch = document.createElement("div");
+  branch.className = "branch " + (b.cls || branchColorClass[idx % branchColorClass.length]);
+  branch.dataset.idx = idx;
+
+  var head = document.createElement("button");
+  head.className = "branch-head";
+  head.innerHTML = '<span>' + b.title + '</span><span class="mark">?</span>';
+  head.addEventListener("click", function(){ toggleBranch(branch); });
+
+  var body = document.createElement("div");
+  body.className = "branch-body";
+  var ul = document.createElement("ul");
+  (b.items || []).forEach(function(t){
+    var li = document.createElement("li");
+    li.textContent = t;
+    ul.appendChild(li);
+  });
+  body.appendChild(ul);
+
+  branch.appendChild(head);
+  branch.appendChild(body);
+  mmRoot.appendChild(branch);
+});
+
+function updateMmCounter(){
+  var total = mindmapData.length;
+  var open = document.querySelectorAll(".branch.open").length;
+  document.getElementById("mm-counter").textContent = "Đã mở " + open + "/" + total + " phần";
+}
+function toggleBranch(branch){
+  var isOpen = branch.classList.toggle("open");
+  var mark = branch.querySelector(".mark");
+  mark.textContent = isOpen ? "−" : "?";
+  updateMmCounter();
+}
+document.getElementById("mm-open-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.add("open");
+    br.querySelector(".mark").textContent = "−";
+  });
+  updateMmCounter();
+});
+document.getElementById("mm-close-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.remove("open");
+    br.querySelector(".mark").textContent = "?";
+  });
+  updateMmCounter();
+});
+updateMmCounter();
+
+/* ===================== KHỐI 3 — THẺ GHI NHỚ ===================== */
+var flashcards = payload.flashcards || [];
+var fcOrder = flashcards.map(function(c,i){ return i; });
+var fcPos = 0;
+
+function fcVisibleOrder(){
+  var onlyUnknown = document.getElementById("fc-filter-unknown").checked;
+  var order = fcOrder.slice();
+  if(onlyUnknown){
+    order = order.filter(function(i){ return !store.known[flashcards[i].id]; });
+  }
+  return order;
+}
+function fcRender(){
+  var order = fcVisibleOrder();
+  if(order.length === 0){
+    document.getElementById("fc-front-text").textContent = "Không còn thẻ nào trong bộ lọc — mọi thẻ đã được đánh dấu Đã thuộc.";
+    document.getElementById("fc-back-text").textContent = "Bỏ lọc để xem lại toàn bộ bộ thẻ.";
+    document.getElementById("fc-counter").textContent = "0/0";
+    document.getElementById("fc-status").textContent = "";
+    return;
+  }
+  if(fcPos >= order.length) fcPos = 0;
+  if(fcPos < 0) fcPos = order.length - 1;
+  var card = flashcards[order[fcPos]];
+  document.getElementById("fc-dir-f").textContent = card.dir;
+  document.getElementById("fc-front-text").textContent = card.front;
+  document.getElementById("fc-back-text").textContent = card.back;
+  document.getElementById("fc-counter").textContent = (fcPos+1) + "/" + order.length;
+  var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
+  document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
+  var el = document.getElementById("fc-card");
+  el.classList.remove("flipped");
+}
+document.getElementById("fc-card").addEventListener("click", function(){
+  this.classList.toggle("flipped");
+});
+document.getElementById("fc-prev").addEventListener("click", function(){ fcPos--; fcRender(); });
+document.getElementById("fc-next").addEventListener("click", function(){ fcPos++; fcRender(); });
+document.getElementById("fc-filter-unknown").addEventListener("change", function(){ fcPos = 0; fcRender(); });
+document.getElementById("fc-shuffle").addEventListener("click", function(){
+  for(var i = fcOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = fcOrder[i]; fcOrder[i] = fcOrder[j]; fcOrder[j] = t;
+  }
+  fcPos = 0;
+  fcRender();
+});
+function fcMark(known){
+  var order = fcVisibleOrder();
+  if(order.length === 0) return;
+  var card = flashcards[order[fcPos]];
+  if(known){ store.known[card.id] = true; } else { delete store.known[card.id]; }
+  saveStore(store);
+  fcPos++;
+  fcRender();
+}
+document.getElementById("fc-mark-known").addEventListener("click", function(){ fcMark(true); });
+document.getElementById("fc-mark-review").addEventListener("click", function(){ fcMark(false); });
+document.getElementById("fc-reset").addEventListener("click", function(){
+  store.known = {};
+  saveStore(store);
+  fcRender();
+});
+
+/* Chế độ tự kiểm tra */
+var testOrder = [];
+var testPos = 0;
+var testRight = 0;
+function startTest(){
+  testOrder = fcOrder.slice();
+  for(var i = testOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = testOrder[i]; testOrder[i] = testOrder[j]; testOrder[j] = t;
+  }
+  testPos = 0; testRight = 0;
+  document.getElementById("fc-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-test-view").style.display = "block";
+  renderTestCard();
+}
+function renderTestCard(){
+  if(testPos >= testOrder.length){ finishTest(); return; }
+  var card = flashcards[testOrder[testPos]];
+  document.getElementById("fct-dir-f").textContent = card.dir;
+  document.getElementById("fct-front-text").textContent = card.front;
+  document.getElementById("fct-back-text").textContent = card.back;
+  document.getElementById("fct-card").classList.remove("flipped");
+  document.getElementById("fct-progress").textContent = "Câu " + (testPos+1) + "/" + testOrder.length;
+}
+document.getElementById("fct-card").addEventListener("click", function(){ this.classList.toggle("flipped"); });
+document.getElementById("fc-test").addEventListener("click", startTest);
+document.getElementById("fct-right").addEventListener("click", function(){ testRight++; testPos++; renderTestCard(); });
+document.getElementById("fct-wrong").addEventListener("click", function(){ testPos++; renderTestCard(); });
+function finishTest(){
+  document.getElementById("fc-test-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "block";
+  var pct = testOrder.length ? Math.round((testRight / testOrder.length) * 100) : 0;
+  document.getElementById("fc-score").textContent = pct + "% (" + testRight + "/" + testOrder.length + ")";
+}
+document.getElementById("fc-test-again").addEventListener("click", startTest);
+document.getElementById("fc-test-exit").addEventListener("click", function(){
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-view").style.display = "block";
+  fcRender();
+});
+
+/* Bản in — lưới toàn bộ thẻ, đường cắt */
+(function printGrid(){
+  var wrap = document.getElementById("fc-print-grid");
+  var style = document.createElement("style");
+  style.textContent = ".pf-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}"
+    + ".pf-card{border:1px dashed #999;padding:10px;min-height:110px;font-size:11px;}"
+    + ".pf-card b{display:block;margin-bottom:6px;}";
+  wrap.appendChild(style);
+  var grid = document.createElement("div");
+  grid.className = "pf-grid";
+  flashcards.forEach(function(c){
+    var d = document.createElement("div");
+    d.className = "pf-card";
+    d.innerHTML = "<b>" + c.dir + ": " + c.front + "</b>" + c.back;
+    grid.appendChild(d);
+  });
+  wrap.appendChild(grid);
+})();
+
+fcRender();
+
+/* ===================== KHỐI 4 — QUIZ ===================== */
+var quiz = payload.quiz || [];
+var quizOrder = quiz.map(function(c,i){ return i; });
+var graded = false;
+
+function renderQuiz(){
+  var form = document.getElementById("qz-form");
+  form.innerHTML = "";
+  quizOrder.forEach(function(qi, pos){
+    var q = quiz[qi];
+    var box = document.createElement("div");
+    box.className = "qz-item";
+    box.dataset.qid = q.id;
+    var html = "";
+    if(q.ngu_canh){ html += '<div class="ctx">' + q.ngu_canh + '</div>'; }
+    html += '<div class="stem">Câu ' + (pos+1) + '. ' + q.stem + '</div>';
+    q.opts.forEach(function(o){
+      html += '<label data-l="' + o.l + '"><input type="radio" name="' + q.id + '" value="' + o.l + '"> <span>' + o.l + '. ' + o.t + '</span></label>';
+    });
+    html += '<div class="qz-explain"></div>';
+    box.innerHTML = html;
+    form.appendChild(box);
+  });
+  document.getElementById("qz-progress").textContent = quiz.length + " câu trắc nghiệm — chọn xong bấm Nộp bài để tự chấm điểm.";
+  document.getElementById("qz-result").classList.remove("show");
+  graded = false;
+  document.querySelectorAll(".qz-item").forEach(function(it){ it.classList.remove("graded"); });
+}
+renderQuiz();
+
+document.getElementById("qz-submit").addEventListener("click", function(){
+  if(graded) return;
+  var right = 0;
+  quiz.forEach(function(q){
+    var chosen = document.querySelector('input[name="' + q.id + '"]:checked');
+    var box = document.querySelector('.qz-item[data-qid="' + q.id + '"]');
+    box.classList.add("graded");
+    var isCorrect = chosen && chosen.value === q.ans;
+    if(isCorrect) right++;
+    box.querySelectorAll("label").forEach(function(lb){
+      if(lb.dataset.l === q.ans) lb.classList.add("correct");
+      else if(chosen && lb.dataset.l === chosen.value) lb.classList.add("wrong-pick");
+    });
+    box.querySelector(".qz-explain").textContent = "Đáp án đúng: " + q.ans + ". " + q.explain;
+    box.querySelectorAll("input").forEach(function(inp){ inp.disabled = true; });
+  });
+  var pct = quiz.length ? Math.round((right / quiz.length) * 100) : 0;
+  document.getElementById("qz-score").textContent = pct + "% (" + right + "/" + quiz.length + " câu)";
+  document.getElementById("qz-result").classList.add("show");
+  graded = true;
+});
+document.getElementById("qz-reset").addEventListener("click", renderQuiz);
+document.getElementById("qz-shuffle").addEventListener("click", function(){
+  for(var i = quizOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = quizOrder[i]; quizOrder[i] = quizOrder[j]; quizOrder[j] = t;
+  }
+  renderQuiz();
+});
+
+/* ========== Phiếu học tập — điền/chọn đáp án + lưu tạm ========== */
+function enhanceWorksheet(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+
+  /* Ô nhập câu trả lời (ngắn: input, dài: textarea) */
+  scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]").forEach(function(el){
+    var id = el.dataset.id;
+    if(store.phieu[id] !== undefined) el.value = store.phieu[id];
+    el.addEventListener("input", function(){
+      store.phieu[id] = el.value;
+      saveStore(store);
+    });
+  });
+
+  /* Trắc nghiệm / Đúng — Sai (radio hoặc checkbox), mỗi câu bọc trong .lua-chon-item[data-id] */
+  scope.querySelectorAll(".lua-chon-item[data-id]").forEach(function(item){
+    var id = item.dataset.id;
+    var saved = store.phieu[id];
+    var boxes = item.querySelectorAll("input[type=checkbox]");
+    if(boxes.length){
+      boxes.forEach(function(inp){
+        if(Array.isArray(saved) && saved.indexOf(inp.value) !== -1) inp.checked = true;
+        inp.addEventListener("change", function(){
+          var chon = [];
+          item.querySelectorAll("input[type=checkbox]:checked").forEach(function(c){ chon.push(c.value); });
+          store.phieu[id] = chon;
+          saveStore(store);
+        });
+      });
+    } else {
+      item.querySelectorAll("input[type=radio]").forEach(function(inp){
+        if(saved === inp.value) inp.checked = true;
+        inp.addEventListener("change", function(){
+          store.phieu[id] = inp.value;
+          saveStore(store);
+        });
+      });
+    }
+  });
+
+  /* Nút xem đáp án gợi ý (không tự chấm, chỉ hiện/ẩn) */
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    var btn = block.querySelector(".nut-xem-dap-an");
+    if(!btn) return;
+    btn.addEventListener("click", function(){
+      var hien = block.classList.toggle("hien");
+      btn.textContent = hien ? "Ẩn đáp án gợi ý" : "Xem đáp án gợi ý";
+    });
+  });
+
+  /* Xóa toàn bộ câu trả lời đã lưu của phiếu học tập */
+  var resetBtn = document.getElementById("p2-reset");
+  if(resetBtn){
+    resetBtn.addEventListener("click", function(){
+      store.phieu = {};
+      saveStore(store);
+      scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){ el.value = ""; });
+      scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){ inp.checked = false; });
+      scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+        block.classList.remove("hien");
+        var b = block.querySelector(".nut-xem-dap-an");
+        if(b) b.textContent = "Xem đáp án gợi ý";
+      });
+    });
+  }
+}
+
+/* Khi in: đưa phiếu về trạng thái trống như bản gốc (không lộ đáp án đã điền/chọn), sau khi in thì khôi phục lại trên màn hình */
+window.addEventListener("beforeprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    el.dataset.printGiuLai = el.value;
+    el.value = "";
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.checked){ inp.dataset.printGiuLai = "1"; inp.checked = false; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+    block.dataset.printGiuLai = "1";
+    block.classList.remove("hien");
+  });
+});
+window.addEventListener("afterprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    if(el.dataset.printGiuLai !== undefined){ el.value = el.dataset.printGiuLai; delete el.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.dataset.printGiuLai){ inp.checked = true; delete inp.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    if(block.dataset.printGiuLai){ block.classList.add("hien"); delete block.dataset.printGiuLai; }
+  });
+});
+
+
+} /* hết buildApp */
+
+})();
+</script>
+</body>
+</html>

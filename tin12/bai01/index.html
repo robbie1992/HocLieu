@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Học liệu số — Bài 1. Làm quen với Trí tuệ nhân tạo</title>
+<style>
+  :root{
+    --c1:#2E86AB; --c1-l:#DCEBF3;
+    --c2:#A23B72; --c2-l:#F1DDE9;
+    --c3:#F18F01; --c3-l:#FDEAC9;
+    --ink:#1F2937; --sub:#5B6472; --bg:#F7F8FA; --card:#FFFFFF; --line:#E1E5EA;
+    --ok:#1E7B45; --bad:#B3261E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5;}
+  header{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;padding:16px 14px;position:relative;}
+  header h1{margin:0 0 2px;font-size:1.15rem;padding-right:80px;}
+  header p{margin:0;font-size:.85rem;opacity:.9;}
+  #print-btn{position:absolute;top:14px;right:14px;min-height:40px;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;}
+  nav.tabs{position:sticky;top:0;z-index:20;display:flex;background:var(--card);border-bottom:1px solid var(--line);overflow-x:auto;}
+  nav.tabs button{flex:1 0 auto;min-width:25%;min-height:44px;border:none;background:none;padding:10px 6px;font-size:.85rem;font-weight:600;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent;}
+  nav.tabs button.active{color:var(--c1);border-bottom-color:var(--c1);}
+  main{max-width:760px;margin:0 auto;padding:14px 14px 40px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  h2.block-title{font-size:1.05rem;margin:4px 0 12px;color:var(--ink);}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  button.btn{min-height:40px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.85rem;font-weight:600;cursor:pointer;}
+  button.btn.primary{background:var(--c1);border-color:var(--c1);color:#fff;}
+  button.btn.ghost{background:transparent;}
+  button.btn:active{transform:scale(.98);}
+  button.btn:disabled{opacity:.6;}
+  .counter{align-self:center;font-size:.82rem;color:var(--sub);margin-left:auto;}
+
+  /* ===== Khối 1 — SƠ Đồ tư duy ===== */
+  .mindmap{display:flex;flex-direction:column;gap:10px;}
+  .center-node{background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:1rem;}
+  .branch{border-radius:10px;overflow:hidden;border:1px solid var(--line);}
+  .branch-head{width:100%;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;color:#fff;font-weight:700;font-size:.92rem;border:none;cursor:pointer;text-align:left;}
+  .branch-head .mark{font-weight:800;font-size:1rem;background:rgba(255,255,255,.25);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .branch-body{max-height:0;overflow:hidden;transition:max-height .25s ease;background:var(--card);}
+  .branch.open .branch-body{max-height:600px;}
+  .branch-body ul{margin:0;padding:10px 16px 12px 30px;}
+  .branch-body li{margin:6px 0;font-size:.9rem;}
+  .b1 .branch-head{background:var(--c1);} .b1 .branch-body{background:var(--c1-l);}
+  .b2 .branch-head{background:var(--c2);} .b2 .branch-body{background:var(--c2-l);}
+  .b3 .branch-head{background:var(--c3);} .b3 .branch-body{background:var(--c3-l);}
+  .b4 .branch-head{background:#3B8686;} .b4 .branch-body{background:#DBEFEE;}
+  .b5 .branch-head{background:#7A5195;} .b5 .branch-body{background:#E9E0F1;}
+  .b6 .branch-head{background:#C0587E;} .b6 .branch-body{background:#F5DEE6;}
+
+  /* ===== Khối 2 — Phiếu học tập ===== */
+  .task{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+  .task h3{margin:0 0 6px;font-size:.95rem;}
+  .task .tag{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--c1);border-radius:6px;padding:2px 8px;margin-bottom:6px;}
+  .task .tag.mo-rong{background:var(--c3);}
+  .task .hint{margin-top:8px;font-size:.85rem;color:var(--sub);border-left:3px solid var(--c1);padding-left:8px;}
+  .task .data-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.85rem;}
+  .task .data-table td,.task .data-table th{border:1px solid var(--line);padding:6px 8px;text-align:center;}
+  .answer-space{border:1px dashed var(--line);border-radius:6px;min-height:50px;margin-top:8px;}
+  .checklist label{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:.88rem;}
+  .checklist input{width:20px;height:20px;flex-shrink:0;margin-top:1px;}
+  .dien-ngan{width:100%;min-height:40px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);}
+  textarea.dien-dai{width:100%;min-height:90px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);resize:vertical;}
+  .dien-ngan:focus,textarea.dien-dai:focus{outline:none;border-style:solid;border-color:var(--c1);}
+  .lua-chon-item{margin-top:10px;}
+  .lua-chon-item .lc-stem{font-weight:600;font-size:.9rem;margin-bottom:6px;}
+  .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
+  .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .dap-an-goi-y{margin-top:10px;}
+  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:34px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:6px;cursor:pointer;font-weight:600;}
+  .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 6px 6px 0;padding:8px 10px;}
+  .dap-an-goi-y.hien .noi-dung-dap-an{display:block;}
+  .dap-an-goi-y.hien .nut-xem-dap-an{background:var(--c1);color:#fff;}
+
+  /* ===== Khối 3 — Thẻ ghi nhớ ===== */
+  .fc-status{font-size:.82rem;color:var(--sub);margin-bottom:8px;}
+  .fc-stage{perspective:1000px;height:190px;margin-bottom:12px;}
+  .fc-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .4s;cursor:pointer;}
+  .fc-card.flipped{transform:rotateY(180deg);}
+  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;font-size:1.05rem;font-weight:600;border:1px solid var(--line);}
+  .fc-face.front{background:var(--card);}
+  .fc-face.back{background:var(--c1-l);transform:rotateY(180deg);font-weight:500;font-size:.95rem;}
+  .fc-face .dir{position:absolute;top:8px;left:10px;font-size:.68rem;font-weight:700;color:var(--sub);text-transform:uppercase;}
+  .fc-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .fc-mark{display:flex;gap:8px;margin-bottom:10px;}
+  .fc-mark button.known{border-color:var(--ok);color:var(--ok);}
+  .fc-mark button.review{border-color:var(--bad);color:var(--bad);}
+  .fc-filter{display:flex;align-items:center;gap:8px;font-size:.85rem;margin-bottom:10px;}
+  .test-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center;}
+  .test-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  /* ===== Khối 4 — Quiz ===== */
+  .qz-progress{font-size:.85rem;color:var(--sub);margin-bottom:10px;}
+  .qz-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+  .qz-item .ctx{font-size:.85rem;color:var(--sub);background:#F2F4F6;border-radius:6px;padding:8px;margin-bottom:8px;}
+  .qz-item .stem{font-weight:600;margin-bottom:8px;font-size:.92rem;}
+  .qz-item label{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid transparent;}
+  .qz-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .qz-item.graded label.correct{background:#E7F5EC;border-color:var(--ok);}
+  .qz-item.graded label.wrong-pick{background:#FBEAE9;border-color:var(--bad);}
+  .qz-explain{display:none;margin-top:8px;font-size:.84rem;background:#F2F4F6;border-radius:6px;padding:8px;}
+  .qz-item.graded .qz-explain{display:block;}
+  .qz-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px;display:none;}
+  .qz-result.show{display:block;}
+  .qz-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px;}
+
+  /* ===== In ===== */
+  .print-only{display:none;}
+  @media print{
+    nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,footer,button{display:none !important;}
+    section.panel{display:block !important;page-break-after:always;}
+    .branch-body{max-height:none !important;}
+    .print-only{display:block;}
+    .fc-stage{display:none;}
+    body{background:#fff;font-size:12px;}
+    header{background:#fff !important;color:#000 !important;border-bottom:2px solid #000;}
+    .branch-head{color:#000 !important;background:#eee !important;border:1px solid #000;}
+    .qz-item label{border:1px solid #999;}
+    h2.block-title{border-bottom:1px solid #000;padding-bottom:4px;}
+    .dap-an-goi-y .noi-dung-dap-an{display:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== ỨNG DỤNG ===================== -->
+<div id="app-shell">
+
+<header>
+  <button id="print-btn" type="button">🖨 In / Lưu PDF</button>
+  <h1>Bài 1. Làm quen với Trí tuệ nhân tạo</h1>
+  <p>Tin học 12 · Trường THCS & THPT Vĩnh Hưng · Học liệu số dùng offline</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="p1">Sơ đồ tư duy</button>
+  <button class="tab-btn" data-panel="p2">Phiếu học tập</button>
+  <button class="tab-btn" data-panel="p3">Thẻ ghi nhớ</button>
+  <button class="tab-btn" data-panel="p4">Quiz</button>
+</nav>
+<main>
+
+  <!-- ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== -->
+  <section id="p1" class="panel active">
+    <h2 class="block-title">1. Sơ đồ tư duy</h2>
+    <div class="toolbar">
+      <button class="btn primary" id="mm-open-all">Mở tất cả</button>
+      <button class="btn" id="mm-close-all">Đóng tất cả</button>
+      <span class="counter" id="mm-counter"></span>
+    </div>
+    <div class="mindmap" id="mindmap"></div>
+  </section>
+
+  <!-- ===================== KHỐI 2 — PHIẾU HỌC TẬP ===================== -->
+  <section id="p2" class="panel">
+    <h2 class="block-title">2. Phiếu học tập / thực hành</h2>
+    <div class="toolbar">
+      <button class="btn ghost" id="p2-reset" type="button">Xóa câu trả lời đã lưu</button>
+    </div>
+    <p class="print-only" style="font-size:.85rem;color:#555;">Họ tên: .................................... Lớp: ............. Nhóm: ............</p>
+    <div id="p2-content"></div>
+  </section>
+
+  <!-- ===================== KHỐI 3 — THẻ GHI NHỚ ===================== -->
+  <section id="p3" class="panel">
+    <h2 class="block-title">3. Thẻ ghi nhớ</h2>
+    <div class="toolbar">
+      <button class="btn" id="fc-shuffle">Xáo trộn</button>
+      <button class="btn" id="fc-test">Tự kiểm tra</button>
+      <button class="btn ghost" id="fc-reset">Xóa tiến độ</button>
+    </div>
+    <div class="fc-filter">
+      <input type="checkbox" id="fc-filter-unknown">
+      <label for="fc-filter-unknown">Chỉ hiện thẻ chưa thuộc</label>
+    </div>
+    <p class="fc-status" id="fc-status"></p>
+    <div id="fc-view">
+      <div class="fc-stage">
+        <div class="fc-card" id="fc-card">
+          <div class="fc-face front"><span class="dir" id="fc-dir-f"></span><span id="fc-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fc-back-text"></span></div>
+        </div>
+      </div>
+      <div class="fc-nav">
+        <button class="btn" id="fc-prev">← Trước</button>
+        <span class="counter" id="fc-counter" style="align-self:center;"></span>
+        <button class="btn" id="fc-next">Sau →</button>
+      </div>
+      <div class="fc-mark">
+        <button class="btn review" id="fc-mark-review">Cần ôn lại</button>
+        <button class="btn known" id="fc-mark-known">Đã thuộc</button>
+      </div>
+    </div>
+    <div id="fc-test-view" style="display:none;">
+      <div class="fc-stage">
+        <div class="fc-card" id="fct-card">
+          <div class="fc-face front"><span class="dir" id="fct-dir-f"></span><span id="fct-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fct-back-text"></span></div>
+        </div>
+      </div>
+      <p class="fc-status" id="fct-progress"></p>
+      <div class="fc-mark">
+        <button class="btn review" id="fct-wrong">Chưa biết</button>
+        <button class="btn known" id="fct-right">Biết rồi</button>
+      </div>
+    </div>
+    <div id="fc-result-view" style="display:none;">
+      <div class="test-result">
+        <p>Kết quả tự kiểm tra</p>
+        <div class="score" id="fc-score"></div>
+        <button class="btn primary" id="fc-test-again" style="margin-top:10px;">Kiểm tra lại</button>
+        <button class="btn" id="fc-test-exit">Quay lại thẻ</button>
+      </div>
+    </div>
+    <!-- Bản in: toàn bộ thẻ dạng lưới có đường cắt -->
+    <div class="print-only" id="fc-print-grid"></div>
+  </section>
+
+  <!-- ===================== KHỐI 4 — QUIZ ===================== -->
+  <section id="p4" class="panel">
+    <h2 class="block-title">4. Quiz tự chấm</h2>
+    <div class="toolbar">
+      <button class="btn" id="qz-shuffle">Xáo trộn câu hỏi</button>
+      <button class="btn" id="qz-reset">Làm lại</button>
+    </div>
+    <p class="qz-progress" id="qz-progress"></p>
+    <div class="qz-result" id="qz-result">
+      <p>Kết quả</p>
+      <div class="score" id="qz-score"></div>
+    </div>
+    <form id="qz-form"></form>
+    <button class="btn primary" id="qz-submit" style="width:100%;">Nộp bài</button>
+  </section>
+
+</main>
+
+<footer>Học liệu số — Bài 1 Tin học 12 ICT — Trường THCS & THPT Vĩnh Hưng. Mở bằng Chrome hoặc Safari, không cần Internet.</footer>
+
+</div><!-- /#app-shell -->
+
+<script type="application/json" id="hls-data">{"worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — cốt lõi<\/span>\n  <h3>Phân loại: AI hay tự động hoá thông thường?<\/h3>\n  <p>Với mỗi thiết bị/phần mềm sau, chọn Có nếu là ứng dụng AI, Không nếu chỉ là tự động hoá thông thường, và ghi ngắn gọn lí do:<\/p>\n  <table class=\"data-table\">\n    <tr><th>Thiết bị / phần mềm<\/th><th>Có AI?<\/th><th>Lí do<\/th><\/tr>\n    <tr>\n      <td>Ấm đun nước tự ngắt điện khi nước sôi<\/td>\n      <td class=\"lua-chon-item\" data-id=\"pl-1\" style=\"margin-top:0;\"><label><input type=\"radio\" name=\"pl-1\" value=\"co\"> Có<\/label><label><input type=\"radio\" name=\"pl-1\" value=\"khong\"> Không<\/label><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"pl-1-lido\"><\/td>\n    <\/tr>\n    <tr>\n      <td>Máy tìm kiếm thông tin Google (Google Search)<\/td>\n      <td class=\"lua-chon-item\" data-id=\"pl-2\" style=\"margin-top:0;\"><label><input type=\"radio\" name=\"pl-2\" value=\"co\"> Có<\/label><label><input type=\"radio\" name=\"pl-2\" value=\"khong\"> Không<\/label><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"pl-2-lido\"><\/td>\n    <\/tr>\n    <tr>\n      <td>Cửa tự động mở khi có người tới gần<\/td>\n      <td class=\"lua-chon-item\" data-id=\"pl-3\" style=\"margin-top:0;\"><label><input type=\"radio\" name=\"pl-3\" value=\"co\"> Có<\/label><label><input type=\"radio\" name=\"pl-3\" value=\"khong\"> Không<\/label><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"pl-3-lido\"><\/td>\n    <\/tr>\n    <tr>\n      <td>Trợ lí ảo trả lời câu hỏi bằng giọng nói<\/td>\n      <td class=\"lua-chon-item\" data-id=\"pl-4\" style=\"margin-top:0;\"><label><input type=\"radio\" name=\"pl-4\" value=\"co\"> Có<\/label><label><input type=\"radio\" name=\"pl-4\" value=\"khong\"> Không<\/label><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"pl-4-lido\"><\/td>\n    <\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Gợi ý: ấm đun nước và cửa tự động — Không (chỉ phản ứng theo cơ chế cố định, không \"học\" hay \"suy luận\"); Google Search và trợ lí ảo — Có (cần xử lí ngôn ngữ, học từ dữ liệu để trả kết quả phù hợp).<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: chỉ hỏi một câu duy nhất — thiết bị này có cần \"học\" hay \"suy luận\" từ dữ liệu để đưa ra kết quả không, hay chỉ phản ứng theo một cơ chế cố định?<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — cốt lõi<\/span>\n  <h3>Đối chiếu đặc trưng của AI<\/h3>\n  <p>Với ứng dụng dịch máy (Google dịch) và trợ lí ảo (Google Assistant/Siri), hãy chỉ ra ít nhất hai đặc trưng cơ bản của AI mà mỗi ứng dụng thể hiện rõ nhất:<\/p>\n  <p>a) Dịch máy thể hiện:<\/p>\n  <textarea class=\"dien-dai\" data-id=\"dc-a\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>b) Trợ lí ảo thể hiện:<\/p>\n  <textarea class=\"dien-dai\" data-id=\"dc-b\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: đối chiếu với 5 đặc trưng đã học — khả năng học, suy luận, nhận thức, hiểu ngôn ngữ, giải quyết vấn đề.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — cốt lõi<\/span>\n  <h3>Kể tên ứng dụng AI trong thực tế<\/h3>\n  <p>Nêu tên và mô tả sơ bộ chức năng hoạt động của một ứng dụng AI mà em biết ngoài các ví dụ đã học trong bài (không nhắc lại MYCIN, Asimo, Google dịch, nhận dạng khuôn mặt/chữ viết tay, trợ lí ảo).<\/p>\n  <textarea class=\"dien-dai\" data-id=\"ke-ung-dung\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: nghĩ tới các ứng dụng trên điện thoại hoặc mạng xã hội em hay dùng — gợi ý video, gợi ý kết bạn, lọc thư rác...<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Câu hỏi mở rộng — vận dụng<\/span>\n  <h3>Liên hệ thực tế<\/h3>\n  <p>1) Đề xuất một ứng dụng AI có thể giúp bà con nuôi tôm hoặc trồng lúa ở địa phương phát hiện sớm dịch bệnh. Mô tả ngắn gọn cách ứng dụng đó hoạt động.<\/p>\n  <p>2) Vì sao người dân vẫn cần đối chiếu thực tế, không nên tin tuyệt đối vào khuyến cáo của một ứng dụng AI?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"lien-he-thuc-te\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Bạn A nêu ý kiến phân loại từng thiết bị, bạn B đối chiếu và bổ sung lí do.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Hai bạn thống nhất được tiêu chí phân biệt AI với tự động hoá thông thường.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Hoàn thành đủ ba nhiệm vụ cốt lõi trong đúng thời gian quy định.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Nêu được lí do cụ thể, không trả lời chung chung \"có\"/\"không\".<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. Khái niệm về AI", "cls": "b1", "items": ["AI: máy tính làm được việc mang tính trí tuệ như con người", "5 đặc trưng: học, suy luận, nhận thức, hiểu ngôn ngữ, giải quyết vấn đề", "Phép thử Turing (Alan Turing, 1950)", "Hội thảo Dartmouth (1956) — thuật ngữ AI ra đời", "AI hẹp (AI yếu) và AI tổng quát (AI mạnh)", "Phân biệt AI với tự động hoá thông thường"]}, {"title": "2. Một số ứng dụng của AI", "cls": "b2", "items": ["Hệ chuyên gia MYCIN — chẩn đoán nhiễm trùng máu", "Robot Asimo — điều khiển, nhận dạng hình ảnh và tiếng nói", "Google dịch — dịch thuật tự động", "Nhận dạng khuôn mặt, nhận dạng chữ viết tay", "Trợ lí ảo: Google Assistant, Siri, Bixby, Cortana"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "Trí tuệ nhân tạo (AI) là gì?", "back": "Khả năng của máy tính làm được những công việc mang tính trí tuệ của con người như đọc chữ, hiểu tiếng nói, dịch thuật, học và ra quyết định."}, {"id": "fc02", "dir": "Hỏi xuôi", "front": "Phép thử Turing dùng để làm gì?", "back": "Đánh giá khả năng của máy tính trong việc thể hiện hành vi thông minh, do Alan Turing đề xuất năm 1950."}, {"id": "fc03", "dir": "Hỏi xuôi", "front": "Hội thảo nào đánh dấu sự ra đời của thuật ngữ AI, tổ chức năm nào?", "back": "Hội thảo Dartmouth, năm 1956, tại Đại học Dartmouth (Mỹ)."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "Kể tên 5 đặc trưng cơ bản của AI.", "back": "Khả năng học, khả năng suy luận, khả năng nhận thức, khả năng hiểu ngôn ngữ, khả năng giải quyết vấn đề."}, {"id": "fc05", "dir": "Hỏi ngược", "front": "Hệ thống khuyến nghị video trên YouTube học từ lịch sử xem để đề xuất video mới thể hiện đặc trưng nào?", "back": "Khả năng học."}, {"id": "fc06", "dir": "Hỏi ngược", "front": "Xe tự lái dùng cảm biến radar, camera để phát hiện chướng ngại vật, biển báo, người đi bộ thể hiện đặc trưng nào?", "back": "Khả năng nhận thức."}, {"id": "fc07", "dir": "Hỏi xuôi", "front": "Vì sao ấm đun nước tự ngắt điện không được coi là ứng dụng AI?", "back": "Vì chỉ hoạt động theo cơ chế ngắt mạch cơ - nhiệt - điện cố định, không học hay suy luận từ dữ liệu."}, {"id": "fc08", "dir": "Hỏi xuôi", "front": "AI hẹp (AI yếu) khác AI tổng quát (AI mạnh) ở điểm nào?", "back": "AI hẹp được thiết kế cho một nhiệm vụ cụ thể; AI tổng quát có khả năng tự học, tự thích nghi và làm được nhiều việc như con người (hiện chưa đạt được trong thực tế)."}, {"id": "fc09", "dir": "Hỏi xuôi", "front": "Hệ chuyên gia MYCIN dùng để làm gì?", "back": "Chẩn đoán nhiễm trùng máu và đề xuất kháng sinh, phát triển tại Đại học Stanford từ năm 1972."}, {"id": "fc10", "dir": "Hỏi xuôi", "front": "Robot Asimo tích hợp những ứng dụng AI nào?", "back": "Tự động điều khiển (di chuyển hai chân), nhận dạng hình ảnh và nhận dạng tiếng nói."}, {"id": "fc11", "dir": "Hỏi ngược", "front": "Google Assistant, Siri, Bixby, Cortana thuộc nhóm ứng dụng AI nào?", "back": "Trợ lí ảo."}, {"id": "fc12", "dir": "Hỏi ngược", "front": "Ứng dụng chuyển hình ảnh chữ viết tay thành văn bản có thể xử lí được, dùng trong xử lí hoá đơn, gọi là gì?", "back": "Nhận dạng chữ viết tay."}], "quiz": [{"id": "q01", "stem": "Theo cách hiểu thông thường, Trí tuệ nhân tạo (AI) là", "opts": [{"l": "A", "t": "khả năng của máy tính có thể làm những công việc mang tính trí tuệ của con người như đọc chữ, hiểu tiếng nói, dịch thuật, học và ra quyết định."}, {"l": "B", "t": "khả năng của máy tính chạy được nhiều phần mềm khác nhau cùng một lúc."}, {"l": "C", "t": "khả năng lưu trữ dữ liệu với dung lượng rất lớn của các thiết bị số hiện đại."}, {"l": "D", "t": "khả năng kết nối Internet tốc độ cao của điện thoại thông minh."}], "ans": "A", "ngu_canh": null, "explain": "SGK định nghĩa AI là khả năng của máy tính làm được những công việc mang tính trí tuệ của con người."}, {"id": "q02", "stem": "Đặc trưng nào sau đây KHÔNG phải là đặc trưng cơ bản của AI?", "opts": [{"l": "A", "t": "Khả năng học"}, {"l": "B", "t": "Khả năng suy luận"}, {"l": "C", "t": "Khả năng nạp điện không dây"}, {"l": "D", "t": "Khả năng giải quyết vấn đề"}], "ans": "C", "ngu_canh": null, "explain": "Năm đặc trưng cơ bản là học, suy luận, nhận thức, hiểu ngôn ngữ, giải quyết vấn đề; nạp điện không liên quan."}, {"id": "q03", "stem": "Phép thử Turing (năm 1950) dùng để làm gì?", "opts": [{"l": "A", "t": "Đo tốc độ xử lí của máy tính."}, {"l": "B", "t": "Đánh giá khả năng của máy tính trong việc thể hiện hành vi thông minh."}, {"l": "C", "t": "Kiểm tra dung lượng lưu trữ của chương trình."}, {"l": "D", "t": "Xác định tốc độ truyền dữ liệu mạng."}], "ans": "B", "ngu_canh": null, "explain": "Phép thử Turing bước đầu đánh giá khả năng máy tính thể hiện hành vi thông minh."}, {"id": "q04", "stem": "Trong bốn thiết bị sau, thiết bị nào KHÔNG được coi là ứng dụng của AI?", "opts": [{"l": "A", "t": "Máy tìm kiếm Google (Google Search)."}, {"l": "B", "t": "Ấm đun nước tự ngắt điện khi nước sôi."}, {"l": "C", "t": "Trợ lí ảo trả lời bằng giọng nói."}, {"l": "D", "t": "Phần mềm nhận dạng khuôn mặt để mở khoá điện thoại."}], "ans": "B", "ngu_canh": null, "explain": "Ấm nước chỉ ngắt theo cơ chế cố định, không học hay suy luận từ dữ liệu."}, {"id": "q05", "stem": "Phần mềm dịch máy và kiểm tra lỗi chính tả thể hiện rõ nhất đặc trưng nào của AI?", "opts": [{"l": "A", "t": "Khả năng nhận thức."}, {"l": "B", "t": "Khả năng hiểu ngôn ngữ."}, {"l": "C", "t": "Khả năng giải quyết vấn đề hình học."}, {"l": "D", "t": "Khả năng nạp năng lượng tự động."}], "ans": "B", "ngu_canh": null, "explain": "Cả hai đều xử lí ngôn ngữ tự nhiên của con người."}, {"id": "q06", "stem": "Hệ chuyên gia MYCIN ứng dụng AI trong lĩnh vực nào?", "opts": [{"l": "A", "t": "Dịch thuật văn bản."}, {"l": "B", "t": "Chẩn đoán nhiễm trùng máu và đề xuất kháng sinh."}, {"l": "C", "t": "Điều khiển robot hình người."}, {"l": "D", "t": "Nhận dạng khuôn mặt."}], "ans": "B", "ngu_canh": null, "explain": "MYCIN dùng khoảng 600 luật suy diễn để chẩn đoán nhiễm trùng máu."}, {"id": "q07", "stem": "Robot Asimo của hãng Honda tích hợp ứng dụng AI nào?", "opts": [{"l": "A", "t": "Tự động điều khiển, nhận dạng hình ảnh và nhận dạng tiếng nói."}, {"l": "B", "t": "Chẩn đoán bệnh từ xa."}, {"l": "C", "t": "Dịch máy nhiều thứ tiếng."}, {"l": "D", "t": "Quét lỗi chính tả văn bản."}], "ans": "A", "ngu_canh": null, "explain": "Asimo tích hợp tự động điều khiển, nhận dạng hình ảnh và nhận dạng tiếng nói."}, {"id": "q08", "stem": "AI được chia thành hai loại theo chức năng. Chương trình chơi cờ thuộc loại nào?", "opts": [{"l": "A", "t": "AI tổng quát (AI mạnh)."}, {"l": "B", "t": "AI hẹp (AI yếu)."}, {"l": "C", "t": "Không thuộc loại AI nào."}, {"l": "D", "t": "AI tổng quát vì đã đạt mục tiêu dài hạn của nghiên cứu AI."}], "ans": "B", "ngu_canh": null, "explain": "Chương trình chơi cờ thiết kế cho một nhiệm vụ cụ thể nên là AI hẹp."}, {"id": "q09", "stem": "Một hợp tác xã nuôi tôm dùng ứng dụng chụp ảnh con tôm nghi bệnh, ứng dụng tự đưa ra nhận định về loại bệnh. Ứng dụng này được coi là AI chủ yếu vì", "opts": [{"l": "A", "t": "chạy được trên điện thoại có 4G."}, {"l": "B", "t": "học từ dữ liệu ảnh và có khả năng nhận thức để đưa ra nhận định, không chỉ phản ứng cố định."}, {"l": "C", "t": "có dung lượng cài đặt lớn."}, {"l": "D", "t": "được tải miễn phí."}], "ans": "B", "ngu_canh": null, "explain": "Điểm phân biệt AI với tự động hoá là khả năng học và nhận thức từ dữ liệu."}, {"id": "q10", "stem": "Trợ lí ảo (Google Assistant, Siri...) khi trả lời yêu cầu bằng giọng nói thể hiện rõ nhất hai đặc trưng nào?", "opts": [{"l": "A", "t": "Khả năng hiểu ngôn ngữ và khả năng giải quyết vấn đề."}, {"l": "B", "t": "Khả năng lưu trữ và khả năng truyền tin tốc độ cao."}, {"l": "C", "t": "Khả năng in ấn và khả năng quét mã vạch."}, {"l": "D", "t": "Khả năng sạc pin nhanh và khả năng chống nước."}], "ans": "A", "ngu_canh": null, "explain": "Trợ lí ảo phải hiểu ngôn ngữ nói rồi giải quyết đúng yêu cầu người dùng."}]}</script>
+<script>
+(function(){
+"use strict";
+
+/* ===================== ỨNG DỤNG — DỰNG NGAY, KHÔNG QUA XÁC THỰC ===================== */
+var payload = JSON.parse(document.getElementById("hls-data").textContent);
+buildApp(payload);
+
+function buildApp(payload){
+
+/* ---------- Lưu trữ an toàn (tiến độ thẻ ghi nhớ) ---------- */
+var STORE_KEY = "tin12_bai01";
+function loadStore(){
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    return raw ? JSON.parse(raw) : {known:{}};
+  }catch(e){ return {known:{}}; }
+}
+function saveStore(s){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){ /* im lặng, tệp file:// có thể chặn */ }
+}
+var store = loadStore();
+if(!store.known) store.known = {};
+
+/* ---------- In / Xuất PDF ---------- */
+document.getElementById("print-btn").addEventListener("click", function(){ window.print(); });
+
+/* ---------- Chuyển tab ---------- */
+var tabBtns = document.querySelectorAll(".tab-btn");
+var panels = document.querySelectorAll(".panel");
+tabBtns.forEach(function(btn){
+  btn.addEventListener("click", function(){
+    tabBtns.forEach(function(b){ b.classList.remove("active"); });
+    panels.forEach(function(p){ p.classList.remove("active"); });
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.panel).classList.add("active");
+  });
+});
+
+/* ---------- Phiếu học tập ---------- */
+document.getElementById("p2-content").innerHTML = payload.worksheetHtml || "";
+if(!store.phieu) store.phieu = {};
+enhanceWorksheet();
+
+/* ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== */
+var mindmapData = payload.mindmap || [];
+var branchColorClass = ["b1","b2","b3","b4","b5","b6"];
+
+var mmRoot = document.getElementById("mindmap");
+var center = document.createElement("div");
+center.className = "center-node";
+center.textContent = payload.tieu_de_trung_tam || (document.title.replace("Học liệu số — ",""));
+mmRoot.appendChild(center);
+
+mindmapData.forEach(function(b, idx){
+  var branch = document.createElement("div");
+  branch.className = "branch " + (b.cls || branchColorClass[idx % branchColorClass.length]);
+  branch.dataset.idx = idx;
+
+  var head = document.createElement("button");
+  head.className = "branch-head";
+  head.innerHTML = '<span>' + b.title + '</span><span class="mark">?</span>';
+  head.addEventListener("click", function(){ toggleBranch(branch); });
+
+  var body = document.createElement("div");
+  body.className = "branch-body";
+  var ul = document.createElement("ul");
+  (b.items || []).forEach(function(t){
+    var li = document.createElement("li");
+    li.textContent = t;
+    ul.appendChild(li);
+  });
+  body.appendChild(ul);
+
+  branch.appendChild(head);
+  branch.appendChild(body);
+  mmRoot.appendChild(branch);
+});
+
+function updateMmCounter(){
+  var total = mindmapData.length;
+  var open = document.querySelectorAll(".branch.open").length;
+  document.getElementById("mm-counter").textContent = "Đã mở " + open + "/" + total + " phần";
+}
+function toggleBranch(branch){
+  var isOpen = branch.classList.toggle("open");
+  var mark = branch.querySelector(".mark");
+  mark.textContent = isOpen ? "−" : "?";
+  updateMmCounter();
+}
+document.getElementById("mm-open-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.add("open");
+    br.querySelector(".mark").textContent = "−";
+  });
+  updateMmCounter();
+});
+document.getElementById("mm-close-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.remove("open");
+    br.querySelector(".mark").textContent = "?";
+  });
+  updateMmCounter();
+});
+updateMmCounter();
+
+/* ===================== KHỐI 3 — THẺ GHI NHỚ ===================== */
+var flashcards = payload.flashcards || [];
+var fcOrder = flashcards.map(function(c,i){ return i; });
+var fcPos = 0;
+
+function fcVisibleOrder(){
+  var onlyUnknown = document.getElementById("fc-filter-unknown").checked;
+  var order = fcOrder.slice();
+  if(onlyUnknown){
+    order = order.filter(function(i){ return !store.known[flashcards[i].id]; });
+  }
+  return order;
+}
+function fcRender(){
+  var order = fcVisibleOrder();
+  if(order.length === 0){
+    document.getElementById("fc-front-text").textContent = "Không còn thẻ nào trong bộ lọc — mọi thẻ đã được đánh dấu Đã thuộc.";
+    document.getElementById("fc-back-text").textContent = "Bỏ lọc để xem lại toàn bộ bộ thẻ.";
+    document.getElementById("fc-counter").textContent = "0/0";
+    document.getElementById("fc-status").textContent = "";
+    return;
+  }
+  if(fcPos >= order.length) fcPos = 0;
+  if(fcPos < 0) fcPos = order.length - 1;
+  var card = flashcards[order[fcPos]];
+  document.getElementById("fc-dir-f").textContent = card.dir;
+  document.getElementById("fc-front-text").textContent = card.front;
+  document.getElementById("fc-back-text").textContent = card.back;
+  document.getElementById("fc-counter").textContent = (fcPos+1) + "/" + order.length;
+  var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
+  document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
+  var el = document.getElementById("fc-card");
+  el.classList.remove("flipped");
+}
+document.getElementById("fc-card").addEventListener("click", function(){
+  this.classList.toggle("flipped");
+});
+document.getElementById("fc-prev").addEventListener("click", function(){ fcPos--; fcRender(); });
+document.getElementById("fc-next").addEventListener("click", function(){ fcPos++; fcRender(); });
+document.getElementById("fc-filter-unknown").addEventListener("change", function(){ fcPos = 0; fcRender(); });
+document.getElementById("fc-shuffle").addEventListener("click", function(){
+  for(var i = fcOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = fcOrder[i]; fcOrder[i] = fcOrder[j]; fcOrder[j] = t;
+  }
+  fcPos = 0;
+  fcRender();
+});
+function fcMark(known){
+  var order = fcVisibleOrder();
+  if(order.length === 0) return;
+  var card = flashcards[order[fcPos]];
+  if(known){ store.known[card.id] = true; } else { delete store.known[card.id]; }
+  saveStore(store);
+  fcPos++;
+  fcRender();
+}
+document.getElementById("fc-mark-known").addEventListener("click", function(){ fcMark(true); });
+document.getElementById("fc-mark-review").addEventListener("click", function(){ fcMark(false); });
+document.getElementById("fc-reset").addEventListener("click", function(){
+  store.known = {};
+  saveStore(store);
+  fcRender();
+});
+
+/* Chế độ tự kiểm tra */
+var testOrder = [];
+var testPos = 0;
+var testRight = 0;
+function startTest(){
+  testOrder = fcOrder.slice();
+  for(var i = testOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = testOrder[i]; testOrder[i] = testOrder[j]; testOrder[j] = t;
+  }
+  testPos = 0; testRight = 0;
+  document.getElementById("fc-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-test-view").style.display = "block";
+  renderTestCard();
+}
+function renderTestCard(){
+  if(testPos >= testOrder.length){ finishTest(); return; }
+  var card = flashcards[testOrder[testPos]];
+  document.getElementById("fct-dir-f").textContent = card.dir;
+  document.getElementById("fct-front-text").textContent = card.front;
+  document.getElementById("fct-back-text").textContent = card.back;
+  document.getElementById("fct-card").classList.remove("flipped");
+  document.getElementById("fct-progress").textContent = "Câu " + (testPos+1) + "/" + testOrder.length;
+}
+document.getElementById("fct-card").addEventListener("click", function(){ this.classList.toggle("flipped"); });
+document.getElementById("fc-test").addEventListener("click", startTest);
+document.getElementById("fct-right").addEventListener("click", function(){ testRight++; testPos++; renderTestCard(); });
+document.getElementById("fct-wrong").addEventListener("click", function(){ testPos++; renderTestCard(); });
+function finishTest(){
+  document.getElementById("fc-test-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "block";
+  var pct = testOrder.length ? Math.round((testRight / testOrder.length) * 100) : 0;
+  document.getElementById("fc-score").textContent = pct + "% (" + testRight + "/" + testOrder.length + ")";
+}
+document.getElementById("fc-test-again").addEventListener("click", startTest);
+document.getElementById("fc-test-exit").addEventListener("click", function(){
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-view").style.display = "block";
+  fcRender();
+});
+
+/* Bản in — lưới toàn bộ thẻ, đường cắt */
+(function printGrid(){
+  var wrap = document.getElementById("fc-print-grid");
+  var style = document.createElement("style");
+  style.textContent = ".pf-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}"
+    + ".pf-card{border:1px dashed #999;padding:10px;min-height:110px;font-size:11px;}"
+    + ".pf-card b{display:block;margin-bottom:6px;}";
+  wrap.appendChild(style);
+  var grid = document.createElement("div");
+  grid.className = "pf-grid";
+  flashcards.forEach(function(c){
+    var d = document.createElement("div");
+    d.className = "pf-card";
+    d.innerHTML = "<b>" + c.dir + ": " + c.front + "</b>" + c.back;
+    grid.appendChild(d);
+  });
+  wrap.appendChild(grid);
+})();
+
+fcRender();
+
+/* ===================== KHỐI 4 — QUIZ ===================== */
+var quiz = payload.quiz || [];
+var quizOrder = quiz.map(function(c,i){ return i; });
+var graded = false;
+
+function renderQuiz(){
+  var form = document.getElementById("qz-form");
+  form.innerHTML = "";
+  quizOrder.forEach(function(qi, pos){
+    var q = quiz[qi];
+    var box = document.createElement("div");
+    box.className = "qz-item";
+    box.dataset.qid = q.id;
+    var html = "";
+    if(q.ngu_canh){ html += '<div class="ctx">' + q.ngu_canh + '</div>'; }
+    html += '<div class="stem">Câu ' + (pos+1) + '. ' + q.stem + '</div>';
+    q.opts.forEach(function(o){
+      html += '<label data-l="' + o.l + '"><input type="radio" name="' + q.id + '" value="' + o.l + '"> <span>' + o.l + '. ' + o.t + '</span></label>';
+    });
+    html += '<div class="qz-explain"></div>';
+    box.innerHTML = html;
+    form.appendChild(box);
+  });
+  document.getElementById("qz-progress").textContent = quiz.length + " câu trắc nghiệm — chọn xong bấm Nộp bài để tự chấm điểm.";
+  document.getElementById("qz-result").classList.remove("show");
+  graded = false;
+  document.querySelectorAll(".qz-item").forEach(function(it){ it.classList.remove("graded"); });
+}
+renderQuiz();
+
+document.getElementById("qz-submit").addEventListener("click", function(){
+  if(graded) return;
+  var right = 0;
+  quiz.forEach(function(q){
+    var chosen = document.querySelector('input[name="' + q.id + '"]:checked');
+    var box = document.querySelector('.qz-item[data-qid="' + q.id + '"]');
+    box.classList.add("graded");
+    var isCorrect = chosen && chosen.value === q.ans;
+    if(isCorrect) right++;
+    box.querySelectorAll("label").forEach(function(lb){
+      if(lb.dataset.l === q.ans) lb.classList.add("correct");
+      else if(chosen && lb.dataset.l === chosen.value) lb.classList.add("wrong-pick");
+    });
+    box.querySelector(".qz-explain").textContent = "Đáp án đúng: " + q.ans + ". " + q.explain;
+    box.querySelectorAll("input").forEach(function(inp){ inp.disabled = true; });
+  });
+  var pct = quiz.length ? Math.round((right / quiz.length) * 100) : 0;
+  document.getElementById("qz-score").textContent = pct + "% (" + right + "/" + quiz.length + " câu)";
+  document.getElementById("qz-result").classList.add("show");
+  graded = true;
+});
+document.getElementById("qz-reset").addEventListener("click", renderQuiz);
+document.getElementById("qz-shuffle").addEventListener("click", function(){
+  for(var i = quizOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = quizOrder[i]; quizOrder[i] = quizOrder[j]; quizOrder[j] = t;
+  }
+  renderQuiz();
+});
+
+/* ========== Phiếu học tập — điền/chọn đáp án + lưu tạm ========== */
+function enhanceWorksheet(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+
+  /* Ô nhập câu trả lời (ngắn: input, dài: textarea) */
+  scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]").forEach(function(el){
+    var id = el.dataset.id;
+    if(store.phieu[id] !== undefined) el.value = store.phieu[id];
+    el.addEventListener("input", function(){
+      store.phieu[id] = el.value;
+      saveStore(store);
+    });
+  });
+
+  /* Trắc nghiệm / Đúng — Sai (radio hoặc checkbox), mỗi câu bọc trong .lua-chon-item[data-id] */
+  scope.querySelectorAll(".lua-chon-item[data-id]").forEach(function(item){
+    var id = item.dataset.id;
+    var saved = store.phieu[id];
+    var boxes = item.querySelectorAll("input[type=checkbox]");
+    if(boxes.length){
+      boxes.forEach(function(inp){
+        if(Array.isArray(saved) && saved.indexOf(inp.value) !== -1) inp.checked = true;
+        inp.addEventListener("change", function(){
+          var chon = [];
+          item.querySelectorAll("input[type=checkbox]:checked").forEach(function(c){ chon.push(c.value); });
+          store.phieu[id] = chon;
+          saveStore(store);
+        });
+      });
+    } else {
+      item.querySelectorAll("input[type=radio]").forEach(function(inp){
+        if(saved === inp.value) inp.checked = true;
+        inp.addEventListener("change", function(){
+          store.phieu[id] = inp.value;
+          saveStore(store);
+        });
+      });
+    }
+  });
+
+  /* Nút xem đáp án gợi ý (không tự chấm, chỉ hiện/ẩn) */
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    var btn = block.querySelector(".nut-xem-dap-an");
+    if(!btn) return;
+    btn.addEventListener("click", function(){
+      var hien = block.classList.toggle("hien");
+      btn.textContent = hien ? "Ẩn đáp án gợi ý" : "Xem đáp án gợi ý";
+    });
+  });
+
+  /* Xóa toàn bộ câu trả lời đã lưu của phiếu học tập */
+  var resetBtn = document.getElementById("p2-reset");
+  if(resetBtn){
+    resetBtn.addEventListener("click", function(){
+      store.phieu = {};
+      saveStore(store);
+      scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){ el.value = ""; });
+      scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){ inp.checked = false; });
+      scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+        block.classList.remove("hien");
+        var b = block.querySelector(".nut-xem-dap-an");
+        if(b) b.textContent = "Xem đáp án gợi ý";
+      });
+    });
+  }
+}
+
+/* Khi in: đưa phiếu về trạng thái trống như bản gốc (không lộ đáp án đã điền/chọn), sau khi in thì khôi phục lại trên màn hình */
+window.addEventListener("beforeprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    el.dataset.printGiuLai = el.value;
+    el.value = "";
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.checked){ inp.dataset.printGiuLai = "1"; inp.checked = false; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+    block.dataset.printGiuLai = "1";
+    block.classList.remove("hien");
+  });
+});
+window.addEventListener("afterprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    if(el.dataset.printGiuLai !== undefined){ el.value = el.dataset.printGiuLai; delete el.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.dataset.printGiuLai){ inp.checked = true; delete inp.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    if(block.dataset.printGiuLai){ block.classList.add("hien"); delete block.dataset.printGiuLai; }
+  });
+});
+
+
+} /* hết buildApp */
+
+})();
+</script>
+</body>
+</html>

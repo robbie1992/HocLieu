@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Học liệu số — Bài 3. Phần mềm nguồn mở và phần mềm chạy trên Internet</title>
+<style>
+  :root{
+    --c1:#2E86AB; --c1-l:#DCEBF3;
+    --c2:#A23B72; --c2-l:#F1DDE9;
+    --c3:#F18F01; --c3-l:#FDEAC9;
+    --ink:#1F2937; --sub:#5B6472; --bg:#F7F8FA; --card:#FFFFFF; --line:#E1E5EA;
+    --ok:#1E7B45; --bad:#B3261E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5;}
+  header{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;padding:16px 14px;position:relative;}
+  header h1{margin:0 0 2px;font-size:1.15rem;padding-right:80px;}
+  header p{margin:0;font-size:.85rem;opacity:.9;}
+  #print-btn{position:absolute;top:14px;right:14px;min-height:40px;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;}
+  nav.tabs{position:sticky;top:0;z-index:20;display:flex;background:var(--card);border-bottom:1px solid var(--line);overflow-x:auto;}
+  nav.tabs button{flex:1 0 auto;min-width:25%;min-height:44px;border:none;background:none;padding:10px 6px;font-size:.85rem;font-weight:600;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent;}
+  nav.tabs button.active{color:var(--c1);border-bottom-color:var(--c1);}
+  main{max-width:760px;margin:0 auto;padding:14px 14px 40px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  h2.block-title{font-size:1.05rem;margin:4px 0 12px;color:var(--ink);}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  button.btn{min-height:40px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.85rem;font-weight:600;cursor:pointer;}
+  button.btn.primary{background:var(--c1);border-color:var(--c1);color:#fff;}
+  button.btn.ghost{background:transparent;}
+  button.btn:active{transform:scale(.98);}
+  button.btn:disabled{opacity:.6;}
+  .counter{align-self:center;font-size:.82rem;color:var(--sub);margin-left:auto;}
+
+  /* ===== Khối 1 — SƠ Đồ tư duy ===== */
+  .mindmap{display:flex;flex-direction:column;gap:10px;}
+  .center-node{background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:1rem;}
+  .branch{border-radius:10px;overflow:hidden;border:1px solid var(--line);}
+  .branch-head{width:100%;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;color:#fff;font-weight:700;font-size:.92rem;border:none;cursor:pointer;text-align:left;}
+  .branch-head .mark{font-weight:800;font-size:1rem;background:rgba(255,255,255,.25);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .branch-body{max-height:0;overflow:hidden;transition:max-height .25s ease;background:var(--card);}
+  .branch.open .branch-body{max-height:600px;}
+  .branch-body ul{margin:0;padding:10px 16px 12px 30px;}
+  .branch-body li{margin:6px 0;font-size:.9rem;}
+  .b1 .branch-head{background:var(--c1);} .b1 .branch-body{background:var(--c1-l);}
+  .b2 .branch-head{background:var(--c2);} .b2 .branch-body{background:var(--c2-l);}
+  .b3 .branch-head{background:var(--c3);} .b3 .branch-body{background:var(--c3-l);}
+  .b4 .branch-head{background:#3B8686;} .b4 .branch-body{background:#DBEFEE;}
+  .b5 .branch-head{background:#7A5195;} .b5 .branch-body{background:#E9E0F1;}
+  .b6 .branch-head{background:#C0587E;} .b6 .branch-body{background:#F5DEE6;}
+
+  /* ===== Khối 2 — Phiếu học tập ===== */
+  .task{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+  .task h3{margin:0 0 6px;font-size:.95rem;}
+  .task .tag{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--c1);border-radius:6px;padding:2px 8px;margin-bottom:6px;}
+  .task .tag.mo-rong{background:var(--c3);}
+  .task .hint{margin-top:8px;font-size:.85rem;color:var(--sub);border-left:3px solid var(--c1);padding-left:8px;}
+  .task .data-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.85rem;}
+  .task .data-table td,.task .data-table th{border:1px solid var(--line);padding:6px 8px;text-align:center;}
+  .answer-space{border:1px dashed var(--line);border-radius:6px;min-height:50px;margin-top:8px;}
+  .checklist label{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:.88rem;}
+  .checklist input{width:20px;height:20px;flex-shrink:0;margin-top:1px;}
+  .dien-ngan{width:100%;min-height:40px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);}
+  textarea.dien-dai{width:100%;min-height:90px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);resize:vertical;}
+  .dien-ngan:focus,textarea.dien-dai:focus{outline:none;border-style:solid;border-color:var(--c1);}
+  .lua-chon-item{margin-top:10px;}
+  .lua-chon-item .lc-stem{font-weight:600;font-size:.9rem;margin-bottom:6px;}
+  .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
+  .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .dap-an-goi-y{margin-top:10px;}
+  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:34px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:6px;cursor:pointer;font-weight:600;}
+  .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 6px 6px 0;padding:8px 10px;}
+  .dap-an-goi-y.hien .noi-dung-dap-an{display:block;}
+  .dap-an-goi-y.hien .nut-xem-dap-an{background:var(--c1);color:#fff;}
+
+  /* ===== Khối 3 — Thẻ ghi nhớ ===== */
+  .fc-status{font-size:.82rem;color:var(--sub);margin-bottom:8px;}
+  .fc-stage{perspective:1000px;height:190px;margin-bottom:12px;}
+  .fc-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .4s;cursor:pointer;}
+  .fc-card.flipped{transform:rotateY(180deg);}
+  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;font-size:1.05rem;font-weight:600;border:1px solid var(--line);}
+  .fc-face.front{background:var(--card);}
+  .fc-face.back{background:var(--c1-l);transform:rotateY(180deg);font-weight:500;font-size:.95rem;}
+  .fc-face .dir{position:absolute;top:8px;left:10px;font-size:.68rem;font-weight:700;color:var(--sub);text-transform:uppercase;}
+  .fc-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .fc-mark{display:flex;gap:8px;margin-bottom:10px;}
+  .fc-mark button.known{border-color:var(--ok);color:var(--ok);}
+  .fc-mark button.review{border-color:var(--bad);color:var(--bad);}
+  .fc-filter{display:flex;align-items:center;gap:8px;font-size:.85rem;margin-bottom:10px;}
+  .test-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center;}
+  .test-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  /* ===== Khối 4 — Quiz ===== */
+  .qz-progress{font-size:.85rem;color:var(--sub);margin-bottom:10px;}
+  .qz-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+  .qz-item .ctx{font-size:.85rem;color:var(--sub);background:#F2F4F6;border-radius:6px;padding:8px;margin-bottom:8px;}
+  .qz-item .stem{font-weight:600;margin-bottom:8px;font-size:.92rem;}
+  .qz-item label{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid transparent;}
+  .qz-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .qz-item.graded label.correct{background:#E7F5EC;border-color:var(--ok);}
+  .qz-item.graded label.wrong-pick{background:#FBEAE9;border-color:var(--bad);}
+  .qz-explain{display:none;margin-top:8px;font-size:.84rem;background:#F2F4F6;border-radius:6px;padding:8px;}
+  .qz-item.graded .qz-explain{display:block;}
+  .qz-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px;display:none;}
+  .qz-result.show{display:block;}
+  .qz-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px;}
+
+  /* ===== In ===== */
+  .print-only{display:none;}
+  @media print{
+    nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,footer,button{display:none !important;}
+    section.panel{display:block !important;page-break-after:always;}
+    .branch-body{max-height:none !important;}
+    .print-only{display:block;}
+    .fc-stage{display:none;}
+    body{background:#fff;font-size:12px;}
+    header{background:#fff !important;color:#000 !important;border-bottom:2px solid #000;}
+    .branch-head{color:#000 !important;background:#eee !important;border:1px solid #000;}
+    .qz-item label{border:1px solid #999;}
+    h2.block-title{border-bottom:1px solid #000;padding-bottom:4px;}
+    .dap-an-goi-y .noi-dung-dap-an{display:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== ỨNG DỤNG ===================== -->
+<div id="app-shell">
+
+<header>
+  <button id="print-btn" type="button">🖨 In / Lưu PDF</button>
+  <h1>Bài 3. Phần mềm nguồn mở và phần mềm chạy trên Internet</h1>
+  <p>Tin học 11 · Trường THCS & THPT Vĩnh Hưng · Học liệu số dùng offline</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="p1">Sơ đồ tư duy</button>
+  <button class="tab-btn" data-panel="p2">Phiếu học tập</button>
+  <button class="tab-btn" data-panel="p3">Thẻ ghi nhớ</button>
+  <button class="tab-btn" data-panel="p4">Quiz</button>
+</nav>
+<main>
+
+  <!-- ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== -->
+  <section id="p1" class="panel active">
+    <h2 class="block-title">1. Sơ đồ tư duy</h2>
+    <div class="toolbar">
+      <button class="btn primary" id="mm-open-all">Mở tất cả</button>
+      <button class="btn" id="mm-close-all">Đóng tất cả</button>
+      <span class="counter" id="mm-counter"></span>
+    </div>
+    <div class="mindmap" id="mindmap"></div>
+  </section>
+
+  <!-- ===================== KHỐI 2 — PHIẾU HỌC TẬP ===================== -->
+  <section id="p2" class="panel">
+    <h2 class="block-title">2. Phiếu học tập / thực hành</h2>
+    <div class="toolbar">
+      <button class="btn ghost" id="p2-reset" type="button">Xóa câu trả lời đã lưu</button>
+    </div>
+    <p class="print-only" style="font-size:.85rem;color:#555;">Họ tên: .................................... Lớp: ............. Nhóm: ............</p>
+    <div id="p2-content"></div>
+  </section>
+
+  <!-- ===================== KHỐI 3 — THẻ GHI NHỚ ===================== -->
+  <section id="p3" class="panel">
+    <h2 class="block-title">3. Thẻ ghi nhớ</h2>
+    <div class="toolbar">
+      <button class="btn" id="fc-shuffle">Xáo trộn</button>
+      <button class="btn" id="fc-test">Tự kiểm tra</button>
+      <button class="btn ghost" id="fc-reset">Xóa tiến độ</button>
+    </div>
+    <div class="fc-filter">
+      <input type="checkbox" id="fc-filter-unknown">
+      <label for="fc-filter-unknown">Chỉ hiện thẻ chưa thuộc</label>
+    </div>
+    <p class="fc-status" id="fc-status"></p>
+    <div id="fc-view">
+      <div class="fc-stage">
+        <div class="fc-card" id="fc-card">
+          <div class="fc-face front"><span class="dir" id="fc-dir-f"></span><span id="fc-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fc-back-text"></span></div>
+        </div>
+      </div>
+      <div class="fc-nav">
+        <button class="btn" id="fc-prev">← Trước</button>
+        <span class="counter" id="fc-counter" style="align-self:center;"></span>
+        <button class="btn" id="fc-next">Sau →</button>
+      </div>
+      <div class="fc-mark">
+        <button class="btn review" id="fc-mark-review">Cần ôn lại</button>
+        <button class="btn known" id="fc-mark-known">Đã thuộc</button>
+      </div>
+    </div>
+    <div id="fc-test-view" style="display:none;">
+      <div class="fc-stage">
+        <div class="fc-card" id="fct-card">
+          <div class="fc-face front"><span class="dir" id="fct-dir-f"></span><span id="fct-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fct-back-text"></span></div>
+        </div>
+      </div>
+      <p class="fc-status" id="fct-progress"></p>
+      <div class="fc-mark">
+        <button class="btn review" id="fct-wrong">Chưa biết</button>
+        <button class="btn known" id="fct-right">Biết rồi</button>
+      </div>
+    </div>
+    <div id="fc-result-view" style="display:none;">
+      <div class="test-result">
+        <p>Kết quả tự kiểm tra</p>
+        <div class="score" id="fc-score"></div>
+        <button class="btn primary" id="fc-test-again" style="margin-top:10px;">Kiểm tra lại</button>
+        <button class="btn" id="fc-test-exit">Quay lại thẻ</button>
+      </div>
+    </div>
+    <!-- Bản in: toàn bộ thẻ dạng lưới có đường cắt -->
+    <div class="print-only" id="fc-print-grid"></div>
+  </section>
+
+  <!-- ===================== KHỐI 4 — QUIZ ===================== -->
+  <section id="p4" class="panel">
+    <h2 class="block-title">4. Quiz tự chấm</h2>
+    <div class="toolbar">
+      <button class="btn" id="qz-shuffle">Xáo trộn câu hỏi</button>
+      <button class="btn" id="qz-reset">Làm lại</button>
+    </div>
+    <p class="qz-progress" id="qz-progress"></p>
+    <div class="qz-result" id="qz-result">
+      <p>Kết quả</p>
+      <div class="score" id="qz-score"></div>
+    </div>
+    <form id="qz-form"></form>
+    <button class="btn primary" id="qz-submit" style="width:100%;">Nộp bài</button>
+  </section>
+
+</main>
+
+<footer>Học liệu số — Bài 3 Tin học 11 ICT — Trường THCS & THPT Vĩnh Hưng. Mở bằng Chrome hoặc Safari, không cần Internet.</footer>
+
+</div><!-- /#app-shell -->
+
+<script type="application/json" id="hls-data">{"worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — cốt lõi<\/span>\n  <h3>Ba cách chuyển giao phần mềm (Hoạt động 1, SGK trang 15)<\/h3>\n  <p>Lợi ích của người dùng tăng dần theo ba cách dưới đây. Ghi người dùng được làm gì với phần mềm ở mỗi cách:<\/p>\n  <table class=\"data-table\">\n    <tr><th>Cách chuyển giao<\/th><th>Người dùng được làm gì?<\/th><\/tr>\n    <tr><td>Bán dưới dạng mã máy<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"cg-1\"><\/td><\/tr>\n    <tr><td>Cho dùng miễn phí, không kèm mã nguồn<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"cg-2\"><\/td><\/tr>\n    <tr><td>Cho dùng tự do kèm mã nguồn<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"cg-3\"><\/td><\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Bán dạng mã máy: mua rồi mới dùng, không sửa được. Miễn phí không kèm mã nguồn: dùng không mất tiền (có hoặc không điều kiện) nhưng không sửa được. Tự do kèm mã nguồn: dùng, sửa đổi, nâng cấp, phát triển và phân phối lại.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: phân biệt bằng câu hỏi — có được sửa đổi lại phần mềm hay không? Miễn phí chưa có nghĩa là được sửa.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — cốt lõi<\/span>\n  <h3>Giấy phép và phân loại phần mềm<\/h3>\n  <p>a) Acrobat Reader (Hình 3.1) dùng miễn phí, không kèm mã nguồn, chỉ đọc, ghi chú, in văn bản. Đây là:<\/p>\n  <div class=\"lua-chon-item\" data-id=\"acrobat\">\n    <label><input type=\"radio\" name=\"acrobat\" value=\"nguon-mo\"> Phần mềm nguồn mở<\/label>\n    <label><input type=\"radio\" name=\"acrobat\" value=\"tu-do\"> Phần mềm tự do dạng mã máy<\/label>\n    <label><input type=\"radio\" name=\"acrobat\" value=\"thuong-mai\"> Phần mềm thương mại<\/label>\n  <\/div>\n  <p>b) Quy định bản quyền mâu thuẫn thế nào với quyền sử dụng phần mềm nguồn mở? Vì sao cần giấy phép nguồn mở?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"mau-thuan\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>c) Vì sao GPL yêu cầu bản sửa đổi cũng phải mở theo GPL?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"gpl-mo\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">a) Phần mềm tự do dạng mã máy; Acrobat Pro DC mới là phần mềm thương mại. b) Bản quyền cho phép tác giả cấm sao chép, sửa đổi; phần mềm nguồn mở lại cần trao đúng các quyền đó (sao chép, sửa đổi, phân phối lại) nên cần giấy phép nguồn mở. c) Để phần mềm phái sinh luôn ở lại cộng đồng nguồn mở, không bị biến thành phần mềm nguồn đóng để trục lợi riêng.<\/div>\n  <\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — cốt lõi<\/span>\n  <h3>Phần mềm nguồn mở có thay thế hoàn toàn phần mềm thương mại? (Hoạt động 3, SGK trang 18)<\/h3>\n  <table class=\"data-table\">\n    <tr><th>Phần mềm thương mại<\/th><th>Phần mềm nguồn mở thay thế<\/th><\/tr>\n    <tr><td>Windows<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tt-1\"><\/td><\/tr>\n    <tr><td>Photoshop<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tt-2\"><\/td><\/tr>\n  <\/table>\n  <p>Phần mềm nguồn mở có thay thế hoàn toàn được phần mềm thương mại không? Giải thích.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"thay-the\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Windows → LINUX (Ubuntu); Photoshop → GIMP. Không thay thế hoàn toàn: phần mềm đặt hàng đáp ứng nhu cầu riêng theo hợp đồng (VD phần mềm điều khiển dây chuyền lắp ráp) mà phần mềm nguồn mở không đảm nhận được; phần mềm thương mại còn là nguồn thu chính để duy trì các tổ chức làm phần mềm. Hai loại bổ sung vai trò cho nhau.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý: phân biệt nhu cầu chung của nhiều người với nhu cầu riêng của một doanh nghiệp.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 4 — cốt lõi<\/span>\n  <h3>Phần mềm chạy trên Internet (Hoạt động 4, SGK trang 19)<\/h3>\n  <p>a) Phần mềm chạy trên Internet là gì? Nêu một ví dụ và ưu điểm.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"pm-internet\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>b) Mô tả thao tác tạo mới và mở lại một văn bản trên Google Docs (Hình 3.2).<\/p>\n  <textarea class=\"dien-dai\" data-id=\"google-docs\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">a) Phần mềm dùng được qua Internet mà không cần cài đặt vào máy; VD mạng xã hội, thư điện tử, Google Docs. Ưu điểm: dùng ở bất cứ đâu, bất cứ khi nào, trên bất cứ máy nào có Internet, chi phí rẻ hoặc miễn phí. b) Vào docs.google.com (cần tài khoản Google), nháy biểu tượng dấu cộng để tạo mới, nháy văn bản trong danh sách để mở lại; văn bản lưu tự động trên đám mây.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: hỏi xem phần mềm có cần cài đặt vào máy hay không.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 5 — luyện tập (SGK trang 20)<\/span>\n  <h3>Tình huống thực tế<\/h3>\n  <p>1) Có ý kiến cho rằng phần mềm nguồn mở phát triển sẽ làm thị trường phần mềm thương mại suy giảm. Em có đồng ý không? Vì sao?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"lt-1\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) Phần mềm ở trạm ATM có phải phần mềm chạy trên Internet không? Vì sao?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"lt-2\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">1) Không hoàn toàn đúng: nguồn mở đáp ứng nhu cầu chung với chi phí thấp nhưng không thay được phần mềm đặt hàng theo nhu cầu riêng; phần mềm thương mại vẫn là nguồn thu chính của các tổ chức làm phần mềm, hai loại cùng tồn tại, bổ sung cho nhau. 2) Không: phần mềm được cài đặt sẵn trên máy chủ và máy ATM, không dùng trực tiếp qua trình duyệt, dù máy vẫn cần kết nối mạng riêng với ngân hàng.<\/div>\n  <\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Câu hỏi mở rộng — vận dụng (SGK trang 20)<\/span>\n  <h3>Phần mềm đồ hoạ và ngôn ngữ Python<\/h3>\n  <p>1) Kể tên một số phần mềm đồ hoạ nguồn mở và phần mềm đồ hoạ thương mại.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-dohoa\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) Có thể coi mọi phần mềm viết bằng Python đều là phần mềm nguồn mở không? Vì sao?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-python\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý: đối chiếu lại định nghĩa phần mềm nguồn mở — mã nguồn phải được công khai kèm giấy phép.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Phân biệt đúng ba cách chuyển giao phần mềm.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Nêu đúng các quy định chính của giấy phép GNU GPL.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Nêu được vai trò của phần mềm thương mại và nguồn mở, có ví dụ.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Nêu đúng khái niệm phần mềm chạy trên Internet, có ví dụ.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-5\"> Hai câu Luyện tập trả lời đúng và có lí do.<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. Phần mềm nguồn mở", "cls": "b1", "items": ["Mã nguồn → dịch thành mã máy; chuyển giao dạng mã máy: phần mềm nguồn đóng", "3 cách chuyển giao: bán dạng mã máy; miễn phí không kèm mã nguồn; tự do kèm mã nguồn", "Phần mềm thương mại: dùng để bán, thường nguồn đóng", "Phần mềm nguồn mở: kèm mã nguồn, sử dụng, sửa đổi, phân phối lại theo giấy phép", "GNU GPL: quyền tiếp cận mã nguồn, miễn trừ trách nhiệm tác giả, quyền đứng tên", "Bản phát triển từ phần mềm theo GPL cũng phải mở theo GPL"]}, {"title": "2. Vai trò phần mềm thương mại và nguồn mở", "cls": "b2", "items": ["Bảng 3.1: LINUX thay Windows, GIMP thay Photoshop", "Thương mại đóng gói: nhu cầu chung, tính hoàn chỉnh cao", "Thương mại đặt hàng: nhu cầu riêng, bảo hành theo hợp đồng", "Nguồn mở: chi phí thấp, minh bạch, không phụ thuộc một nhà cung cấp", "Nguồn mở: hỗ trợ kĩ thuật chủ yếu dựa vào cộng đồng", "Hai loại bổ sung cho nhau, nguồn mở không thay thế hoàn toàn thương mại"]}, {"title": "3. Phần mềm chạy trên Internet", "cls": "b3", "items": ["Dùng qua Internet, không cần cài đặt vào máy", "Dùng ở bất cứ đâu, bất cứ khi nào, trên máy có Internet; chi phí rẻ hoặc miễn phí", "Google Docs, Sheets, Slides thay Word, Excel, PowerPoint", "Cần tài khoản Google; văn bản lưu tự động trên đám mây", "Có dùng mạng chưa chắc là phần mềm chạy trên Internet (VD phần mềm ATM)"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "Mã nguồn là gì?", "back": "Chương trình viết bằng ngôn ngữ lập trình bậc cao, được dịch thành mã máy để chạy."}, {"id": "fc02", "dir": "Hỏi ngược", "front": "Phần mềm chuyển giao dưới dạng mã máy gọi là gì?", "back": "Phần mềm nguồn đóng."}, {"id": "fc03", "dir": "Hỏi xuôi", "front": "Phần mềm nguồn mở là gì?", "back": "Phần mềm kèm mã nguồn, được sử dụng, sửa đổi, phân phối lại theo giấy phép."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "Nêu các quyền giấy phép GNU GPL đảm bảo.", "back": "Tiếp cận mã nguồn; tác giả miễn trừ trách nhiệm; quyền đứng tên của tác giả tham gia phát triển."}, {"id": "fc05", "dir": "Hỏi ngược", "front": "Giấy phép nào yêu cầu bản phát triển từ phần mềm nguồn mở cũng phải mở?", "back": "Giấy phép công cộng GNU GPL."}, {"id": "fc06", "dir": "Hỏi xuôi", "front": "Vì sao phần mềm nguồn mở cần giấy phép riêng?", "back": "Bản quyền cấm sao chép, sửa đổi; giấy phép nguồn mở trao lại các quyền đó cho người dùng."}, {"id": "fc07", "dir": "Hỏi ngược", "front": "Phần mềm nguồn mở nào thay được Windows? Photoshop?", "back": "LINUX (Ubuntu) thay Windows; GIMP thay Photoshop."}, {"id": "fc08", "dir": "Hỏi xuôi", "front": "Ưu điểm của phần mềm thương mại dạng đặt hàng?", "back": "Đáp ứng đúng nhu cầu riêng, có bảo hành theo hợp đồng."}, {"id": "fc09", "dir": "Hỏi xuôi", "front": "Ưu điểm của phần mềm nguồn mở?", "back": "Chi phí thấp, minh bạch mã nguồn, không phụ thuộc một nhà cung cấp."}, {"id": "fc10", "dir": "Hỏi ngược", "front": "Phần mềm nào dùng được qua Internet mà không cần cài đặt?", "back": "Phần mềm chạy trên Internet (phần mềm trực tuyến)."}, {"id": "fc11", "dir": "Hỏi xuôi", "front": "Google Docs, Sheets, Slides thay thế phần mềm nào?", "back": "Word, Excel, PowerPoint."}, {"id": "fc12", "dir": "Hỏi xuôi", "front": "Phần mềm ở trạm ATM có phải phần mềm chạy trên Internet?", "back": "Không, được cài đặt sẵn trên máy chủ và máy ATM để xử lí giao dịch."}, {"id": "fc13", "dir": "Hỏi ngược", "front": "Chương trình Python giữ kín mã, không cấp phép có phải nguồn mở?", "back": "Không, nguồn mở cần công khai mã nguồn kèm giấy phép."}], "quiz": [{"id": "q01", "stem": "Phần mềm nguồn mở là phần mềm", "opts": [{"l": "A", "t": "được cung cấp cả mã nguồn để người dùng sử dụng, sửa đổi và phân phối lại theo giấy phép."}, {"l": "B", "t": "chỉ được bán dưới dạng mã máy."}, {"l": "C", "t": "chỉ dùng được khi có kết nối Internet."}, {"l": "D", "t": "được dùng miễn phí nhưng không kèm mã nguồn."}], "ans": "A", "ngu_canh": null, "explain": "Phần mềm nguồn mở được cung cấp cả mã nguồn để người dùng sử dụng, sửa đổi và phân phối lại theo giấy phép."}, {"id": "q02", "stem": "Phần mềm được chuyển giao dưới dạng mã máy, người dùng không xem được mã nguồn, gọi là", "opts": [{"l": "A", "t": "phần mềm nguồn mở."}, {"l": "B", "t": "phần mềm nguồn đóng."}, {"l": "C", "t": "phần mềm chạy trên Internet."}, {"l": "D", "t": "phần mềm tự do kèm mã nguồn."}], "ans": "B", "ngu_canh": null, "explain": "Mã máy khó đọc nên dịch sang mã máy giúp bảo vệ ý tưởng; phần mềm chuyển giao dưới dạng mã máy gọi là phần mềm nguồn đóng."}, {"id": "q03", "stem": "Phần mềm chạy trên Internet là phần mềm", "opts": [{"l": "A", "t": "phải cài đặt vào máy trước khi dùng."}, {"l": "B", "t": "dùng được qua Internet mà không cần cài đặt vào máy."}, {"l": "C", "t": "chỉ chạy được trên máy chủ của nhà trường."}, {"l": "D", "t": "chỉ dùng được trên điện thoại."}], "ans": "B", "ngu_canh": null, "explain": "Phần mềm chạy trên Internet dùng được qua Internet mà không cần cài đặt vào máy, ở bất cứ đâu, bất cứ khi nào, trên bất cứ máy nào có kết nối Internet."}, {"id": "q04", "stem": "Phần mềm trực tuyến nào của Google có thể thay thế Microsoft Excel?", "opts": [{"l": "A", "t": "Google Docs"}, {"l": "B", "t": "Google Slides"}, {"l": "C", "t": "Google Sheets"}, {"l": "D", "t": "Google Maps"}], "ans": "C", "ngu_canh": null, "explain": "Google Docs, Google Sheets, Google Slides lần lượt thay thế được Word, Excel, PowerPoint; cần có tài khoản Google để sử dụng."}, {"id": "q05", "stem": "Nội dung nào sau đây KHÔNG thuộc quy định của giấy phép công cộng GNU GPL?", "opts": [{"l": "A", "t": "Đảm bảo quyền tiếp cận mã nguồn của người sử dụng."}, {"l": "B", "t": "Tác giả được miễn trừ trách nhiệm về hậu quả sử dụng phần mềm."}, {"l": "C", "t": "Các tác giả tham gia phát triển được quyền đứng tên."}, {"l": "D", "t": "Bản sửa đổi được phép đóng mã nguồn để bán độc quyền."}], "ans": "D", "ngu_canh": null, "explain": "GPL yêu cầu phần mềm phát triển dựa trên phần mềm nguồn mở theo GPL cũng phải mở theo GPL, không được biến thành phần mềm nguồn đóng."}, {"id": "q06", "stem": "Acrobat Reader (Hình 3.1) chỉ đọc, ghi chú và in được văn bản PDF, dùng miễn phí, không kèm mã nguồn. Phần mềm này thuộc loại nào?", "opts": [{"l": "A", "t": "Phần mềm nguồn mở."}, {"l": "B", "t": "Phần mềm tự do dạng mã máy."}, {"l": "C", "t": "Phần mềm thương mại dạng đặt hàng."}, {"l": "D", "t": "Phần mềm chạy trên Internet."}], "ans": "B", "ngu_canh": null, "explain": "Acrobat Reader là phần mềm tự do dạng mã máy; Acrobat Pro DC có đầy đủ tính năng, phải mua, là phần mềm thương mại."}, {"id": "q07", "stem": "Ưu điểm nào sau đây là của phần mềm nguồn mở so với phần mềm thương mại nguồn đóng?", "opts": [{"l": "A", "t": "Được bảo hành theo hợp đồng."}, {"l": "B", "t": "Hỗ trợ kĩ thuật từ một nhà cung cấp duy nhất."}, {"l": "C", "t": "Chi phí thấp, minh bạch mã nguồn, không phụ thuộc một nhà cung cấp."}, {"l": "D", "t": "Luôn đáp ứng đúng mọi nhu cầu riêng của từng doanh nghiệp."}], "ans": "C", "ngu_canh": null, "explain": "Phần mềm nguồn mở có chi phí thấp, minh bạch mã nguồn, không phụ thuộc một nhà cung cấp; hỗ trợ kĩ thuật chủ yếu dựa vào cộng đồng."}, {"id": "q08", "stem": "Loại phần mềm nào phù hợp nhất với nhu cầu của nhà máy?", "opts": [{"l": "A", "t": "Phần mềm nguồn mở tải miễn phí trên mạng."}, {"l": "B", "t": "Phần mềm thương mại dạng đặt hàng."}, {"l": "C", "t": "Phần mềm tự do dạng mã máy."}, {"l": "D", "t": "Phần mềm soạn thảo trực tuyến Google Docs."}], "ans": "B", "ngu_canh": "Một nhà máy chế biến tôm ở Cà Mau cần phần mềm điều khiển dây chuyền đóng gói theo đúng quy trình riêng của nhà máy, có bảo hành và hỗ trợ kĩ thuật.", "explain": "Phần mềm đặt hàng đáp ứng nhu cầu riêng theo hợp đồng, có bảo hành; phần mềm nguồn mở không đảm nhận được loại nhu cầu này."}, {"id": "q09", "stem": "Nhận định nào sau đây đúng về phần mềm ở trạm ATM?", "opts": [{"l": "A", "t": "Là phần mềm chạy trên Internet vì máy ATM có kết nối mạng."}, {"l": "B", "t": "Không phải phần mềm chạy trên Internet vì được cài đặt sẵn trên máy chủ và máy ATM để xử lí giao dịch."}, {"l": "C", "t": "Là phần mềm nguồn mở vì ai cũng dùng được."}, {"l": "D", "t": "Là phần mềm trực tuyến của Google."}], "ans": "B", "ngu_canh": "Bạn Hoa rút tiền ở trạm ATM; máy ATM kết nối với ngân hàng để kiểm tra số dư tài khoản.", "explain": "Phần mềm ATM được cài đặt sẵn, không dùng trực tiếp qua trình duyệt như phần mềm trực tuyến, dù máy cần kết nối mạng riêng để đối chiếu dữ liệu ngân hàng."}, {"id": "q10", "stem": "Chương trình của Nam có phải là phần mềm nguồn mở không?", "opts": [{"l": "A", "t": "Có, vì mọi chương trình viết bằng Python đều là phần mềm nguồn mở."}, {"l": "B", "t": "Có, vì Python là ngôn ngữ miễn phí."}, {"l": "C", "t": "Không, vì nguồn mở đòi hỏi tác giả công khai mã nguồn kèm giấy phép cho phép sử dụng, sửa đổi, phân phối lại."}, {"l": "D", "t": "Không, vì Python chỉ viết được phần mềm thương mại."}], "ans": "C", "ngu_canh": "Nam viết một chương trình quản lí điểm bằng Python, dùng riêng, không công bố mã nguồn và không cấp phép cho ai.", "explain": "Mã nguồn chỉ là văn bản chương trình chưa dịch; phần mềm là nguồn mở khi tác giả chủ động công khai mã nguồn kèm giấy phép."}]}</script>
+<script>
+(function(){
+"use strict";
+
+/* ===================== ỨNG DỤNG — DỰNG NGAY, KHÔNG QUA XÁC THỰC ===================== */
+var payload = JSON.parse(document.getElementById("hls-data").textContent);
+buildApp(payload);
+
+function buildApp(payload){
+
+/* ---------- Lưu trữ an toàn (tiến độ thẻ ghi nhớ) ---------- */
+var STORE_KEY = "tin11_bai03";
+function loadStore(){
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    return raw ? JSON.parse(raw) : {known:{}};
+  }catch(e){ return {known:{}}; }
+}
+function saveStore(s){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){ /* im lặng, tệp file:// có thể chặn */ }
+}
+var store = loadStore();
+if(!store.known) store.known = {};
+
+/* ---------- In / Xuất PDF ---------- */
+document.getElementById("print-btn").addEventListener("click", function(){ window.print(); });
+
+/* ---------- Chuyển tab ---------- */
+var tabBtns = document.querySelectorAll(".tab-btn");
+var panels = document.querySelectorAll(".panel");
+tabBtns.forEach(function(btn){
+  btn.addEventListener("click", function(){
+    tabBtns.forEach(function(b){ b.classList.remove("active"); });
+    panels.forEach(function(p){ p.classList.remove("active"); });
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.panel).classList.add("active");
+  });
+});
+
+/* ---------- Phiếu học tập ---------- */
+document.getElementById("p2-content").innerHTML = payload.worksheetHtml || "";
+if(!store.phieu) store.phieu = {};
+enhanceWorksheet();
+
+/* ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== */
+var mindmapData = payload.mindmap || [];
+var branchColorClass = ["b1","b2","b3","b4","b5","b6"];
+
+var mmRoot = document.getElementById("mindmap");
+var center = document.createElement("div");
+center.className = "center-node";
+center.textContent = payload.tieu_de_trung_tam || (document.title.replace("Học liệu số — ",""));
+mmRoot.appendChild(center);
+
+mindmapData.forEach(function(b, idx){
+  var branch = document.createElement("div");
+  branch.className = "branch " + (b.cls || branchColorClass[idx % branchColorClass.length]);
+  branch.dataset.idx = idx;
+
+  var head = document.createElement("button");
+  head.className = "branch-head";
+  head.innerHTML = '<span>' + b.title + '</span><span class="mark">?</span>';
+  head.addEventListener("click", function(){ toggleBranch(branch); });
+
+  var body = document.createElement("div");
+  body.className = "branch-body";
+  var ul = document.createElement("ul");
+  (b.items || []).forEach(function(t){
+    var li = document.createElement("li");
+    li.textContent = t;
+    ul.appendChild(li);
+  });
+  body.appendChild(ul);
+
+  branch.appendChild(head);
+  branch.appendChild(body);
+  mmRoot.appendChild(branch);
+});
+
+function updateMmCounter(){
+  var total = mindmapData.length;
+  var open = document.querySelectorAll(".branch.open").length;
+  document.getElementById("mm-counter").textContent = "Đã mở " + open + "/" + total + " phần";
+}
+function toggleBranch(branch){
+  var isOpen = branch.classList.toggle("open");
+  var mark = branch.querySelector(".mark");
+  mark.textContent = isOpen ? "−" : "?";
+  updateMmCounter();
+}
+document.getElementById("mm-open-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.add("open");
+    br.querySelector(".mark").textContent = "−";
+  });
+  updateMmCounter();
+});
+document.getElementById("mm-close-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.remove("open");
+    br.querySelector(".mark").textContent = "?";
+  });
+  updateMmCounter();
+});
+updateMmCounter();
+
+/* ===================== KHỐI 3 — THẺ GHI NHỚ ===================== */
+var flashcards = payload.flashcards || [];
+var fcOrder = flashcards.map(function(c,i){ return i; });
+var fcPos = 0;
+
+function fcVisibleOrder(){
+  var onlyUnknown = document.getElementById("fc-filter-unknown").checked;
+  var order = fcOrder.slice();
+  if(onlyUnknown){
+    order = order.filter(function(i){ return !store.known[flashcards[i].id]; });
+  }
+  return order;
+}
+function fcRender(){
+  var order = fcVisibleOrder();
+  if(order.length === 0){
+    document.getElementById("fc-front-text").textContent = "Không còn thẻ nào trong bộ lọc — mọi thẻ đã được đánh dấu Đã thuộc.";
+    document.getElementById("fc-back-text").textContent = "Bỏ lọc để xem lại toàn bộ bộ thẻ.";
+    document.getElementById("fc-counter").textContent = "0/0";
+    document.getElementById("fc-status").textContent = "";
+    return;
+  }
+  if(fcPos >= order.length) fcPos = 0;
+  if(fcPos < 0) fcPos = order.length - 1;
+  var card = flashcards[order[fcPos]];
+  document.getElementById("fc-dir-f").textContent = card.dir;
+  document.getElementById("fc-front-text").textContent = card.front;
+  document.getElementById("fc-back-text").textContent = card.back;
+  document.getElementById("fc-counter").textContent = (fcPos+1) + "/" + order.length;
+  var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
+  document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
+  var el = document.getElementById("fc-card");
+  el.classList.remove("flipped");
+}
+document.getElementById("fc-card").addEventListener("click", function(){
+  this.classList.toggle("flipped");
+});
+document.getElementById("fc-prev").addEventListener("click", function(){ fcPos--; fcRender(); });
+document.getElementById("fc-next").addEventListener("click", function(){ fcPos++; fcRender(); });
+document.getElementById("fc-filter-unknown").addEventListener("change", function(){ fcPos = 0; fcRender(); });
+document.getElementById("fc-shuffle").addEventListener("click", function(){
+  for(var i = fcOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = fcOrder[i]; fcOrder[i] = fcOrder[j]; fcOrder[j] = t;
+  }
+  fcPos = 0;
+  fcRender();
+});
+function fcMark(known){
+  var order = fcVisibleOrder();
+  if(order.length === 0) return;
+  var card = flashcards[order[fcPos]];
+  if(known){ store.known[card.id] = true; } else { delete store.known[card.id]; }
+  saveStore(store);
+  fcPos++;
+  fcRender();
+}
+document.getElementById("fc-mark-known").addEventListener("click", function(){ fcMark(true); });
+document.getElementById("fc-mark-review").addEventListener("click", function(){ fcMark(false); });
+document.getElementById("fc-reset").addEventListener("click", function(){
+  store.known = {};
+  saveStore(store);
+  fcRender();
+});
+
+/* Chế độ tự kiểm tra */
+var testOrder = [];
+var testPos = 0;
+var testRight = 0;
+function startTest(){
+  testOrder = fcOrder.slice();
+  for(var i = testOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = testOrder[i]; testOrder[i] = testOrder[j]; testOrder[j] = t;
+  }
+  testPos = 0; testRight = 0;
+  document.getElementById("fc-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-test-view").style.display = "block";
+  renderTestCard();
+}
+function renderTestCard(){
+  if(testPos >= testOrder.length){ finishTest(); return; }
+  var card = flashcards[testOrder[testPos]];
+  document.getElementById("fct-dir-f").textContent = card.dir;
+  document.getElementById("fct-front-text").textContent = card.front;
+  document.getElementById("fct-back-text").textContent = card.back;
+  document.getElementById("fct-card").classList.remove("flipped");
+  document.getElementById("fct-progress").textContent = "Câu " + (testPos+1) + "/" + testOrder.length;
+}
+document.getElementById("fct-card").addEventListener("click", function(){ this.classList.toggle("flipped"); });
+document.getElementById("fc-test").addEventListener("click", startTest);
+document.getElementById("fct-right").addEventListener("click", function(){ testRight++; testPos++; renderTestCard(); });
+document.getElementById("fct-wrong").addEventListener("click", function(){ testPos++; renderTestCard(); });
+function finishTest(){
+  document.getElementById("fc-test-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "block";
+  var pct = testOrder.length ? Math.round((testRight / testOrder.length) * 100) : 0;
+  document.getElementById("fc-score").textContent = pct + "% (" + testRight + "/" + testOrder.length + ")";
+}
+document.getElementById("fc-test-again").addEventListener("click", startTest);
+document.getElementById("fc-test-exit").addEventListener("click", function(){
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-view").style.display = "block";
+  fcRender();
+});
+
+/* Bản in — lưới toàn bộ thẻ, đường cắt */
+(function printGrid(){
+  var wrap = document.getElementById("fc-print-grid");
+  var style = document.createElement("style");
+  style.textContent = ".pf-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}"
+    + ".pf-card{border:1px dashed #999;padding:10px;min-height:110px;font-size:11px;}"
+    + ".pf-card b{display:block;margin-bottom:6px;}";
+  wrap.appendChild(style);
+  var grid = document.createElement("div");
+  grid.className = "pf-grid";
+  flashcards.forEach(function(c){
+    var d = document.createElement("div");
+    d.className = "pf-card";
+    d.innerHTML = "<b>" + c.dir + ": " + c.front + "</b>" + c.back;
+    grid.appendChild(d);
+  });
+  wrap.appendChild(grid);
+})();
+
+fcRender();
+
+/* ===================== KHỐI 4 — QUIZ ===================== */
+var quiz = payload.quiz || [];
+var quizOrder = quiz.map(function(c,i){ return i; });
+var graded = false;
+
+function renderQuiz(){
+  var form = document.getElementById("qz-form");
+  form.innerHTML = "";
+  quizOrder.forEach(function(qi, pos){
+    var q = quiz[qi];
+    var box = document.createElement("div");
+    box.className = "qz-item";
+    box.dataset.qid = q.id;
+    var html = "";
+    if(q.ngu_canh){ html += '<div class="ctx">' + q.ngu_canh + '</div>'; }
+    html += '<div class="stem">Câu ' + (pos+1) + '. ' + q.stem + '</div>';
+    q.opts.forEach(function(o){
+      html += '<label data-l="' + o.l + '"><input type="radio" name="' + q.id + '" value="' + o.l + '"> <span>' + o.l + '. ' + o.t + '</span></label>';
+    });
+    html += '<div class="qz-explain"></div>';
+    box.innerHTML = html;
+    form.appendChild(box);
+  });
+  document.getElementById("qz-progress").textContent = quiz.length + " câu trắc nghiệm — chọn xong bấm Nộp bài để tự chấm điểm.";
+  document.getElementById("qz-result").classList.remove("show");
+  graded = false;
+  document.querySelectorAll(".qz-item").forEach(function(it){ it.classList.remove("graded"); });
+}
+renderQuiz();
+
+document.getElementById("qz-submit").addEventListener("click", function(){
+  if(graded) return;
+  var right = 0;
+  quiz.forEach(function(q){
+    var chosen = document.querySelector('input[name="' + q.id + '"]:checked');
+    var box = document.querySelector('.qz-item[data-qid="' + q.id + '"]');
+    box.classList.add("graded");
+    var isCorrect = chosen && chosen.value === q.ans;
+    if(isCorrect) right++;
+    box.querySelectorAll("label").forEach(function(lb){
+      if(lb.dataset.l === q.ans) lb.classList.add("correct");
+      else if(chosen && lb.dataset.l === chosen.value) lb.classList.add("wrong-pick");
+    });
+    box.querySelector(".qz-explain").textContent = "Đáp án đúng: " + q.ans + ". " + q.explain;
+    box.querySelectorAll("input").forEach(function(inp){ inp.disabled = true; });
+  });
+  var pct = quiz.length ? Math.round((right / quiz.length) * 100) : 0;
+  document.getElementById("qz-score").textContent = pct + "% (" + right + "/" + quiz.length + " câu)";
+  document.getElementById("qz-result").classList.add("show");
+  graded = true;
+});
+document.getElementById("qz-reset").addEventListener("click", renderQuiz);
+document.getElementById("qz-shuffle").addEventListener("click", function(){
+  for(var i = quizOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = quizOrder[i]; quizOrder[i] = quizOrder[j]; quizOrder[j] = t;
+  }
+  renderQuiz();
+});
+
+/* ========== Phiếu học tập — điền/chọn đáp án + lưu tạm ========== */
+function enhanceWorksheet(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+
+  /* Ô nhập câu trả lời (ngắn: input, dài: textarea) */
+  scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]").forEach(function(el){
+    var id = el.dataset.id;
+    if(store.phieu[id] !== undefined) el.value = store.phieu[id];
+    el.addEventListener("input", function(){
+      store.phieu[id] = el.value;
+      saveStore(store);
+    });
+  });
+
+  /* Trắc nghiệm / Đúng — Sai (radio hoặc checkbox), mỗi câu bọc trong .lua-chon-item[data-id] */
+  scope.querySelectorAll(".lua-chon-item[data-id]").forEach(function(item){
+    var id = item.dataset.id;
+    var saved = store.phieu[id];
+    var boxes = item.querySelectorAll("input[type=checkbox]");
+    if(boxes.length){
+      boxes.forEach(function(inp){
+        if(Array.isArray(saved) && saved.indexOf(inp.value) !== -1) inp.checked = true;
+        inp.addEventListener("change", function(){
+          var chon = [];
+          item.querySelectorAll("input[type=checkbox]:checked").forEach(function(c){ chon.push(c.value); });
+          store.phieu[id] = chon;
+          saveStore(store);
+        });
+      });
+    } else {
+      item.querySelectorAll("input[type=radio]").forEach(function(inp){
+        if(saved === inp.value) inp.checked = true;
+        inp.addEventListener("change", function(){
+          store.phieu[id] = inp.value;
+          saveStore(store);
+        });
+      });
+    }
+  });
+
+  /* Nút xem đáp án gợi ý (không tự chấm, chỉ hiện/ẩn) */
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    var btn = block.querySelector(".nut-xem-dap-an");
+    if(!btn) return;
+    btn.addEventListener("click", function(){
+      var hien = block.classList.toggle("hien");
+      btn.textContent = hien ? "Ẩn đáp án gợi ý" : "Xem đáp án gợi ý";
+    });
+  });
+
+  /* Xóa toàn bộ câu trả lời đã lưu của phiếu học tập */
+  var resetBtn = document.getElementById("p2-reset");
+  if(resetBtn){
+    resetBtn.addEventListener("click", function(){
+      store.phieu = {};
+      saveStore(store);
+      scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){ el.value = ""; });
+      scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){ inp.checked = false; });
+      scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+        block.classList.remove("hien");
+        var b = block.querySelector(".nut-xem-dap-an");
+        if(b) b.textContent = "Xem đáp án gợi ý";
+      });
+    });
+  }
+}
+
+/* Khi in: đưa phiếu về trạng thái trống như bản gốc (không lộ đáp án đã điền/chọn), sau khi in thì khôi phục lại trên màn hình */
+window.addEventListener("beforeprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    el.dataset.printGiuLai = el.value;
+    el.value = "";
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.checked){ inp.dataset.printGiuLai = "1"; inp.checked = false; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+    block.dataset.printGiuLai = "1";
+    block.classList.remove("hien");
+  });
+});
+window.addEventListener("afterprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    if(el.dataset.printGiuLai !== undefined){ el.value = el.dataset.printGiuLai; delete el.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.dataset.printGiuLai){ inp.checked = true; delete inp.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    if(block.dataset.printGiuLai){ block.classList.add("hien"); delete block.dataset.printGiuLai; }
+  });
+});
+
+
+} /* hết buildApp */
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Học liệu số — Bài 1. Hệ điều hành</title>
+<style>
+  :root{
+    --c1:#2E86AB; --c1-l:#DCEBF3;
+    --c2:#A23B72; --c2-l:#F1DDE9;
+    --c3:#F18F01; --c3-l:#FDEAC9;
+    --ink:#1F2937; --sub:#5B6472; --bg:#F7F8FA; --card:#FFFFFF; --line:#E1E5EA;
+    --ok:#1E7B45; --bad:#B3261E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5;}
+  header{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;padding:16px 14px;position:relative;}
+  header h1{margin:0 0 2px;font-size:1.15rem;padding-right:80px;}
+  header p{margin:0;font-size:.85rem;opacity:.9;}
+  #print-btn{position:absolute;top:14px;right:14px;min-height:40px;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;}
+  nav.tabs{position:sticky;top:0;z-index:20;display:flex;background:var(--card);border-bottom:1px solid var(--line);overflow-x:auto;}
+  nav.tabs button{flex:1 0 auto;min-width:25%;min-height:44px;border:none;background:none;padding:10px 6px;font-size:.85rem;font-weight:600;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent;}
+  nav.tabs button.active{color:var(--c1);border-bottom-color:var(--c1);}
+  main{max-width:760px;margin:0 auto;padding:14px 14px 40px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  h2.block-title{font-size:1.05rem;margin:4px 0 12px;color:var(--ink);}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  button.btn{min-height:40px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.85rem;font-weight:600;cursor:pointer;}
+  button.btn.primary{background:var(--c1);border-color:var(--c1);color:#fff;}
+  button.btn.ghost{background:transparent;}
+  button.btn:active{transform:scale(.98);}
+  button.btn:disabled{opacity:.6;}
+  .counter{align-self:center;font-size:.82rem;color:var(--sub);margin-left:auto;}
+
+  /* ===== Khối 1 — SƠ Đồ tư duy ===== */
+  .mindmap{display:flex;flex-direction:column;gap:10px;}
+  .center-node{background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:1rem;}
+  .branch{border-radius:10px;overflow:hidden;border:1px solid var(--line);}
+  .branch-head{width:100%;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;color:#fff;font-weight:700;font-size:.92rem;border:none;cursor:pointer;text-align:left;}
+  .branch-head .mark{font-weight:800;font-size:1rem;background:rgba(255,255,255,.25);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .branch-body{max-height:0;overflow:hidden;transition:max-height .25s ease;background:var(--card);}
+  .branch.open .branch-body{max-height:600px;}
+  .branch-body ul{margin:0;padding:10px 16px 12px 30px;}
+  .branch-body li{margin:6px 0;font-size:.9rem;}
+  .b1 .branch-head{background:var(--c1);} .b1 .branch-body{background:var(--c1-l);}
+  .b2 .branch-head{background:var(--c2);} .b2 .branch-body{background:var(--c2-l);}
+  .b3 .branch-head{background:var(--c3);} .b3 .branch-body{background:var(--c3-l);}
+  .b4 .branch-head{background:#3B8686;} .b4 .branch-body{background:#DBEFEE;}
+  .b5 .branch-head{background:#7A5195;} .b5 .branch-body{background:#E9E0F1;}
+  .b6 .branch-head{background:#C0587E;} .b6 .branch-body{background:#F5DEE6;}
+
+  /* ===== Khối 2 — Phiếu học tập ===== */
+  .task{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+  .task h3{margin:0 0 6px;font-size:.95rem;}
+  .task .tag{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--c1);border-radius:6px;padding:2px 8px;margin-bottom:6px;}
+  .task .tag.mo-rong{background:var(--c3);}
+  .task .hint{margin-top:8px;font-size:.85rem;color:var(--sub);border-left:3px solid var(--c1);padding-left:8px;}
+  .task .data-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.85rem;}
+  .task .data-table td,.task .data-table th{border:1px solid var(--line);padding:6px 8px;text-align:center;}
+  .answer-space{border:1px dashed var(--line);border-radius:6px;min-height:50px;margin-top:8px;}
+  .checklist label{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:.88rem;}
+  .checklist input{width:20px;height:20px;flex-shrink:0;margin-top:1px;}
+  .dien-ngan{width:100%;min-height:40px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);}
+  textarea.dien-dai{width:100%;min-height:90px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);resize:vertical;}
+  .dien-ngan:focus,textarea.dien-dai:focus{outline:none;border-style:solid;border-color:var(--c1);}
+  .lua-chon-item{margin-top:10px;}
+  .lua-chon-item .lc-stem{font-weight:600;font-size:.9rem;margin-bottom:6px;}
+  .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
+  .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .dap-an-goi-y{margin-top:10px;}
+  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:34px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:6px;cursor:pointer;font-weight:600;}
+  .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 6px 6px 0;padding:8px 10px;}
+  .dap-an-goi-y.hien .noi-dung-dap-an{display:block;}
+  .dap-an-goi-y.hien .nut-xem-dap-an{background:var(--c1);color:#fff;}
+
+  /* ===== Khối 3 — Thẻ ghi nhớ ===== */
+  .fc-status{font-size:.82rem;color:var(--sub);margin-bottom:8px;}
+  .fc-stage{perspective:1000px;height:190px;margin-bottom:12px;}
+  .fc-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .4s;cursor:pointer;}
+  .fc-card.flipped{transform:rotateY(180deg);}
+  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;font-size:1.05rem;font-weight:600;border:1px solid var(--line);}
+  .fc-face.front{background:var(--card);}
+  .fc-face.back{background:var(--c1-l);transform:rotateY(180deg);font-weight:500;font-size:.95rem;}
+  .fc-face .dir{position:absolute;top:8px;left:10px;font-size:.68rem;font-weight:700;color:var(--sub);text-transform:uppercase;}
+  .fc-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .fc-mark{display:flex;gap:8px;margin-bottom:10px;}
+  .fc-mark button.known{border-color:var(--ok);color:var(--ok);}
+  .fc-mark button.review{border-color:var(--bad);color:var(--bad);}
+  .fc-filter{display:flex;align-items:center;gap:8px;font-size:.85rem;margin-bottom:10px;}
+  .test-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center;}
+  .test-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  /* ===== Khối 4 — Quiz ===== */
+  .qz-progress{font-size:.85rem;color:var(--sub);margin-bottom:10px;}
+  .qz-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+  .qz-item .ctx{font-size:.85rem;color:var(--sub);background:#F2F4F6;border-radius:6px;padding:8px;margin-bottom:8px;}
+  .qz-item .stem{font-weight:600;margin-bottom:8px;font-size:.92rem;}
+  .qz-item label{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid transparent;}
+  .qz-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .qz-item.graded label.correct{background:#E7F5EC;border-color:var(--ok);}
+  .qz-item.graded label.wrong-pick{background:#FBEAE9;border-color:var(--bad);}
+  .qz-explain{display:none;margin-top:8px;font-size:.84rem;background:#F2F4F6;border-radius:6px;padding:8px;}
+  .qz-item.graded .qz-explain{display:block;}
+  .qz-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px;display:none;}
+  .qz-result.show{display:block;}
+  .qz-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px;}
+
+  /* ===== In ===== */
+  .print-only{display:none;}
+  @media print{
+    nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,footer,button{display:none !important;}
+    section.panel{display:block !important;page-break-after:always;}
+    .branch-body{max-height:none !important;}
+    .print-only{display:block;}
+    .fc-stage{display:none;}
+    body{background:#fff;font-size:12px;}
+    header{background:#fff !important;color:#000 !important;border-bottom:2px solid #000;}
+    .branch-head{color:#000 !important;background:#eee !important;border:1px solid #000;}
+    .qz-item label{border:1px solid #999;}
+    h2.block-title{border-bottom:1px solid #000;padding-bottom:4px;}
+    .dap-an-goi-y .noi-dung-dap-an{display:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== ỨNG DỤNG ===================== -->
+<div id="app-shell">
+
+<header>
+  <button id="print-btn" type="button">🖨 In / Lưu PDF</button>
+  <h1>Bài 1. Hệ điều hành</h1>
+  <p>Tin học 11 · Trường THCS & THPT Vĩnh Hưng · Học liệu số dùng offline</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="p1">Sơ đồ tư duy</button>
+  <button class="tab-btn" data-panel="p2">Phiếu học tập</button>
+  <button class="tab-btn" data-panel="p3">Thẻ ghi nhớ</button>
+  <button class="tab-btn" data-panel="p4">Quiz</button>
+</nav>
+<main>
+
+  <!-- ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== -->
+  <section id="p1" class="panel active">
+    <h2 class="block-title">1. Sơ đồ tư duy</h2>
+    <div class="toolbar">
+      <button class="btn primary" id="mm-open-all">Mở tất cả</button>
+      <button class="btn" id="mm-close-all">Đóng tất cả</button>
+      <span class="counter" id="mm-counter"></span>
+    </div>
+    <div class="mindmap" id="mindmap"></div>
+  </section>
+
+  <!-- ===================== KHỐI 2 — PHIẾU HỌC TẬP ===================== -->
+  <section id="p2" class="panel">
+    <h2 class="block-title">2. Phiếu học tập / thực hành</h2>
+    <div class="toolbar">
+      <button class="btn ghost" id="p2-reset" type="button">Xóa câu trả lời đã lưu</button>
+    </div>
+    <p class="print-only" style="font-size:.85rem;color:#555;">Họ tên: .................................... Lớp: ............. Nhóm: ............</p>
+    <div id="p2-content"></div>
+  </section>
+
+  <!-- ===================== KHỐI 3 — THẻ GHI NHỚ ===================== -->
+  <section id="p3" class="panel">
+    <h2 class="block-title">3. Thẻ ghi nhớ</h2>
+    <div class="toolbar">
+      <button class="btn" id="fc-shuffle">Xáo trộn</button>
+      <button class="btn" id="fc-test">Tự kiểm tra</button>
+      <button class="btn ghost" id="fc-reset">Xóa tiến độ</button>
+    </div>
+    <div class="fc-filter">
+      <input type="checkbox" id="fc-filter-unknown">
+      <label for="fc-filter-unknown">Chỉ hiện thẻ chưa thuộc</label>
+    </div>
+    <p class="fc-status" id="fc-status"></p>
+    <div id="fc-view">
+      <div class="fc-stage">
+        <div class="fc-card" id="fc-card">
+          <div class="fc-face front"><span class="dir" id="fc-dir-f"></span><span id="fc-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fc-back-text"></span></div>
+        </div>
+      </div>
+      <div class="fc-nav">
+        <button class="btn" id="fc-prev">← Trước</button>
+        <span class="counter" id="fc-counter" style="align-self:center;"></span>
+        <button class="btn" id="fc-next">Sau →</button>
+      </div>
+      <div class="fc-mark">
+        <button class="btn review" id="fc-mark-review">Cần ôn lại</button>
+        <button class="btn known" id="fc-mark-known">Đã thuộc</button>
+      </div>
+    </div>
+    <div id="fc-test-view" style="display:none;">
+      <div class="fc-stage">
+        <div class="fc-card" id="fct-card">
+          <div class="fc-face front"><span class="dir" id="fct-dir-f"></span><span id="fct-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fct-back-text"></span></div>
+        </div>
+      </div>
+      <p class="fc-status" id="fct-progress"></p>
+      <div class="fc-mark">
+        <button class="btn review" id="fct-wrong">Chưa biết</button>
+        <button class="btn known" id="fct-right">Biết rồi</button>
+      </div>
+    </div>
+    <div id="fc-result-view" style="display:none;">
+      <div class="test-result">
+        <p>Kết quả tự kiểm tra</p>
+        <div class="score" id="fc-score"></div>
+        <button class="btn primary" id="fc-test-again" style="margin-top:10px;">Kiểm tra lại</button>
+        <button class="btn" id="fc-test-exit">Quay lại thẻ</button>
+      </div>
+    </div>
+    <!-- Bản in: toàn bộ thẻ dạng lưới có đường cắt -->
+    <div class="print-only" id="fc-print-grid"></div>
+  </section>
+
+  <!-- ===================== KHỐI 4 — QUIZ ===================== -->
+  <section id="p4" class="panel">
+    <h2 class="block-title">4. Quiz tự chấm</h2>
+    <div class="toolbar">
+      <button class="btn" id="qz-shuffle">Xáo trộn câu hỏi</button>
+      <button class="btn" id="qz-reset">Làm lại</button>
+    </div>
+    <p class="qz-progress" id="qz-progress"></p>
+    <div class="qz-result" id="qz-result">
+      <p>Kết quả</p>
+      <div class="score" id="qz-score"></div>
+    </div>
+    <form id="qz-form"></form>
+    <button class="btn primary" id="qz-submit" style="width:100%;">Nộp bài</button>
+  </section>
+
+</main>
+
+<footer>Học liệu số — Bài 1 Tin học 11 ICT — Trường THCS & THPT Vĩnh Hưng. Mở bằng Chrome hoặc Safari, không cần Internet.</footer>
+
+</div><!-- /#app-shell -->
+
+<script type="application/json" id="hls-data">{"worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — cốt lõi<\/span>\n  <h3>Hoạt động 1 (SGK trang 5) — Xác định nhóm chức năng đặc thù<\/h3>\n  <p>Hệ điều hành máy tính cá nhân có 5 nhóm chức năng: quản lí thiết bị; quản lí lưu trữ dữ liệu; tổ chức thực hiện chương trình; cung cấp môi trường giao tiếp; cung cấp tiện ích. Thảo luận nhóm (kĩ thuật khăn trải bàn) và chọn MỘT nhóm thể hiện rõ nhất đặc thù của hệ điều hành máy tính cá nhân:<\/p>\n  <div class=\"lua-chon-item\" data-id=\"hd1-nhom\">\n    <div class=\"lc-stem\">Chọn nhóm chức năng thể hiện rõ nhất đặc thù của hệ điều hành:<\/div>\n    <label><input type=\"radio\" name=\"hd1-nhom\" value=\"thiet-bi\"> Quản lí thiết bị<\/label>\n    <label><input type=\"radio\" name=\"hd1-nhom\" value=\"luu-tru\"> Quản lí lưu trữ dữ liệu<\/label>\n    <label><input type=\"radio\" name=\"hd1-nhom\" value=\"chuong-trinh\"> Tổ chức thực hiện chương trình<\/label>\n    <label><input type=\"radio\" name=\"hd1-nhom\" value=\"giao-tiep\"> Cung cấp môi trường giao tiếp<\/label>\n    <label><input type=\"radio\" name=\"hd1-nhom\" value=\"tien-ich\"> Cung cấp tiện ích<\/label>\n  <\/div>\n  <p>Lí do nhóm em chọn:<\/p>\n  <textarea class=\"dien-dai\" data-id=\"hd1-lido\" rows=\"3\" placeholder=\"Nhập lí do của nhóm...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Gợi ý: nhóm \"Tổ chức thực hiện chương trình\" thể hiện rõ nhất — vì đây là chức năng lõi giúp phân biệt hệ điều hành với các thiết bị chỉ chạy một chương trình cố định (như lò vi sóng).<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: phân biệt bằng ví dụ — chuột, bàn phím là thiết bị (quản lí thiết bị); nén tệp, quét đĩa là tiện ích (cung cấp tiện ích).<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — cốt lõi<\/span>\n  <h3>Hoạt động 2 (SGK trang 8) — So sánh hệ điều hành di động và máy tính cá nhân<\/h3>\n  <p>Điện thoại thông minh, máy tính bảng thực chất cũng là máy tính cá nhân. Trong 3 phút, thảo luận cặp và liệt kê những điểm khác nhau giữa hệ điều hành thiết bị di động em đang dùng với hệ điều hành máy tính của phòng học bộ môn:<\/p>\n  <table class=\"data-table\">\n    <tr><th>Hệ điều hành máy tính cá nhân<\/th><th>Hệ điều hành thiết bị di động<\/th><\/tr>\n    <tr><td><input type=\"text\" class=\"dien-ngan\" data-id=\"hd2-r1c1\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"hd2-r1c2\"><\/td><\/tr>\n    <tr><td><input type=\"text\" class=\"dien-ngan\" data-id=\"hd2-r2c1\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"hd2-r2c2\"><\/td><\/tr>\n    <tr><td><input type=\"text\" class=\"dien-ngan\" data-id=\"hd2-r3c1\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"hd2-r3c2\"><\/td><\/tr>\n  <\/table>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: hướng vào cách kết nối mạng (wifi, mạng di động) và cách thao tác (bàn phím/chuột hay chạm/vuốt).<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — cốt lõi<\/span>\n  <h3>Hoạt động 3 (SGK trang 9) — Khi nào cần hệ điều hành?<\/h3>\n  <p>Có hay không trường hợp phần mềm chạy trên thiết bị không có hệ điều hành? Khi nào cần phải có hệ điều hành? Liên hệ ví dụ lò vi sóng và máy tính:<\/p>\n  <textarea class=\"dien-dai\" data-id=\"hd3-traloi\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Gợi ý: lò vi sóng chỉ làm một việc, chạy chương trình ghi sẵn trong ROM nên không cần hệ điều hành; máy tính chạy được nhiều phần mềm khác nhau, cần hệ điều hành để quản lí và điều phối tài nguyên giữa các phần mềm đó.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: lò vi sóng chỉ làm một việc, chạy chương trình ghi sẵn trong ROM; máy tính chạy được nhiều phần mềm khác nhau.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Vận dụng — về nhà<\/span>\n  <h3>Hai nhiệm vụ Vận dụng (SGK trang 9)<\/h3>\n  <p>1) Kể tên và mô tả ngắn một thiết bị điện gia dụng (ngoài lò vi sóng) có hệ điều hành hoặc phần mềm điều khiển tích hợp.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd1\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) Tìm hiểu thêm về hệ điều hành UNIX: ra đời năm nào, có đặc điểm gì, liên hệ gì với LINUX?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd2\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p style=\"font-style:italic;color:#5b6b82;\">Nộp bằng vở viết tay hoặc file Word vào đầu tiết Tin học tuần sau — tự chọn hình thức trình bày.<\/p>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Bạn A nêu ý kiến trước, bạn B đối chiếu và bổ sung ở Hoạt động 2.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Hai bạn nêu được ít nhất 2 điểm khác biệt giữa hệ điều hành di động và máy tính cá nhân.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Hoàn thành đủ 3 nhiệm vụ cốt lõi trong đúng thời gian quy định.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Nêu được lí do cụ thể, không trả lời chung chung \"có\"/\"không\".<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. Lịch sử phát triển của hệ điều hành máy tính cá nhân", "cls": "b1", "items": ["5 nhóm chức năng của hệ điều hành + cơ chế plug & play", "Giao diện dòng lệnh (DOS) → giao diện đồ hoạ (Windows)", "Windows: phiên bản đầu 1985 → Windows 11 (2021)", "LINUX: Linus Torvalds viết 1991, mã nguồn mở 1994", "Biến thể LINUX: Red Hat, Suse, Ubuntu — nền tảng Android"]}, {"title": "2. Hệ điều hành cho thiết bị di động", "cls": "b2", "items": ["Ưu tiên kết nối mạng di động (3G/4G/5G)", "Thao tác chạm, vuốt trên màn hình cảm ứng", "Nhiều cảm biến hỗ trợ cá nhân: định vị, sức khoẻ, camera", "Hai hệ điều hành phổ biến: iOS (Apple), Android (Google)"]}, {"title": "3. Quan hệ giữa hệ điều hành, phần cứng và phần mềm ứng dụng", "cls": "b3", "items": ["Hệ điều hành là môi trường trung gian", "4 lớp: người dùng — phần mềm ứng dụng — hệ điều hành — phần cứng", "Phần mềm gọi dịch vụ hệ điều hành: tìm/mở/ghi/đóng tệp", "Thiết bị đa năng bắt buộc phải có hệ điều hành"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "Hệ điều hành có bao nhiêu nhóm chức năng cơ bản? Kể tên.", "back": "5 nhóm: quản lí thiết bị, quản lí lưu trữ dữ liệu, tổ chức thực hiện chương trình, cung cấp môi trường giao tiếp, cung cấp tiện ích."}, {"id": "fc02", "dir": "Hỏi xuôi", "front": "Cơ chế plug & play là gì?", "back": "Khả năng hệ điều hành tự nhận biết thiết bị ngoại vi mới cắm vào máy tính."}, {"id": "fc03", "dir": "Hỏi ngược", "front": "Giao diện thao tác bằng biểu tượng và chuột, trực quan hơn dòng lệnh, gọi là giao diện gì?", "back": "Giao diện đồ hoạ (GUI)."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "Ai viết hệ điều hành LINUX, vào năm nào?", "back": "Linus Torvalds, năm 1991; công bố mã nguồn mở năm 1994."}, {"id": "fc05", "dir": "Hỏi ngược", "front": "Red Hat, Suse, Ubuntu là các biến thể của hệ điều hành nào?", "back": "LINUX."}, {"id": "fc06", "dir": "Hỏi ngược", "front": "Hệ điều hành nào là nền tảng của Android?", "back": "LINUX."}, {"id": "fc07", "dir": "Hỏi xuôi", "front": "Kể tên hai hệ điều hành thiết bị di động phổ biến nhất.", "back": "iOS (Apple) và Android (Google)."}, {"id": "fc08", "dir": "Hỏi ngược", "front": "Ưu tiên kết nối mạng di động, dùng cảm biến nhận dạng hành vi người dùng — là đặc điểm của loại hệ điều hành nào?", "back": "Hệ điều hành thiết bị di động."}, {"id": "fc09", "dir": "Hỏi xuôi", "front": "Vì sao lò vi sóng không cần hệ điều hành?", "back": "Vì chỉ chạy một chương trình cố định ghi sẵn trong ROM, không cần điều phối nhiều phần mềm."}, {"id": "fc10", "dir": "Hỏi xuôi", "front": "Vì sao máy tính bắt buộc phải có hệ điều hành?", "back": "Vì là thiết bị đa năng, chạy được nhiều phần mềm khác nhau, cần điều phối tài nguyên."}, {"id": "fc11", "dir": "Hỏi ngược", "front": "Khi phần mềm ứng dụng cần mở một tệp, nó gọi dịch vụ của thành phần nào thay vì tự điều khiển phần cứng?", "back": "Hệ điều hành."}, {"id": "fc12", "dir": "Hỏi xuôi", "front": "Trong sơ đồ 4 lớp, hệ điều hành đứng giữa những thành phần nào?", "back": "Giữa phần mềm ứng dụng và phần cứng."}], "quiz": [{"id": "q01", "stem": "Theo sách giáo khoa, hệ điều hành máy tính cá nhân có bao nhiêu nhóm chức năng cơ bản?", "opts": [{"l": "A", "t": "3 nhóm chức năng."}, {"l": "B", "t": "4 nhóm chức năng."}, {"l": "C", "t": "5 nhóm chức năng."}, {"l": "D", "t": "6 nhóm chức năng."}], "ans": "C", "ngu_canh": null, "explain": "SGK nêu 5 nhóm chức năng: quản lí thiết bị, quản lí lưu trữ dữ liệu, tổ chức thực hiện chương trình, cung cấp môi trường giao tiếp, cung cấp tiện ích."}, {"id": "q02", "stem": "Nhóm chức năng nào sau đây KHÔNG thuộc 5 nhóm chức năng cơ bản của hệ điều hành máy tính cá nhân?", "opts": [{"l": "A", "t": "Quản lí thiết bị."}, {"l": "B", "t": "Tổ chức thực hiện chương trình."}, {"l": "C", "t": "Thiết kế đồ hoạ 3D chuyên nghiệp."}, {"l": "D", "t": "Cung cấp môi trường giao tiếp."}], "ans": "C", "ngu_canh": null, "explain": "Thiết kế đồ hoạ 3D là việc của phần mềm ứng dụng, không phải chức năng của hệ điều hành."}, {"id": "q03", "stem": "Ở giao diện dòng lệnh (command line), người dùng phải làm gì để ra lệnh cho máy tính?", "opts": [{"l": "A", "t": "Gõ đúng cú pháp lệnh."}, {"l": "B", "t": "Nhấp chuột vào biểu tượng."}, {"l": "C", "t": "Chạm vào màn hình cảm ứng."}, {"l": "D", "t": "Ra lệnh bằng giọng nói."}], "ans": "A", "ngu_canh": null, "explain": "Giao diện dòng lệnh (như DOS) đòi hỏi gõ đúng cú pháp lệnh; giao diện đồ hoạ mới thao tác bằng biểu tượng và chuột."}, {"id": "q04", "stem": "Sự khác biệt cơ bản giữa giao diện dòng lệnh của DOS và giao diện đồ hoạ của Windows là gì?", "opts": [{"l": "A", "t": "DOS chạy nhanh hơn Windows trên mọi loại máy tính."}, {"l": "B", "t": "Giao diện dòng lệnh đòi hỏi gõ đúng cú pháp lệnh, còn giao diện đồ hoạ thao tác bằng biểu tượng và chuột nên trực quan hơn."}, {"l": "C", "t": "Windows không hỗ trợ sử dụng bàn phím."}, {"l": "D", "t": "DOS chỉ cài đặt được trên máy tính xách tay."}], "ans": "B", "ngu_canh": null, "explain": "Giao diện dòng lệnh đòi hỏi gõ đúng cú pháp lệnh; giao diện đồ hoạ thao tác bằng biểu tượng và chuột nên trực quan hơn."}, {"id": "q05", "stem": "Hệ điều hành LINUX do ai viết, vào năm nào, và công bố mã nguồn mở vào năm nào?", "opts": [{"l": "A", "t": "Linus Torvalds viết năm 1991, công bố mã nguồn mở năm 1994."}, {"l": "B", "t": "Bill Gates viết năm 1985, công bố mã nguồn mở ngay năm đó."}, {"l": "C", "t": "Steve Jobs viết năm 1991, chưa từng công bố mã nguồn mở."}, {"l": "D", "t": "Linus Torvalds viết năm 1994, công bố mã nguồn mở năm 1991."}], "ans": "A", "ngu_canh": null, "explain": "Linus Torvalds viết LINUX năm 1991 và công bố mã nguồn mở năm 1994; các biến thể phổ biến gồm Red Hat, Suse, Ubuntu — nền tảng của Android."}, {"id": "q06", "stem": "Vì sao hệ điều hành thiết bị di động cần ưu tiên kết nối mạng di động (3G/4G/5G) hơn hệ điều hành máy tính cá nhân?", "opts": [{"l": "A", "t": "Vì thiết bị di động nhỏ gọn, luôn mang theo người, cần thao tác nhanh và kết nối liên tục."}, {"l": "B", "t": "Vì thiết bị di động không thể kết nối wifi."}, {"l": "C", "t": "Vì thiết bị di động luôn chạy chậm hơn máy tính cá nhân."}, {"l": "D", "t": "Vì mạng di động không tính phí sử dụng."}], "ans": "A", "ngu_canh": null, "explain": "Thiết bị di động nhỏ gọn, luôn mang theo người, cần thao tác nhanh và kết nối liên tục nên hệ điều hành ưu tiên kết nối mạng di động."}, {"id": "q07", "stem": "Hai hệ điều hành thiết bị di động phổ biến nhất hiện nay là", "opts": [{"l": "A", "t": "Windows và LINUX."}, {"l": "B", "t": "iOS (Apple) và Android (Google)."}, {"l": "C", "t": "DOS và Ubuntu."}, {"l": "D", "t": "macOS và Windows."}], "ans": "B", "ngu_canh": null, "explain": "Hai hệ điều hành thiết bị di động phổ biến nhất là iOS của Apple và Android của Google."}, {"id": "q08", "stem": "Vì sao lò vi sóng chỉ chạy một chương trình ghi sẵn trong ROM mà KHÔNG cần hệ điều hành, còn máy tính thì bắt buộc phải có?", "opts": [{"l": "A", "t": "Vì lò vi sóng chỉ làm một việc cố định, còn máy tính chạy được nhiều phần mềm khác nhau nên cần hệ điều hành điều phối."}, {"l": "B", "t": "Vì lò vi sóng có giá thành rẻ hơn máy tính."}, {"l": "C", "t": "Vì lò vi sóng không có màn hình hiển thị."}, {"l": "D", "t": "Vì máy tính không có bộ nhớ ROM."}], "ans": "A", "ngu_canh": null, "explain": "Thiết bị chỉ làm một việc cố định không cần hệ điều hành; thiết bị đa năng như máy tính bắt buộc phải có hệ điều hành để điều phối tài nguyên."}, {"id": "q09", "stem": "Trong sơ đồ quan hệ người dùng — phần mềm ứng dụng — hệ điều hành — phần cứng, khi một phần mềm ứng dụng cần mở một tệp, nó thực hiện việc này bằng cách nào?", "opts": [{"l": "A", "t": "Tự viết mã điều khiển trực tiếp phần cứng đọc dữ liệu."}, {"l": "B", "t": "Gọi dịch vụ tương ứng của hệ điều hành (tìm tệp, mở tệp) thay vì tự điều khiển trực tiếp phần cứng."}, {"l": "C", "t": "Gửi yêu cầu trực tiếp tới người dùng để người dùng tự thao tác."}, {"l": "D", "t": "Không cần thao tác gì, tệp tự động mở."}], "ans": "B", "ngu_canh": null, "explain": "Phần mềm ứng dụng gọi dịch vụ của hệ điều hành (tìm tệp, mở tệp, ghi dữ liệu, đóng tệp) thay vì tự điều khiển trực tiếp phần cứng — đây chính là vai trò trung gian của hệ điều hành."}, {"id": "q10", "stem": "Một hợp tác xã nuôi tôm ở Cà Mau trang bị máy tính bảng chạy Android để ghi nhật kí sản lượng ngay tại ao nuôi. Đặc điểm nào của Android phù hợp nhất với việc ghi chép ngoài trời, di chuyển liên tục?", "opts": [{"l": "A", "t": "Dung lượng lưu trữ rất lớn."}, {"l": "B", "t": "Thao tác chạm, vuốt trên màn hình cảm ứng và dễ dàng kết nối mạng di động."}, {"l": "C", "t": "Chạy được toàn bộ phần mềm viết cho Windows."}, {"l": "D", "t": "Có bàn phím cơ rời kèm theo máy."}], "ans": "B", "ngu_canh": null, "explain": "Hệ điều hành di động ưu tiên thao tác chạm/vuốt và kết nối mạng di động, phù hợp việc ghi chép nhanh, di chuyển liên tục ngoài ao nuôi."}]}</script>
+<script>
+(function(){
+"use strict";
+
+/* ===================== ỨNG DỤNG — DỰNG NGAY, KHÔNG QUA XÁC THỰC ===================== */
+var payload = JSON.parse(document.getElementById("hls-data").textContent);
+buildApp(payload);
+
+function buildApp(payload){
+
+/* ---------- Lưu trữ an toàn (tiến độ thẻ ghi nhớ) ---------- */
+var STORE_KEY = "tin11_bai01";
+function loadStore(){
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    return raw ? JSON.parse(raw) : {known:{}};
+  }catch(e){ return {known:{}}; }
+}
+function saveStore(s){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){ /* im lặng, tệp file:// có thể chặn */ }
+}
+var store = loadStore();
+if(!store.known) store.known = {};
+
+/* ---------- In / Xuất PDF ---------- */
+document.getElementById("print-btn").addEventListener("click", function(){ window.print(); });
+
+/* ---------- Chuyển tab ---------- */
+var tabBtns = document.querySelectorAll(".tab-btn");
+var panels = document.querySelectorAll(".panel");
+tabBtns.forEach(function(btn){
+  btn.addEventListener("click", function(){
+    tabBtns.forEach(function(b){ b.classList.remove("active"); });
+    panels.forEach(function(p){ p.classList.remove("active"); });
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.panel).classList.add("active");
+  });
+});
+
+/* ---------- Phiếu học tập ---------- */
+document.getElementById("p2-content").innerHTML = payload.worksheetHtml || "";
+if(!store.phieu) store.phieu = {};
+enhanceWorksheet();
+
+/* ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== */
+var mindmapData = payload.mindmap || [];
+var branchColorClass = ["b1","b2","b3","b4","b5","b6"];
+
+var mmRoot = document.getElementById("mindmap");
+var center = document.createElement("div");
+center.className = "center-node";
+center.textContent = payload.tieu_de_trung_tam || (document.title.replace("Học liệu số — ",""));
+mmRoot.appendChild(center);
+
+mindmapData.forEach(function(b, idx){
+  var branch = document.createElement("div");
+  branch.className = "branch " + (b.cls || branchColorClass[idx % branchColorClass.length]);
+  branch.dataset.idx = idx;
+
+  var head = document.createElement("button");
+  head.className = "branch-head";
+  head.innerHTML = '<span>' + b.title + '</span><span class="mark">?</span>';
+  head.addEventListener("click", function(){ toggleBranch(branch); });
+
+  var body = document.createElement("div");
+  body.className = "branch-body";
+  var ul = document.createElement("ul");
+  (b.items || []).forEach(function(t){
+    var li = document.createElement("li");
+    li.textContent = t;
+    ul.appendChild(li);
+  });
+  body.appendChild(ul);
+
+  branch.appendChild(head);
+  branch.appendChild(body);
+  mmRoot.appendChild(branch);
+});
+
+function updateMmCounter(){
+  var total = mindmapData.length;
+  var open = document.querySelectorAll(".branch.open").length;
+  document.getElementById("mm-counter").textContent = "Đã mở " + open + "/" + total + " phần";
+}
+function toggleBranch(branch){
+  var isOpen = branch.classList.toggle("open");
+  var mark = branch.querySelector(".mark");
+  mark.textContent = isOpen ? "−" : "?";
+  updateMmCounter();
+}
+document.getElementById("mm-open-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.add("open");
+    br.querySelector(".mark").textContent = "−";
+  });
+  updateMmCounter();
+});
+document.getElementById("mm-close-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.remove("open");
+    br.querySelector(".mark").textContent = "?";
+  });
+  updateMmCounter();
+});
+updateMmCounter();
+
+/* ===================== KHỐI 3 — THẺ GHI NHỚ ===================== */
+var flashcards = payload.flashcards || [];
+var fcOrder = flashcards.map(function(c,i){ return i; });
+var fcPos = 0;
+
+function fcVisibleOrder(){
+  var onlyUnknown = document.getElementById("fc-filter-unknown").checked;
+  var order = fcOrder.slice();
+  if(onlyUnknown){
+    order = order.filter(function(i){ return !store.known[flashcards[i].id]; });
+  }
+  return order;
+}
+function fcRender(){
+  var order = fcVisibleOrder();
+  if(order.length === 0){
+    document.getElementById("fc-front-text").textContent = "Không còn thẻ nào trong bộ lọc — mọi thẻ đã được đánh dấu Đã thuộc.";
+    document.getElementById("fc-back-text").textContent = "Bỏ lọc để xem lại toàn bộ bộ thẻ.";
+    document.getElementById("fc-counter").textContent = "0/0";
+    document.getElementById("fc-status").textContent = "";
+    return;
+  }
+  if(fcPos >= order.length) fcPos = 0;
+  if(fcPos < 0) fcPos = order.length - 1;
+  var card = flashcards[order[fcPos]];
+  document.getElementById("fc-dir-f").textContent = card.dir;
+  document.getElementById("fc-front-text").textContent = card.front;
+  document.getElementById("fc-back-text").textContent = card.back;
+  document.getElementById("fc-counter").textContent = (fcPos+1) + "/" + order.length;
+  var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
+  document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
+  var el = document.getElementById("fc-card");
+  el.classList.remove("flipped");
+}
+document.getElementById("fc-card").addEventListener("click", function(){
+  this.classList.toggle("flipped");
+});
+document.getElementById("fc-prev").addEventListener("click", function(){ fcPos--; fcRender(); });
+document.getElementById("fc-next").addEventListener("click", function(){ fcPos++; fcRender(); });
+document.getElementById("fc-filter-unknown").addEventListener("change", function(){ fcPos = 0; fcRender(); });
+document.getElementById("fc-shuffle").addEventListener("click", function(){
+  for(var i = fcOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = fcOrder[i]; fcOrder[i] = fcOrder[j]; fcOrder[j] = t;
+  }
+  fcPos = 0;
+  fcRender();
+});
+function fcMark(known){
+  var order = fcVisibleOrder();
+  if(order.length === 0) return;
+  var card = flashcards[order[fcPos]];
+  if(known){ store.known[card.id] = true; } else { delete store.known[card.id]; }
+  saveStore(store);
+  fcPos++;
+  fcRender();
+}
+document.getElementById("fc-mark-known").addEventListener("click", function(){ fcMark(true); });
+document.getElementById("fc-mark-review").addEventListener("click", function(){ fcMark(false); });
+document.getElementById("fc-reset").addEventListener("click", function(){
+  store.known = {};
+  saveStore(store);
+  fcRender();
+});
+
+/* Chế độ tự kiểm tra */
+var testOrder = [];
+var testPos = 0;
+var testRight = 0;
+function startTest(){
+  testOrder = fcOrder.slice();
+  for(var i = testOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = testOrder[i]; testOrder[i] = testOrder[j]; testOrder[j] = t;
+  }
+  testPos = 0; testRight = 0;
+  document.getElementById("fc-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-test-view").style.display = "block";
+  renderTestCard();
+}
+function renderTestCard(){
+  if(testPos >= testOrder.length){ finishTest(); return; }
+  var card = flashcards[testOrder[testPos]];
+  document.getElementById("fct-dir-f").textContent = card.dir;
+  document.getElementById("fct-front-text").textContent = card.front;
+  document.getElementById("fct-back-text").textContent = card.back;
+  document.getElementById("fct-card").classList.remove("flipped");
+  document.getElementById("fct-progress").textContent = "Câu " + (testPos+1) + "/" + testOrder.length;
+}
+document.getElementById("fct-card").addEventListener("click", function(){ this.classList.toggle("flipped"); });
+document.getElementById("fc-test").addEventListener("click", startTest);
+document.getElementById("fct-right").addEventListener("click", function(){ testRight++; testPos++; renderTestCard(); });
+document.getElementById("fct-wrong").addEventListener("click", function(){ testPos++; renderTestCard(); });
+function finishTest(){
+  document.getElementById("fc-test-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "block";
+  var pct = testOrder.length ? Math.round((testRight / testOrder.length) * 100) : 0;
+  document.getElementById("fc-score").textContent = pct + "% (" + testRight + "/" + testOrder.length + ")";
+}
+document.getElementById("fc-test-again").addEventListener("click", startTest);
+document.getElementById("fc-test-exit").addEventListener("click", function(){
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-view").style.display = "block";
+  fcRender();
+});
+
+/* Bản in — lưới toàn bộ thẻ, đường cắt */
+(function printGrid(){
+  var wrap = document.getElementById("fc-print-grid");
+  var style = document.createElement("style");
+  style.textContent = ".pf-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}"
+    + ".pf-card{border:1px dashed #999;padding:10px;min-height:110px;font-size:11px;}"
+    + ".pf-card b{display:block;margin-bottom:6px;}";
+  wrap.appendChild(style);
+  var grid = document.createElement("div");
+  grid.className = "pf-grid";
+  flashcards.forEach(function(c){
+    var d = document.createElement("div");
+    d.className = "pf-card";
+    d.innerHTML = "<b>" + c.dir + ": " + c.front + "</b>" + c.back;
+    grid.appendChild(d);
+  });
+  wrap.appendChild(grid);
+})();
+
+fcRender();
+
+/* ===================== KHỐI 4 — QUIZ ===================== */
+var quiz = payload.quiz || [];
+var quizOrder = quiz.map(function(c,i){ return i; });
+var graded = false;
+
+function renderQuiz(){
+  var form = document.getElementById("qz-form");
+  form.innerHTML = "";
+  quizOrder.forEach(function(qi, pos){
+    var q = quiz[qi];
+    var box = document.createElement("div");
+    box.className = "qz-item";
+    box.dataset.qid = q.id;
+    var html = "";
+    if(q.ngu_canh){ html += '<div class="ctx">' + q.ngu_canh + '</div>'; }
+    html += '<div class="stem">Câu ' + (pos+1) + '. ' + q.stem + '</div>';
+    q.opts.forEach(function(o){
+      html += '<label data-l="' + o.l + '"><input type="radio" name="' + q.id + '" value="' + o.l + '"> <span>' + o.l + '. ' + o.t + '</span></label>';
+    });
+    html += '<div class="qz-explain"></div>';
+    box.innerHTML = html;
+    form.appendChild(box);
+  });
+  document.getElementById("qz-progress").textContent = quiz.length + " câu trắc nghiệm — chọn xong bấm Nộp bài để tự chấm điểm.";
+  document.getElementById("qz-result").classList.remove("show");
+  graded = false;
+  document.querySelectorAll(".qz-item").forEach(function(it){ it.classList.remove("graded"); });
+}
+renderQuiz();
+
+document.getElementById("qz-submit").addEventListener("click", function(){
+  if(graded) return;
+  var right = 0;
+  quiz.forEach(function(q){
+    var chosen = document.querySelector('input[name="' + q.id + '"]:checked');
+    var box = document.querySelector('.qz-item[data-qid="' + q.id + '"]');
+    box.classList.add("graded");
+    var isCorrect = chosen && chosen.value === q.ans;
+    if(isCorrect) right++;
+    box.querySelectorAll("label").forEach(function(lb){
+      if(lb.dataset.l === q.ans) lb.classList.add("correct");
+      else if(chosen && lb.dataset.l === chosen.value) lb.classList.add("wrong-pick");
+    });
+    box.querySelector(".qz-explain").textContent = "Đáp án đúng: " + q.ans + ". " + q.explain;
+    box.querySelectorAll("input").forEach(function(inp){ inp.disabled = true; });
+  });
+  var pct = quiz.length ? Math.round((right / quiz.length) * 100) : 0;
+  document.getElementById("qz-score").textContent = pct + "% (" + right + "/" + quiz.length + " câu)";
+  document.getElementById("qz-result").classList.add("show");
+  graded = true;
+});
+document.getElementById("qz-reset").addEventListener("click", renderQuiz);
+document.getElementById("qz-shuffle").addEventListener("click", function(){
+  for(var i = quizOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = quizOrder[i]; quizOrder[i] = quizOrder[j]; quizOrder[j] = t;
+  }
+  renderQuiz();
+});
+
+/* ========== Phiếu học tập — điền/chọn đáp án + lưu tạm ========== */
+function enhanceWorksheet(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+
+  /* Ô nhập câu trả lời (ngắn: input, dài: textarea) */
+  scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]").forEach(function(el){
+    var id = el.dataset.id;
+    if(store.phieu[id] !== undefined) el.value = store.phieu[id];
+    el.addEventListener("input", function(){
+      store.phieu[id] = el.value;
+      saveStore(store);
+    });
+  });
+
+  /* Trắc nghiệm / Đúng — Sai (radio hoặc checkbox), mỗi câu bọc trong .lua-chon-item[data-id] */
+  scope.querySelectorAll(".lua-chon-item[data-id]").forEach(function(item){
+    var id = item.dataset.id;
+    var saved = store.phieu[id];
+    var boxes = item.querySelectorAll("input[type=checkbox]");
+    if(boxes.length){
+      boxes.forEach(function(inp){
+        if(Array.isArray(saved) && saved.indexOf(inp.value) !== -1) inp.checked = true;
+        inp.addEventListener("change", function(){
+          var chon = [];
+          item.querySelectorAll("input[type=checkbox]:checked").forEach(function(c){ chon.push(c.value); });
+          store.phieu[id] = chon;
+          saveStore(store);
+        });
+      });
+    } else {
+      item.querySelectorAll("input[type=radio]").forEach(function(inp){
+        if(saved === inp.value) inp.checked = true;
+        inp.addEventListener("change", function(){
+          store.phieu[id] = inp.value;
+          saveStore(store);
+        });
+      });
+    }
+  });
+
+  /* Nút xem đáp án gợi ý (không tự chấm, chỉ hiện/ẩn) */
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    var btn = block.querySelector(".nut-xem-dap-an");
+    if(!btn) return;
+    btn.addEventListener("click", function(){
+      var hien = block.classList.toggle("hien");
+      btn.textContent = hien ? "Ẩn đáp án gợi ý" : "Xem đáp án gợi ý";
+    });
+  });
+
+  /* Xóa toàn bộ câu trả lời đã lưu của phiếu học tập */
+  var resetBtn = document.getElementById("p2-reset");
+  if(resetBtn){
+    resetBtn.addEventListener("click", function(){
+      store.phieu = {};
+      saveStore(store);
+      scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){ el.value = ""; });
+      scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){ inp.checked = false; });
+      scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+        block.classList.remove("hien");
+        var b = block.querySelector(".nut-xem-dap-an");
+        if(b) b.textContent = "Xem đáp án gợi ý";
+      });
+    });
+  }
+}
+
+/* Khi in: đưa phiếu về trạng thái trống như bản gốc (không lộ đáp án đã điền/chọn), sau khi in thì khôi phục lại trên màn hình */
+window.addEventListener("beforeprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    el.dataset.printGiuLai = el.value;
+    el.value = "";
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.checked){ inp.dataset.printGiuLai = "1"; inp.checked = false; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+    block.dataset.printGiuLai = "1";
+    block.classList.remove("hien");
+  });
+});
+window.addEventListener("afterprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    if(el.dataset.printGiuLai !== undefined){ el.value = el.dataset.printGiuLai; delete el.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.dataset.printGiuLai){ inp.checked = true; delete inp.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    if(block.dataset.printGiuLai){ block.classList.add("hien"); delete block.dataset.printGiuLai; }
+  });
+});
+
+
+} /* hết buildApp */
+
+})();
+</script>
+</body>
+</html>

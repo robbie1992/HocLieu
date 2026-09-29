@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Học liệu số — Bài 4. Bên trong máy tính</title>
+<style>
+  :root{
+    --c1:#2E86AB; --c1-l:#DCEBF3;
+    --c2:#A23B72; --c2-l:#F1DDE9;
+    --c3:#F18F01; --c3-l:#FDEAC9;
+    --ink:#1F2937; --sub:#5B6472; --bg:#F7F8FA; --card:#FFFFFF; --line:#E1E5EA;
+    --ok:#1E7B45; --bad:#B3261E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5;}
+  header{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;padding:16px 14px;position:relative;}
+  header h1{margin:0 0 2px;font-size:1.15rem;padding-right:80px;}
+  header p{margin:0;font-size:.85rem;opacity:.9;}
+  #print-btn{position:absolute;top:14px;right:14px;min-height:40px;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;}
+  nav.tabs{position:sticky;top:0;z-index:20;display:flex;background:var(--card);border-bottom:1px solid var(--line);overflow-x:auto;}
+  nav.tabs button{flex:1 0 auto;min-width:25%;min-height:44px;border:none;background:none;padding:10px 6px;font-size:.85rem;font-weight:600;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent;}
+  nav.tabs button.active{color:var(--c1);border-bottom-color:var(--c1);}
+  main{max-width:760px;margin:0 auto;padding:14px 14px 40px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  h2.block-title{font-size:1.05rem;margin:4px 0 12px;color:var(--ink);}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  button.btn{min-height:40px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.85rem;font-weight:600;cursor:pointer;}
+  button.btn.primary{background:var(--c1);border-color:var(--c1);color:#fff;}
+  button.btn.ghost{background:transparent;}
+  button.btn:active{transform:scale(.98);}
+  button.btn:disabled{opacity:.6;}
+  .counter{align-self:center;font-size:.82rem;color:var(--sub);margin-left:auto;}
+
+  /* ===== Khối 1 — SƠ Đồ tư duy ===== */
+  .mindmap{display:flex;flex-direction:column;gap:10px;}
+  .center-node{background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:1rem;}
+  .branch{border-radius:10px;overflow:hidden;border:1px solid var(--line);}
+  .branch-head{width:100%;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;color:#fff;font-weight:700;font-size:.92rem;border:none;cursor:pointer;text-align:left;}
+  .branch-head .mark{font-weight:800;font-size:1rem;background:rgba(255,255,255,.25);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .branch-body{max-height:0;overflow:hidden;transition:max-height .25s ease;background:var(--card);}
+  .branch.open .branch-body{max-height:600px;}
+  .branch-body ul{margin:0;padding:10px 16px 12px 30px;}
+  .branch-body li{margin:6px 0;font-size:.9rem;}
+  .b1 .branch-head{background:var(--c1);} .b1 .branch-body{background:var(--c1-l);}
+  .b2 .branch-head{background:var(--c2);} .b2 .branch-body{background:var(--c2-l);}
+  .b3 .branch-head{background:var(--c3);} .b3 .branch-body{background:var(--c3-l);}
+  .b4 .branch-head{background:#3B8686;} .b4 .branch-body{background:#DBEFEE;}
+  .b5 .branch-head{background:#7A5195;} .b5 .branch-body{background:#E9E0F1;}
+  .b6 .branch-head{background:#C0587E;} .b6 .branch-body{background:#F5DEE6;}
+
+  /* ===== Khối 2 — Phiếu học tập ===== */
+  .task{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+  .task h3{margin:0 0 6px;font-size:.95rem;}
+  .task .tag{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--c1);border-radius:6px;padding:2px 8px;margin-bottom:6px;}
+  .task .tag.mo-rong{background:var(--c3);}
+  .task .hint{margin-top:8px;font-size:.85rem;color:var(--sub);border-left:3px solid var(--c1);padding-left:8px;}
+  .task .data-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.85rem;}
+  .task .data-table td,.task .data-table th{border:1px solid var(--line);padding:6px 8px;text-align:center;}
+  .answer-space{border:1px dashed var(--line);border-radius:6px;min-height:50px;margin-top:8px;}
+  .checklist label{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:.88rem;}
+  .checklist input{width:20px;height:20px;flex-shrink:0;margin-top:1px;}
+  .dien-ngan{width:100%;min-height:40px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);}
+  textarea.dien-dai{width:100%;min-height:90px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);resize:vertical;}
+  .dien-ngan:focus,textarea.dien-dai:focus{outline:none;border-style:solid;border-color:var(--c1);}
+  .lua-chon-item{margin-top:10px;}
+  .lua-chon-item .lc-stem{font-weight:600;font-size:.9rem;margin-bottom:6px;}
+  .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
+  .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .dap-an-goi-y{margin-top:10px;}
+  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:34px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:6px;cursor:pointer;font-weight:600;}
+  .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 6px 6px 0;padding:8px 10px;}
+  .dap-an-goi-y.hien .noi-dung-dap-an{display:block;}
+  .dap-an-goi-y.hien .nut-xem-dap-an{background:var(--c1);color:#fff;}
+
+  /* ===== Khối 3 — Thẻ ghi nhớ ===== */
+  .fc-status{font-size:.82rem;color:var(--sub);margin-bottom:8px;}
+  .fc-stage{perspective:1000px;height:190px;margin-bottom:12px;}
+  .fc-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .4s;cursor:pointer;}
+  .fc-card.flipped{transform:rotateY(180deg);}
+  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;font-size:1.05rem;font-weight:600;border:1px solid var(--line);}
+  .fc-face.front{background:var(--card);}
+  .fc-face.back{background:var(--c1-l);transform:rotateY(180deg);font-weight:500;font-size:.95rem;}
+  .fc-face .dir{position:absolute;top:8px;left:10px;font-size:.68rem;font-weight:700;color:var(--sub);text-transform:uppercase;}
+  .fc-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .fc-mark{display:flex;gap:8px;margin-bottom:10px;}
+  .fc-mark button.known{border-color:var(--ok);color:var(--ok);}
+  .fc-mark button.review{border-color:var(--bad);color:var(--bad);}
+  .fc-filter{display:flex;align-items:center;gap:8px;font-size:.85rem;margin-bottom:10px;}
+  .test-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center;}
+  .test-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  /* ===== Khối 4 — Quiz ===== */
+  .qz-progress{font-size:.85rem;color:var(--sub);margin-bottom:10px;}
+  .qz-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+  .qz-item .ctx{font-size:.85rem;color:var(--sub);background:#F2F4F6;border-radius:6px;padding:8px;margin-bottom:8px;}
+  .qz-item .stem{font-weight:600;margin-bottom:8px;font-size:.92rem;}
+  .qz-item label{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid transparent;}
+  .qz-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .qz-item.graded label.correct{background:#E7F5EC;border-color:var(--ok);}
+  .qz-item.graded label.wrong-pick{background:#FBEAE9;border-color:var(--bad);}
+  .qz-explain{display:none;margin-top:8px;font-size:.84rem;background:#F2F4F6;border-radius:6px;padding:8px;}
+  .qz-item.graded .qz-explain{display:block;}
+  .qz-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px;display:none;}
+  .qz-result.show{display:block;}
+  .qz-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+
+  footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px;}
+
+  /* ===== In ===== */
+  .print-only{display:none;}
+  @media print{
+    nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,footer,button{display:none !important;}
+    section.panel{display:block !important;page-break-after:always;}
+    .branch-body{max-height:none !important;}
+    .print-only{display:block;}
+    .fc-stage{display:none;}
+    body{background:#fff;font-size:12px;}
+    header{background:#fff !important;color:#000 !important;border-bottom:2px solid #000;}
+    .branch-head{color:#000 !important;background:#eee !important;border:1px solid #000;}
+    .qz-item label{border:1px solid #999;}
+    h2.block-title{border-bottom:1px solid #000;padding-bottom:4px;}
+    .dap-an-goi-y .noi-dung-dap-an{display:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== ỨNG DỤNG ===================== -->
+<div id="app-shell">
+
+<header>
+  <button id="print-btn" type="button">🖨 In / Lưu PDF</button>
+  <h1>Bài 4. Bên trong máy tính</h1>
+  <p>Tin học 11 · Trường THCS & THPT Vĩnh Hưng · Học liệu số dùng offline</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="p1">Sơ đồ tư duy</button>
+  <button class="tab-btn" data-panel="p2">Phiếu học tập</button>
+  <button class="tab-btn" data-panel="p3">Thẻ ghi nhớ</button>
+  <button class="tab-btn" data-panel="p4">Quiz</button>
+</nav>
+<main>
+
+  <!-- ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== -->
+  <section id="p1" class="panel active">
+    <h2 class="block-title">1. Sơ đồ tư duy</h2>
+    <div class="toolbar">
+      <button class="btn primary" id="mm-open-all">Mở tất cả</button>
+      <button class="btn" id="mm-close-all">Đóng tất cả</button>
+      <span class="counter" id="mm-counter"></span>
+    </div>
+    <div class="mindmap" id="mindmap"></div>
+  </section>
+
+  <!-- ===================== KHỐI 2 — PHIẾU HỌC TẬP ===================== -->
+  <section id="p2" class="panel">
+    <h2 class="block-title">2. Phiếu học tập / thực hành</h2>
+    <div class="toolbar">
+      <button class="btn ghost" id="p2-reset" type="button">Xóa câu trả lời đã lưu</button>
+    </div>
+    <p class="print-only" style="font-size:.85rem;color:#555;">Họ tên: .................................... Lớp: ............. Nhóm: ............</p>
+    <div id="p2-content"></div>
+  </section>
+
+  <!-- ===================== KHỐI 3 — THẻ GHI NHỚ ===================== -->
+  <section id="p3" class="panel">
+    <h2 class="block-title">3. Thẻ ghi nhớ</h2>
+    <div class="toolbar">
+      <button class="btn" id="fc-shuffle">Xáo trộn</button>
+      <button class="btn" id="fc-test">Tự kiểm tra</button>
+      <button class="btn ghost" id="fc-reset">Xóa tiến độ</button>
+    </div>
+    <div class="fc-filter">
+      <input type="checkbox" id="fc-filter-unknown">
+      <label for="fc-filter-unknown">Chỉ hiện thẻ chưa thuộc</label>
+    </div>
+    <p class="fc-status" id="fc-status"></p>
+    <div id="fc-view">
+      <div class="fc-stage">
+        <div class="fc-card" id="fc-card">
+          <div class="fc-face front"><span class="dir" id="fc-dir-f"></span><span id="fc-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fc-back-text"></span></div>
+        </div>
+      </div>
+      <div class="fc-nav">
+        <button class="btn" id="fc-prev">← Trước</button>
+        <span class="counter" id="fc-counter" style="align-self:center;"></span>
+        <button class="btn" id="fc-next">Sau →</button>
+      </div>
+      <div class="fc-mark">
+        <button class="btn review" id="fc-mark-review">Cần ôn lại</button>
+        <button class="btn known" id="fc-mark-known">Đã thuộc</button>
+      </div>
+    </div>
+    <div id="fc-test-view" style="display:none;">
+      <div class="fc-stage">
+        <div class="fc-card" id="fct-card">
+          <div class="fc-face front"><span class="dir" id="fct-dir-f"></span><span id="fct-front-text"></span></div>
+          <div class="fc-face back"><span class="dir">Trả lời</span><span id="fct-back-text"></span></div>
+        </div>
+      </div>
+      <p class="fc-status" id="fct-progress"></p>
+      <div class="fc-mark">
+        <button class="btn review" id="fct-wrong">Chưa biết</button>
+        <button class="btn known" id="fct-right">Biết rồi</button>
+      </div>
+    </div>
+    <div id="fc-result-view" style="display:none;">
+      <div class="test-result">
+        <p>Kết quả tự kiểm tra</p>
+        <div class="score" id="fc-score"></div>
+        <button class="btn primary" id="fc-test-again" style="margin-top:10px;">Kiểm tra lại</button>
+        <button class="btn" id="fc-test-exit">Quay lại thẻ</button>
+      </div>
+    </div>
+    <!-- Bản in: toàn bộ thẻ dạng lưới có đường cắt -->
+    <div class="print-only" id="fc-print-grid"></div>
+  </section>
+
+  <!-- ===================== KHỐI 4 — QUIZ ===================== -->
+  <section id="p4" class="panel">
+    <h2 class="block-title">4. Quiz tự chấm</h2>
+    <div class="toolbar">
+      <button class="btn" id="qz-shuffle">Xáo trộn câu hỏi</button>
+      <button class="btn" id="qz-reset">Làm lại</button>
+    </div>
+    <p class="qz-progress" id="qz-progress"></p>
+    <div class="qz-result" id="qz-result">
+      <p>Kết quả</p>
+      <div class="score" id="qz-score"></div>
+    </div>
+    <form id="qz-form"></form>
+    <button class="btn primary" id="qz-submit" style="width:100%;">Nộp bài</button>
+  </section>
+
+</main>
+
+<footer>Học liệu số — Bài 4 Tin học 11 ICT — Trường THCS & THPT Vĩnh Hưng. Mở bằng Chrome hoặc Safari, không cần Internet.</footer>
+
+</div><!-- /#app-shell -->
+
+<script type="application/json" id="hls-data">{"worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — cốt lõi<\/span>\n  <h3>Gọi tên thiết bị (Hoạt động 1, SGK trang 21, Hình 4.2)<\/h3>\n  <table class=\"data-table\">\n    <tr><th>Hình<\/th><th>Tên thiết bị<\/th><\/tr>\n    <tr><td>4.2a<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"h42-a\"><\/td><\/tr>\n    <tr><td>4.2b<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"h42-b\"><\/td><\/tr>\n    <tr><td>4.2c<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"h42-c\"><\/td><\/tr>\n    <tr><td>4.2d<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"h42-d\"><\/td><\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">a) Bộ xử lí trung tâm CPU; b) ổ đĩa cứng; c) thanh RAM; d) bảng mạch mở rộng.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: thanh RAM và bảng mạch mở rộng cùng dạng thanh dài, nhưng bảng mạch mở rộng có các cổng kết nối ra ngoài thân máy.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — cốt lõi<\/span>\n  <h3>Thiết bị — chức năng — thông số đo hiệu năng<\/h3>\n  <table class=\"data-table\">\n    <tr><th>Thiết bị<\/th><th>Chức năng<\/th><th>Thông số, đơn vị đo<\/th><\/tr>\n    <tr><td>CPU<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-cpu-cn\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-cpu-ts\"><\/td><\/tr>\n    <tr><td>RAM<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-ram-cn\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-ram-ts\"><\/td><\/tr>\n    <tr><td>ROM<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-rom-cn\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-rom-ts\"><\/td><\/tr>\n    <tr><td>Bộ nhớ ngoài<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-bnn-cn\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-bnn-ts\"><\/td><\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">CPU: thực hiện phép toán và điều khiển toàn bộ máy tính hoạt động theo chương trình — tần số xung nhịp (GHz), số lõi. RAM: chứa dữ liệu tạm thời khi chạy chương trình, mất khi tắt máy — dung lượng (MB, GB), thời gian truy cập trung bình. ROM: chỉ đọc, lưu chương trình kiểm tra, khởi động máy — dung lượng, thời gian truy cập. Bộ nhớ ngoài (đĩa cứng, SSD, đĩa quang): lưu dữ liệu lâu dài — dung lượng (GB, TB), thời gian truy cập trung bình.<\/div>\n  <\/div>\n  <p>Vì sao ROM có dung lượng nhỏ hơn RAM nhưng máy tính vẫn phải có ROM?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vi-sao-rom\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — cốt lõi<\/span>\n  <h3>Bảng các phép toán lôgic (Bảng 4.1, SGK trang 24)<\/h3>\n  <table class=\"data-table\">\n    <tr><th>x<\/th><th>y<\/th><th>x AND y<\/th><th>x OR y<\/th><th>x XOR y<\/th><th>NOT x<\/th><\/tr>\n    <tr><td>0<\/td><td>0<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-00-and\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-00-or\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-00-xor\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-00-not\"><\/td><\/tr>\n    <tr><td>0<\/td><td>1<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-01-and\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-01-or\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-01-xor\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-01-not\"><\/td><\/tr>\n    <tr><td>1<\/td><td>0<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-10-and\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-10-or\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-10-xor\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-10-not\"><\/td><\/tr>\n    <tr><td>1<\/td><td>1<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-11-and\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-11-or\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-11-xor\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"bct-11-not\"><\/td><\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">AND: 0, 0, 0, 1. OR: 0, 1, 1, 1. XOR: 0, 1, 1, 0. NOT x: 1, 1, 0, 0.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý: AND giống phép nhân, OR bằng 1 khi có ít nhất một số 1, XOR bằng 1 khi hai giá trị khác nhau.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 4 — cốt lõi<\/span>\n  <h3>Cộng hai bit (Hoạt động 2, SGK trang 26)<\/h3>\n  <p>Khi cộng hai bit x và y được số nhớ z và kết quả t. Đối chiếu với Bảng 4.1:<\/p>\n  <table class=\"data-table\">\n    <tr><th><\/th><th>Là phép toán lôgic nào của x và y?<\/th><\/tr>\n    <tr><td>z (số nhớ)<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"cong-z\"><\/td><\/tr>\n    <tr><td>t (kết quả)<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"cong-t\"><\/td><\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">z = x AND y; t = x XOR y. Mạch cộng hai bit (Hình 4.10) gồm một cổng AND và một cổng XOR.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: đặt cột z, cột t cạnh từng cột của Bảng 4.1, tìm cột trùng khớp. Chú ý dòng x = 1, y = 1 để không nhầm OR với XOR.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 5 — luyện tập (SGK trang 26)<\/span>\n  <h3>Tốc độ xử lí và cộng số nhị phân<\/h3>\n  <p>1) Thiết bị nào ảnh hưởng đến tốc độ xử lí của máy tính? Giải thích.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"lt-1\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) Thực hiện phép cộng rồi chuyển các số sang hệ thập phân:<\/p>\n  <table class=\"data-table\">\n    <tr><th>Phép cộng<\/th><th>Kết quả nhị phân<\/th><th>Dạng thập phân<\/th><\/tr>\n    <tr><td>1010 + 101<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"lt-2a\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"lt-2a-tp\"><\/td><\/tr>\n    <tr><td>1001 + 1011<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"lt-2b\"><\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"lt-2b-tp\"><\/td><\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">1) CPU ảnh hưởng trực tiếp (tần số xung nhịp, số lõi); bộ nhớ trong và bộ nhớ ngoài cũng ảnh hưởng vì thời gian truy cập trung bình càng nhỏ thì đọc, ghi dữ liệu càng nhanh (SSD nhanh hơn đĩa cứng). 2) 1010 + 101 = 1111 (10 + 5 = 15); 1001 + 1011 = 10100 (9 + 11 = 20).<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý: căn thẳng hàng các chữ số từ phải sang trái; 1 + 1 = 10, viết 0 nhớ 1.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Câu hỏi mở rộng — vận dụng (SGK trang 26)<\/span>\n  <h3>Chỉ số flops<\/h3>\n  <p>Flops (floating operation per second) là gì? Tại sao chỉ số này ít dùng với máy tính cá nhân?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-flops\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý: đọc lại cách đánh giá tốc độ CPU bằng tần số xung nhịp; tìm hiểu thêm về siêu máy tính.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Gọi đúng tên 4 thiết bị ở Hình 4.2.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Nêu đúng chức năng, thông số và đơn vị đo của CPU, RAM, ROM, bộ nhớ ngoài.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Điền đúng bảng các phép toán lôgic.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Xác định đúng z = x AND y, t = x XOR y.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-5\"> Cộng nhị phân đúng số nhớ và đổi đúng sang thập phân.<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. Các thiết bị bên trong máy tính", "cls": "b1", "items": ["Bảng mạch chính: gắn CPU, bộ nhớ trong, bộ nhớ ngoài, bảng mạch mở rộng", "CPU: ALU thực hiện phép tính, bộ điều khiển phối hợp thiết bị; thanh ghi, cache", "Tốc độ CPU: tần số xung nhịp (GHz, 1 tỉ xung/giây), số lõi", "RAM: ghi được, dữ liệu tạm thời, mất khi tắt máy", "ROM: chỉ đọc, lưu chương trình kiểm tra, khởi động máy", "Bộ nhớ ngoài: đĩa cứng, SSD, đĩa quang — lưu lâu dài, dung lượng GB, TB", "Thông số bộ nhớ: dung lượng nhớ, thời gian truy cập trung bình"]}, {"title": "2. Mạch lôgic và vai trò", "cls": "b2", "items": ["AND: 1 khi cả hai bằng 1; OR: 1 khi ít nhất một bằng 1", "XOR: 1 khi hai đầu vào khác nhau; NOT: đảo giá trị", "Mạch rơ le: nối tiếp → nhân lôgic, song song → cộng lôgic (Hình 4.4, 4.5)", "Cộng nhị phân: 1 + 1 = 10, viết 0 nhớ 1; VD 110 + 111 = 1101", "Mạch cộng hai bit: z = x AND y (số nhớ), t = x XOR y (kết quả)", "Mọi mạch lôgic xây dựng từ AND, OR, NOT; mọi thiết bị số chế tạo từ mạch lôgic"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "Bảng mạch chính dùng để làm gì?", "back": "Gắn các thiết bị bên trong máy: CPU, bộ nhớ trong, bộ nhớ ngoài, bảng mạch mở rộng."}, {"id": "fc02", "dir": "Hỏi xuôi", "front": "CPU gồm hai bộ phận chính nào?", "back": "Bộ số học và lôgic (ALU) và bộ điều khiển."}, {"id": "fc03", "dir": "Hỏi ngược", "front": "Thông số nào đánh giá tốc độ CPU, đo bằng GHz?", "back": "Tần số xung nhịp."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "CPU nhiều lõi có lợi gì?", "back": "Thực hiện đồng thời được nhiều nhiệm vụ."}, {"id": "fc05", "dir": "Hỏi xuôi", "front": "RAM khác ROM thế nào?", "back": "RAM ghi được, mất dữ liệu khi tắt máy; ROM chỉ đọc, giữ dữ liệu khi tắt máy."}, {"id": "fc06", "dir": "Hỏi ngược", "front": "Bộ nhớ nào lưu chương trình khởi động máy tính?", "back": "ROM."}, {"id": "fc07", "dir": "Hỏi xuôi", "front": "Hai thông số quan trọng nhất của bộ nhớ?", "back": "Dung lượng nhớ và thời gian truy cập trung bình."}, {"id": "fc08", "dir": "Hỏi ngược", "front": "Vì sao SSD truy cập nhanh hơn đĩa cứng?", "back": "Đĩa cứng là thiết bị điện cơ nên thời gian truy cập lớn hơn."}, {"id": "fc09", "dir": "Hỏi xuôi", "front": "x XOR y bằng 1 khi nào?", "back": "Khi x và y khác nhau."}, {"id": "fc10", "dir": "Hỏi xuôi", "front": "1 + 1 trong hệ nhị phân bằng bao nhiêu?", "back": "10 — viết 0, nhớ 1."}, {"id": "fc11", "dir": "Hỏi ngược", "front": "110 + 111 bằng bao nhiêu (nhị phân và thập phân)?", "back": "1101; 6 + 7 = 13."}, {"id": "fc12", "dir": "Hỏi xuôi", "front": "Mạch cộng hai bit dùng những cổng nào?", "back": "Cổng AND cho số nhớ z, cổng XOR cho kết quả t."}, {"id": "fc13", "dir": "Hỏi xuôi", "front": "Mạch lôgic là gì?", "back": "Mạch điện, điện tử có đầu vào, đầu ra thể hiện giá trị lôgic."}], "quiz": [{"id": "q01", "stem": "Bộ nhớ nào chỉ đọc được, không ghi hay xoá được, dùng lưu chương trình kiểm tra và khởi động máy tính?", "opts": [{"l": "A", "t": "RAM"}, {"l": "B", "t": "ROM"}, {"l": "C", "t": "Đĩa cứng"}, {"l": "D", "t": "Bộ nhớ đệm (cache)"}], "ans": "B", "ngu_canh": null, "explain": "ROM chỉ đọc, không cần nguồn nuôi, lưu dữ liệu hệ thống cố định và chương trình kiểm tra, khởi động máy tính."}, {"id": "q02", "stem": "Thành phần nào của CPU thực hiện các phép tính số học và lôgic?", "opts": [{"l": "A", "t": "Bộ điều khiển"}, {"l": "B", "t": "Bộ số học và lôgic (ALU)"}, {"l": "C", "t": "Bảng mạch mở rộng"}, {"l": "D", "t": "Thanh RAM"}], "ans": "B", "ngu_canh": null, "explain": "CPU gồm bộ số học và lôgic (ALU) thực hiện các phép tính và bộ điều khiển phối hợp đồng bộ các thiết bị; ngoài ra có thanh ghi và bộ nhớ đệm."}, {"id": "q03", "stem": "Phép toán lôgic nào cho kết quả bằng 1 chỉ khi cả hai đầu vào đều bằng 1?", "opts": [{"l": "A", "t": "OR"}, {"l": "B", "t": "XOR"}, {"l": "C", "t": "AND"}, {"l": "D", "t": "NOT"}], "ans": "C", "ngu_canh": null, "explain": "x AND y = 1 chỉ khi x = 1 và y = 1 (phép nhân lôgic)."}, {"id": "q04", "stem": "Tốc độ CPU thường được đánh giá bằng tần số xung nhịp, đo bằng đơn vị nào?", "opts": [{"l": "A", "t": "GB"}, {"l": "B", "t": "GHz"}, {"l": "C", "t": "TB"}, {"l": "D", "t": "MB"}], "ans": "B", "ngu_canh": null, "explain": "Tần số xung nhịp đo bằng GHz; 1 GHz là 1 tỉ xung một giây. GB, TB, MB là đơn vị dung lượng nhớ."}, {"id": "q05", "stem": "Khi tắt máy tính, điều gì xảy ra với dữ liệu trong RAM và trên đĩa cứng?", "opts": [{"l": "A", "t": "Cả hai đều bị xoá."}, {"l": "B", "t": "Dữ liệu trong RAM bị xoá, dữ liệu trên đĩa cứng vẫn được giữ."}, {"l": "C", "t": "Dữ liệu trong RAM được giữ, dữ liệu trên đĩa cứng bị xoá."}, {"l": "D", "t": "Cả hai đều được giữ."}], "ans": "B", "ngu_canh": null, "explain": "RAM chứa dữ liệu tạm thời khi chạy chương trình, bị xoá khi tắt máy; bộ nhớ ngoài như đĩa cứng lưu dữ liệu lâu dài, không cần nguồn nuôi."}, {"id": "q06", "stem": "Hai thông số quan trọng nhất để đánh giá chất lượng bộ nhớ là", "opts": [{"l": "A", "t": "giá tiền và hãng sản xuất."}, {"l": "B", "t": "dung lượng nhớ và thời gian truy cập trung bình."}, {"l": "C", "t": "tần số xung nhịp và số lõi."}, {"l": "D", "t": "kích thước và khối lượng."}], "ans": "B", "ngu_canh": null, "explain": "Chất lượng bộ nhớ đo bằng dung lượng nhớ và thời gian truy cập trung bình; giá tiền còn phụ thuộc hãng sản xuất và thị trường."}, {"id": "q07", "stem": "Với x = 1 và y = 1, phát biểu nào sau đây đúng?", "opts": [{"l": "A", "t": "x AND y = 0"}, {"l": "B", "t": "x OR y = 0"}, {"l": "C", "t": "x XOR y = 0"}, {"l": "D", "t": "NOT x = 1"}], "ans": "C", "ngu_canh": null, "explain": "Với x = y = 1: x AND y = 1, x OR y = 1, x XOR y = 0 (XOR bằng 1 khi hai đầu vào khác nhau), NOT x = 0."}, {"id": "q08", "stem": "Kết quả phép cộng nhị phân 1011 + 110 là", "opts": [{"l": "A", "t": "10001"}, {"l": "B", "t": "1101"}, {"l": "C", "t": "10011"}, {"l": "D", "t": "11001"}], "ans": "A", "ngu_canh": null, "explain": "Căn thẳng hàng từ phải sang: 1011 + 0110 = 10001. Kiểm tra: 11 + 6 = 17 = 10001₂."}, {"id": "q09", "stem": "Trong mạch cộng hai bit x, y (Hình 4.10), số nhớ z và kết quả t được tạo ra bởi cổng nào?", "opts": [{"l": "A", "t": "z từ cổng OR, t từ cổng AND"}, {"l": "B", "t": "z từ cổng AND, t từ cổng XOR"}, {"l": "C", "t": "z từ cổng XOR, t từ cổng NOT"}, {"l": "D", "t": "z từ cổng NOT, t từ cổng OR"}], "ans": "B", "ngu_canh": null, "explain": "Bảng cộng hai bit cho z = x AND y (chỉ nhớ 1 khi 1 + 1) và t = x XOR y, nên mạch gồm cổng AND và cổng XOR."}, {"id": "q10", "stem": "Máy nào mở phần mềm nhanh hơn? Vì sao?", "opts": [{"l": "A", "t": "Máy A, vì đĩa cứng có dung lượng lớn hơn."}, {"l": "B", "t": "Máy B, vì SSD có thời gian truy cập trung bình nhỏ hơn đĩa cứng điện cơ."}, {"l": "C", "t": "Hai máy như nhau vì cùng CPU."}, {"l": "D", "t": "Máy A, vì đĩa cứng là thiết bị điện cơ."}], "ans": "B", "ngu_canh": "Hai máy tính cùng loại CPU và cùng dung lượng RAM; máy A dùng đĩa cứng 1 TB, máy B dùng SSD 512 GB. Cả hai cần mở cùng một phần mềm lưu trên bộ nhớ ngoài.", "explain": "Thời gian truy cập trung bình càng nhỏ thì dữ liệu đọc, ghi càng nhanh; đĩa cứng là thiết bị điện cơ nên truy cập chậm hơn SSD."}]}</script>
+<script>
+(function(){
+"use strict";
+
+/* ===================== ỨNG DỤNG — DỰNG NGAY, KHÔNG QUA XÁC THỰC ===================== */
+var payload = JSON.parse(document.getElementById("hls-data").textContent);
+buildApp(payload);
+
+function buildApp(payload){
+
+/* ---------- Lưu trữ an toàn (tiến độ thẻ ghi nhớ) ---------- */
+var STORE_KEY = "tin11_bai04";
+function loadStore(){
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    return raw ? JSON.parse(raw) : {known:{}};
+  }catch(e){ return {known:{}}; }
+}
+function saveStore(s){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){ /* im lặng, tệp file:// có thể chặn */ }
+}
+var store = loadStore();
+if(!store.known) store.known = {};
+
+/* ---------- In / Xuất PDF ---------- */
+document.getElementById("print-btn").addEventListener("click", function(){ window.print(); });
+
+/* ---------- Chuyển tab ---------- */
+var tabBtns = document.querySelectorAll(".tab-btn");
+var panels = document.querySelectorAll(".panel");
+tabBtns.forEach(function(btn){
+  btn.addEventListener("click", function(){
+    tabBtns.forEach(function(b){ b.classList.remove("active"); });
+    panels.forEach(function(p){ p.classList.remove("active"); });
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.panel).classList.add("active");
+  });
+});
+
+/* ---------- Phiếu học tập ---------- */
+document.getElementById("p2-content").innerHTML = payload.worksheetHtml || "";
+if(!store.phieu) store.phieu = {};
+enhanceWorksheet();
+
+/* ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== */
+var mindmapData = payload.mindmap || [];
+var branchColorClass = ["b1","b2","b3","b4","b5","b6"];
+
+var mmRoot = document.getElementById("mindmap");
+var center = document.createElement("div");
+center.className = "center-node";
+center.textContent = payload.tieu_de_trung_tam || (document.title.replace("Học liệu số — ",""));
+mmRoot.appendChild(center);
+
+mindmapData.forEach(function(b, idx){
+  var branch = document.createElement("div");
+  branch.className = "branch " + (b.cls || branchColorClass[idx % branchColorClass.length]);
+  branch.dataset.idx = idx;
+
+  var head = document.createElement("button");
+  head.className = "branch-head";
+  head.innerHTML = '<span>' + b.title + '</span><span class="mark">?</span>';
+  head.addEventListener("click", function(){ toggleBranch(branch); });
+
+  var body = document.createElement("div");
+  body.className = "branch-body";
+  var ul = document.createElement("ul");
+  (b.items || []).forEach(function(t){
+    var li = document.createElement("li");
+    li.textContent = t;
+    ul.appendChild(li);
+  });
+  body.appendChild(ul);
+
+  branch.appendChild(head);
+  branch.appendChild(body);
+  mmRoot.appendChild(branch);
+});
+
+function updateMmCounter(){
+  var total = mindmapData.length;
+  var open = document.querySelectorAll(".branch.open").length;
+  document.getElementById("mm-counter").textContent = "Đã mở " + open + "/" + total + " phần";
+}
+function toggleBranch(branch){
+  var isOpen = branch.classList.toggle("open");
+  var mark = branch.querySelector(".mark");
+  mark.textContent = isOpen ? "−" : "?";
+  updateMmCounter();
+}
+document.getElementById("mm-open-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.add("open");
+    br.querySelector(".mark").textContent = "−";
+  });
+  updateMmCounter();
+});
+document.getElementById("mm-close-all").addEventListener("click", function(){
+  document.querySelectorAll(".branch").forEach(function(br){
+    br.classList.remove("open");
+    br.querySelector(".mark").textContent = "?";
+  });
+  updateMmCounter();
+});
+updateMmCounter();
+
+/* ===================== KHỐI 3 — THẺ GHI NHỚ ===================== */
+var flashcards = payload.flashcards || [];
+var fcOrder = flashcards.map(function(c,i){ return i; });
+var fcPos = 0;
+
+function fcVisibleOrder(){
+  var onlyUnknown = document.getElementById("fc-filter-unknown").checked;
+  var order = fcOrder.slice();
+  if(onlyUnknown){
+    order = order.filter(function(i){ return !store.known[flashcards[i].id]; });
+  }
+  return order;
+}
+function fcRender(){
+  var order = fcVisibleOrder();
+  if(order.length === 0){
+    document.getElementById("fc-front-text").textContent = "Không còn thẻ nào trong bộ lọc — mọi thẻ đã được đánh dấu Đã thuộc.";
+    document.getElementById("fc-back-text").textContent = "Bỏ lọc để xem lại toàn bộ bộ thẻ.";
+    document.getElementById("fc-counter").textContent = "0/0";
+    document.getElementById("fc-status").textContent = "";
+    return;
+  }
+  if(fcPos >= order.length) fcPos = 0;
+  if(fcPos < 0) fcPos = order.length - 1;
+  var card = flashcards[order[fcPos]];
+  document.getElementById("fc-dir-f").textContent = card.dir;
+  document.getElementById("fc-front-text").textContent = card.front;
+  document.getElementById("fc-back-text").textContent = card.back;
+  document.getElementById("fc-counter").textContent = (fcPos+1) + "/" + order.length;
+  var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
+  document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
+  var el = document.getElementById("fc-card");
+  el.classList.remove("flipped");
+}
+document.getElementById("fc-card").addEventListener("click", function(){
+  this.classList.toggle("flipped");
+});
+document.getElementById("fc-prev").addEventListener("click", function(){ fcPos--; fcRender(); });
+document.getElementById("fc-next").addEventListener("click", function(){ fcPos++; fcRender(); });
+document.getElementById("fc-filter-unknown").addEventListener("change", function(){ fcPos = 0; fcRender(); });
+document.getElementById("fc-shuffle").addEventListener("click", function(){
+  for(var i = fcOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = fcOrder[i]; fcOrder[i] = fcOrder[j]; fcOrder[j] = t;
+  }
+  fcPos = 0;
+  fcRender();
+});
+function fcMark(known){
+  var order = fcVisibleOrder();
+  if(order.length === 0) return;
+  var card = flashcards[order[fcPos]];
+  if(known){ store.known[card.id] = true; } else { delete store.known[card.id]; }
+  saveStore(store);
+  fcPos++;
+  fcRender();
+}
+document.getElementById("fc-mark-known").addEventListener("click", function(){ fcMark(true); });
+document.getElementById("fc-mark-review").addEventListener("click", function(){ fcMark(false); });
+document.getElementById("fc-reset").addEventListener("click", function(){
+  store.known = {};
+  saveStore(store);
+  fcRender();
+});
+
+/* Chế độ tự kiểm tra */
+var testOrder = [];
+var testPos = 0;
+var testRight = 0;
+function startTest(){
+  testOrder = fcOrder.slice();
+  for(var i = testOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = testOrder[i]; testOrder[i] = testOrder[j]; testOrder[j] = t;
+  }
+  testPos = 0; testRight = 0;
+  document.getElementById("fc-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-test-view").style.display = "block";
+  renderTestCard();
+}
+function renderTestCard(){
+  if(testPos >= testOrder.length){ finishTest(); return; }
+  var card = flashcards[testOrder[testPos]];
+  document.getElementById("fct-dir-f").textContent = card.dir;
+  document.getElementById("fct-front-text").textContent = card.front;
+  document.getElementById("fct-back-text").textContent = card.back;
+  document.getElementById("fct-card").classList.remove("flipped");
+  document.getElementById("fct-progress").textContent = "Câu " + (testPos+1) + "/" + testOrder.length;
+}
+document.getElementById("fct-card").addEventListener("click", function(){ this.classList.toggle("flipped"); });
+document.getElementById("fc-test").addEventListener("click", startTest);
+document.getElementById("fct-right").addEventListener("click", function(){ testRight++; testPos++; renderTestCard(); });
+document.getElementById("fct-wrong").addEventListener("click", function(){ testPos++; renderTestCard(); });
+function finishTest(){
+  document.getElementById("fc-test-view").style.display = "none";
+  document.getElementById("fc-result-view").style.display = "block";
+  var pct = testOrder.length ? Math.round((testRight / testOrder.length) * 100) : 0;
+  document.getElementById("fc-score").textContent = pct + "% (" + testRight + "/" + testOrder.length + ")";
+}
+document.getElementById("fc-test-again").addEventListener("click", startTest);
+document.getElementById("fc-test-exit").addEventListener("click", function(){
+  document.getElementById("fc-result-view").style.display = "none";
+  document.getElementById("fc-view").style.display = "block";
+  fcRender();
+});
+
+/* Bản in — lưới toàn bộ thẻ, đường cắt */
+(function printGrid(){
+  var wrap = document.getElementById("fc-print-grid");
+  var style = document.createElement("style");
+  style.textContent = ".pf-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}"
+    + ".pf-card{border:1px dashed #999;padding:10px;min-height:110px;font-size:11px;}"
+    + ".pf-card b{display:block;margin-bottom:6px;}";
+  wrap.appendChild(style);
+  var grid = document.createElement("div");
+  grid.className = "pf-grid";
+  flashcards.forEach(function(c){
+    var d = document.createElement("div");
+    d.className = "pf-card";
+    d.innerHTML = "<b>" + c.dir + ": " + c.front + "</b>" + c.back;
+    grid.appendChild(d);
+  });
+  wrap.appendChild(grid);
+})();
+
+fcRender();
+
+/* ===================== KHỐI 4 — QUIZ ===================== */
+var quiz = payload.quiz || [];
+var quizOrder = quiz.map(function(c,i){ return i; });
+var graded = false;
+
+function renderQuiz(){
+  var form = document.getElementById("qz-form");
+  form.innerHTML = "";
+  quizOrder.forEach(function(qi, pos){
+    var q = quiz[qi];
+    var box = document.createElement("div");
+    box.className = "qz-item";
+    box.dataset.qid = q.id;
+    var html = "";
+    if(q.ngu_canh){ html += '<div class="ctx">' + q.ngu_canh + '</div>'; }
+    html += '<div class="stem">Câu ' + (pos+1) + '. ' + q.stem + '</div>';
+    q.opts.forEach(function(o){
+      html += '<label data-l="' + o.l + '"><input type="radio" name="' + q.id + '" value="' + o.l + '"> <span>' + o.l + '. ' + o.t + '</span></label>';
+    });
+    html += '<div class="qz-explain"></div>';
+    box.innerHTML = html;
+    form.appendChild(box);
+  });
+  document.getElementById("qz-progress").textContent = quiz.length + " câu trắc nghiệm — chọn xong bấm Nộp bài để tự chấm điểm.";
+  document.getElementById("qz-result").classList.remove("show");
+  graded = false;
+  document.querySelectorAll(".qz-item").forEach(function(it){ it.classList.remove("graded"); });
+}
+renderQuiz();
+
+document.getElementById("qz-submit").addEventListener("click", function(){
+  if(graded) return;
+  var right = 0;
+  quiz.forEach(function(q){
+    var chosen = document.querySelector('input[name="' + q.id + '"]:checked');
+    var box = document.querySelector('.qz-item[data-qid="' + q.id + '"]');
+    box.classList.add("graded");
+    var isCorrect = chosen && chosen.value === q.ans;
+    if(isCorrect) right++;
+    box.querySelectorAll("label").forEach(function(lb){
+      if(lb.dataset.l === q.ans) lb.classList.add("correct");
+      else if(chosen && lb.dataset.l === chosen.value) lb.classList.add("wrong-pick");
+    });
+    box.querySelector(".qz-explain").textContent = "Đáp án đúng: " + q.ans + ". " + q.explain;
+    box.querySelectorAll("input").forEach(function(inp){ inp.disabled = true; });
+  });
+  var pct = quiz.length ? Math.round((right / quiz.length) * 100) : 0;
+  document.getElementById("qz-score").textContent = pct + "% (" + right + "/" + quiz.length + " câu)";
+  document.getElementById("qz-result").classList.add("show");
+  graded = true;
+});
+document.getElementById("qz-reset").addEventListener("click", renderQuiz);
+document.getElementById("qz-shuffle").addEventListener("click", function(){
+  for(var i = quizOrder.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = quizOrder[i]; quizOrder[i] = quizOrder[j]; quizOrder[j] = t;
+  }
+  renderQuiz();
+});
+
+/* ========== Phiếu học tập — điền/chọn đáp án + lưu tạm ========== */
+function enhanceWorksheet(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+
+  /* Ô nhập câu trả lời (ngắn: input, dài: textarea) */
+  scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]").forEach(function(el){
+    var id = el.dataset.id;
+    if(store.phieu[id] !== undefined) el.value = store.phieu[id];
+    el.addEventListener("input", function(){
+      store.phieu[id] = el.value;
+      saveStore(store);
+    });
+  });
+
+  /* Trắc nghiệm / Đúng — Sai (radio hoặc checkbox), mỗi câu bọc trong .lua-chon-item[data-id] */
+  scope.querySelectorAll(".lua-chon-item[data-id]").forEach(function(item){
+    var id = item.dataset.id;
+    var saved = store.phieu[id];
+    var boxes = item.querySelectorAll("input[type=checkbox]");
+    if(boxes.length){
+      boxes.forEach(function(inp){
+        if(Array.isArray(saved) && saved.indexOf(inp.value) !== -1) inp.checked = true;
+        inp.addEventListener("change", function(){
+          var chon = [];
+          item.querySelectorAll("input[type=checkbox]:checked").forEach(function(c){ chon.push(c.value); });
+          store.phieu[id] = chon;
+          saveStore(store);
+        });
+      });
+    } else {
+      item.querySelectorAll("input[type=radio]").forEach(function(inp){
+        if(saved === inp.value) inp.checked = true;
+        inp.addEventListener("change", function(){
+          store.phieu[id] = inp.value;
+          saveStore(store);
+        });
+      });
+    }
+  });
+
+  /* Nút xem đáp án gợi ý (không tự chấm, chỉ hiện/ẩn) */
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    var btn = block.querySelector(".nut-xem-dap-an");
+    if(!btn) return;
+    btn.addEventListener("click", function(){
+      var hien = block.classList.toggle("hien");
+      btn.textContent = hien ? "Ẩn đáp án gợi ý" : "Xem đáp án gợi ý";
+    });
+  });
+
+  /* Xóa toàn bộ câu trả lời đã lưu của phiếu học tập */
+  var resetBtn = document.getElementById("p2-reset");
+  if(resetBtn){
+    resetBtn.addEventListener("click", function(){
+      store.phieu = {};
+      saveStore(store);
+      scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){ el.value = ""; });
+      scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){ inp.checked = false; });
+      scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+        block.classList.remove("hien");
+        var b = block.querySelector(".nut-xem-dap-an");
+        if(b) b.textContent = "Xem đáp án gợi ý";
+      });
+    });
+  }
+}
+
+/* Khi in: đưa phiếu về trạng thái trống như bản gốc (không lộ đáp án đã điền/chọn), sau khi in thì khôi phục lại trên màn hình */
+window.addEventListener("beforeprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    el.dataset.printGiuLai = el.value;
+    el.value = "";
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.checked){ inp.dataset.printGiuLai = "1"; inp.checked = false; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+    block.dataset.printGiuLai = "1";
+    block.classList.remove("hien");
+  });
+});
+window.addEventListener("afterprint", function(){
+  var scope = document.getElementById("p2-content");
+  if(!scope) return;
+  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+    if(el.dataset.printGiuLai !== undefined){ el.value = el.dataset.printGiuLai; delete el.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+    if(inp.dataset.printGiuLai){ inp.checked = true; delete inp.dataset.printGiuLai; }
+  });
+  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+    if(block.dataset.printGiuLai){ block.classList.add("hien"); delete block.dataset.printGiuLai; }
+  });
+});
+
+
+} /* hết buildApp */
+
+})();
+</script>
+</body>
+</html>
