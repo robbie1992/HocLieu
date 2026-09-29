@@ -140,6 +140,9 @@
   .fc-swiper .swiper-slide{height:230px;border-radius:18px;}
   .fc-swiper .fc-stage{height:100%;margin:0;}
   .fc-nav{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+  /* Có Swiper: vuốt thay nút Trước/Sau, chỉ giữ số thứ tự thẻ */
+  #fc-view.co-swiper #fc-prev,#fc-view.co-swiper #fc-next{display:none;}
+  #fc-view.co-swiper .fc-nav{justify-content:center;margin-top:-4px;}
   .fc-mark{display:flex;gap:8px;margin-bottom:10px;}
   .fc-mark .btn{flex:1;justify-content:center;}
   .fc-mark button.known{border-color:var(--ok);color:var(--ok);background:var(--ok-l);}
@@ -1047,10 +1050,11 @@ function dungSwiper(app){
     swEl.classList.remove("an");
     document.getElementById("fc-single").classList.add("an");
     var sw = new window.Swiper(swEl, {
-      effect: "cards", grabCursor: true,
+      effect: "cards", grabCursor: true, keyboard: { enabled: true },
       cardsEffect: { slideShadows: false, perSlideOffset: 7, perSlideRotate: 2 }
     });
     app.fc.swiper = sw;
+    document.getElementById("fc-view").classList.add("co-swiper");
     sw.on("slideChange", function(){
       app.datFcPos(sw.activeIndex);
       moiPhanTu(document.querySelectorAll("#fc-swiper .fc-card.flipped"), function(c){ c.classList.remove("flipped"); });
