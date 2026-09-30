@@ -2,124 +2,215 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2E86AB">
+<meta name="description" content="Tin 11 – Bài 2: sơ đồ tư duy, phiếu học tập, thẻ ghi nhớ, quiz">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:site_name" content="Học liệu số Tin học — Trường THCS &amp; THPT Vĩnh Hưng">
+<meta property="og:title" content="Bài 2. Thực hành sử dụng hệ điều hành">
+<meta property="og:description" content="Tin 11 – Bài 2: sơ đồ tư duy, phiếu học tập, thẻ ghi nhớ, quiz">
+<meta property="og:url" content="https://robbie1992.github.io/HocLieu/tin11/bai02/">
+<meta property="og:image" content="https://robbie1992.github.io/HocLieu/anh-bia.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <title>Học liệu số — Bài 2. Thực hành sử dụng hệ điều hành</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
 <style>
   :root{
     --c1:#2E86AB; --c1-l:#DCEBF3;
     --c2:#A23B72; --c2-l:#F1DDE9;
     --c3:#F18F01; --c3-l:#FDEAC9;
-    --ink:#1F2937; --sub:#5B6472; --bg:#F7F8FA; --card:#FFFFFF; --line:#E1E5EA;
-    --ok:#1E7B45; --bad:#B3261E;
+    --c4:#3B8686; --c5:#7A5195; --c6:#C0587E;
+    --ink:#1F2937; --sub:#5B6472; --bg:#F4F6F9; --card:#FFFFFF; --line:#E1E5EA;
+    --ok:#1E7B45; --ok-l:#E7F5EC; --bad:#B3261E; --bad-l:#FBEAE9;
+    --shadow:0 1px 2px rgba(16,24,40,.06),0 2px 8px rgba(16,24,40,.06);
+    --radius:14px;
   }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5;}
-  header{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;padding:16px 14px;position:relative;}
-  header h1{margin:0 0 2px;font-size:1.15rem;padding-right:80px;}
-  header p{margin:0;font-size:.85rem;opacity:.9;}
-  #print-btn{position:absolute;top:14px;right:14px;min-height:40px;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;}
-  nav.tabs{position:sticky;top:0;z-index:20;display:flex;background:var(--card);border-bottom:1px solid var(--line);overflow-x:auto;}
-  nav.tabs button{flex:1 0 auto;min-width:25%;min-height:44px;border:none;background:none;padding:10px 6px;font-size:.85rem;font-weight:600;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent;}
-  nav.tabs button.active{color:var(--c1);border-bottom-color:var(--c1);}
-  main{max-width:760px;margin:0 auto;padding:14px 14px 40px;}
-  section.panel{display:none;}
-  section.panel.active{display:block;}
-  h2.block-title{font-size:1.05rem;margin:4px 0 12px;color:var(--ink);}
-  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-  button.btn{min-height:40px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.85rem;font-weight:600;cursor:pointer;}
-  button.btn.primary{background:var(--c1);border-color:var(--c1);color:#fff;}
-  button.btn.ghost{background:transparent;}
-  button.btn:active{transform:scale(.98);}
-  button.btn:disabled{opacity:.6;}
-  .counter{align-self:center;font-size:.82rem;color:var(--sub);margin-left:auto;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro",-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.55;}
+  button{font-family:inherit;}
+  i[data-lucide]{display:none;}
+  svg.lucide{width:18px;height:18px;flex-shrink:0;}
 
-  /* ===== Khối 1 — SƠ Đồ tư duy ===== */
+  /* ===== Cảnh báo khi trình xem không chạy JavaScript (Zalo, ứng dụng Tệp) — script xoá ngay khi chạy được ===== */
+  #nojs{background:#FFF4E5;color:#7A4100;border-bottom:1px solid #F5C77E;padding:12px 16px;font-size:.9rem;}
+  #nojs b{display:block;margin-bottom:2px;}
+
+  /* ===== Đầu trang: chữ và nút In nằm hai cột, không chồng nhau ===== */
+  header.hd{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;padding:14px 16px 16px;padding-top:max(14px,env(safe-area-inset-top));}
+  .hd-row{max-width:860px;margin:0 auto;display:flex;align-items:flex-start;gap:12px;}
+  .hd-text{flex:1;min-width:0;}
+  .hd-text h1{margin:0 0 4px;font-size:1.12rem;line-height:1.35;font-weight:700;overflow-wrap:anywhere;}
+  .hd-text p{margin:0;font-size:.8rem;opacity:.88;}
+  .hd-btn{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;min-width:40px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.14);color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
+  .hd-btn:hover{background:rgba(255,255,255,.24);}
+  .hd-btn:active{transform:scale(.97);}
+  .hd-btn .ico-in{font-size:1rem;line-height:1;}
+  .hd-btn svg.lucide + .ico-in{display:none;}
+  @media (max-width:420px){ .hd-btn .lbl{display:none;} .hd-btn{padding:0;width:40px;} }
+
+  /* ===== Thanh tab ===== */
+  nav.tabs{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .tabs-in{max-width:860px;margin:0 auto;display:flex;}
+  nav.tabs button{flex:1 1 0;min-width:0;min-height:52px;border:none;background:none;padding:6px 4px;font-size:.78rem;font-weight:600;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+  nav.tabs button.active{color:var(--c1);border-bottom-color:var(--c1);}
+  @media (min-width:560px){ nav.tabs button{flex-direction:row;gap:6px;font-size:.88rem;} }
+
+  main{max-width:860px;margin:0 auto;padding:16px 16px 40px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:hienRa .25s ease;}
+  @keyframes hienRa{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){ section.panel.active{animation:none;} }
+  h2.block-title{font-size:1.08rem;margin:2px 0 12px;}
+  .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px;}
+  button.btn{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.85rem;font-weight:600;cursor:pointer;box-shadow:0 1px 1px rgba(16,24,40,.04);}
+  button.btn.primary{background:var(--c1);border-color:var(--c1);color:#fff;}
+  button.btn.ghost{background:transparent;box-shadow:none;}
+  button.btn:active{transform:scale(.98);}
+  button.btn:disabled{opacity:.55;}
+  .counter{font-size:.82rem;color:var(--sub);margin-left:auto;}
+  .an{display:none !important;}
+
+  /* ===== Khối 1 — Sơ đồ tư duy ===== */
+  .mm-svg-wrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;}
+  #mm-svg{display:block;width:100%;height:62vh;height:62dvh;min-height:360px;max-height:640px;touch-action:none;}
+  .mm-hint{font-size:.78rem;color:var(--sub);padding:6px 12px;border-top:1px solid var(--line);background:#FAFBFC;}
+  .markmap-node .mm-q{display:inline-block;margin-left:6px;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#FDEAC9;color:#9A5A00;font-weight:800;font-size:12px;}
   .mindmap{display:flex;flex-direction:column;gap:10px;}
-  .center-node{background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:1rem;}
-  .branch{border-radius:10px;overflow:hidden;border:1px solid var(--line);}
+  .center-node{background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));color:#fff;padding:14px;border-radius:var(--radius);text-align:center;font-weight:700;font-size:1rem;}
+  .branch{border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);}
   .branch-head{width:100%;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;color:#fff;font-weight:700;font-size:.92rem;border:none;cursor:pointer;text-align:left;}
   .branch-head .mark{font-weight:800;font-size:1rem;background:rgba(255,255,255,.25);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .branch-body{max-height:0;overflow:hidden;transition:max-height .25s ease;background:var(--card);}
-  .branch.open .branch-body{max-height:600px;}
+  .branch.open .branch-body{max-height:900px;}
   .branch-body ul{margin:0;padding:10px 16px 12px 30px;}
   .branch-body li{margin:6px 0;font-size:.9rem;}
   .b1 .branch-head{background:var(--c1);} .b1 .branch-body{background:var(--c1-l);}
   .b2 .branch-head{background:var(--c2);} .b2 .branch-body{background:var(--c2-l);}
   .b3 .branch-head{background:var(--c3);} .b3 .branch-body{background:var(--c3-l);}
-  .b4 .branch-head{background:#3B8686;} .b4 .branch-body{background:#DBEFEE;}
-  .b5 .branch-head{background:#7A5195;} .b5 .branch-body{background:#E9E0F1;}
-  .b6 .branch-head{background:#C0587E;} .b6 .branch-body{background:#F5DEE6;}
+  .b4 .branch-head{background:var(--c4);} .b4 .branch-body{background:#DBEFEE;}
+  .b5 .branch-head{background:var(--c5);} .b5 .branch-body{background:#E9E0F1;}
+  .b6 .branch-head{background:var(--c6);} .b6 .branch-body{background:#F5DEE6;}
 
   /* ===== Khối 2 — Phiếu học tập ===== */
-  .task{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
-  .task h3{margin:0 0 6px;font-size:.95rem;}
-  .task .tag{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--c1);border-radius:6px;padding:2px 8px;margin-bottom:6px;}
+  .task{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow);}
+  .task h3{margin:0 0 6px;font-size:.96rem;}
+  .task .tag{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--c1);border-radius:999px;padding:2px 10px;margin-bottom:6px;}
   .task .tag.mo-rong{background:var(--c3);}
   .task .hint{margin-top:8px;font-size:.85rem;color:var(--sub);border-left:3px solid var(--c1);padding-left:8px;}
   .task .data-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.85rem;}
   .task .data-table td,.task .data-table th{border:1px solid var(--line);padding:6px 8px;text-align:center;}
-  .answer-space{border:1px dashed var(--line);border-radius:6px;min-height:50px;margin-top:8px;}
+  .answer-space{border:1px dashed var(--line);border-radius:8px;min-height:50px;margin-top:8px;}
   .checklist label{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:.88rem;}
-  .checklist input{width:20px;height:20px;flex-shrink:0;margin-top:1px;}
-  .dien-ngan{width:100%;min-height:40px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);}
-  textarea.dien-dai{width:100%;min-height:90px;border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:.9rem;color:var(--ink);background:var(--card);resize:vertical;}
-  .dien-ngan:focus,textarea.dien-dai:focus{outline:none;border-style:solid;border-color:var(--c1);}
+  .checklist input{width:20px;height:20px;flex-shrink:0;margin-top:1px;accent-color:var(--c1);}
+  .dien-ngan{width:100%;min-height:42px;border:1px dashed #C9D0D8;border-radius:8px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:16px;color:var(--ink);background:var(--card);}
+  textarea.dien-dai{width:100%;min-height:90px;border:1px dashed #C9D0D8;border-radius:8px;padding:8px 10px;margin-top:8px;font-family:inherit;font-size:16px;color:var(--ink);background:var(--card);resize:vertical;}
+  .dien-ngan:focus,textarea.dien-dai:focus{outline:none;border-style:solid;border-color:var(--c1);box-shadow:0 0 0 3px var(--c1-l);}
   .lua-chon-item{margin-top:10px;}
   .lua-chon-item .lc-stem{font-weight:600;font-size:.9rem;margin-bottom:6px;}
-  .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
-  .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+  .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:10px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
+  .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--c1);}
   .dap-an-goi-y{margin-top:10px;}
-  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:34px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:6px;cursor:pointer;font-weight:600;}
-  .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 6px 6px 0;padding:8px 10px;}
+  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:40px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:8px;cursor:pointer;font-weight:600;}
+  .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 8px 8px 0;padding:8px 10px;}
   .dap-an-goi-y.hien .noi-dung-dap-an{display:block;}
   .dap-an-goi-y.hien .nut-xem-dap-an{background:var(--c1);color:#fff;}
+  /* Kéo thả sắp xếp */
+  ol.keo-tha,ul.keo-tha{list-style:none;margin:8px 0 0;padding:0;counter-reset:kt;}
+  .keo-tha li{counter-increment:kt;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 8px 8px 10px;margin-bottom:6px;font-size:.88rem;cursor:grab;}
+  .keo-tha li::before{content:counter(kt);flex:none;width:24px;height:24px;border-radius:50%;background:var(--c1-l);color:var(--c1);font-weight:700;font-size:.78rem;display:flex;align-items:center;justify-content:center;}
+  .keo-tha li .kt-text{flex:1;min-width:0;}
+  .keo-tha li .kt-nut{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:8px;background:#F7F8FA;color:var(--sub);cursor:pointer;font-size:.8rem;}
+  .keo-tha li.sortable-ghost{opacity:.4;}
+  .keo-tha li.sortable-chosen{border-color:var(--c1);box-shadow:0 4px 14px rgba(46,134,171,.25);}
+  /* Mã nguồn */
+  pre{background:#F6F8FA;border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow-x:auto;font-size:.82rem;line-height:1.5;}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em;}
+  pre code.hljs{padding:0;background:transparent;}
 
   /* ===== Khối 3 — Thẻ ghi nhớ ===== */
   .fc-status{font-size:.82rem;color:var(--sub);margin-bottom:8px;}
-  .fc-stage{perspective:1000px;height:190px;margin-bottom:12px;}
-  .fc-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .4s;cursor:pointer;}
+  .fc-filter{display:flex;align-items:center;gap:8px;font-size:.86rem;margin-bottom:10px;}
+  .fc-filter input{width:18px;height:18px;accent-color:var(--c1);}
+  .fc-stage{perspective:1000px;height:210px;margin-bottom:12px;}
+  .fc-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.7,.3,1);cursor:pointer;-webkit-tap-highlight-color:transparent;}
   .fc-card.flipped{transform:rotateY(180deg);}
-  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;font-size:1.05rem;font-weight:600;border:1px solid var(--line);}
+  .fc-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;text-align:center;padding:26px 18px 22px;font-size:1.06rem;font-weight:600;border:1px solid var(--line);box-shadow:var(--shadow);}
   .fc-face.front{background:var(--card);}
-  .fc-face.back{background:var(--c1-l);transform:rotateY(180deg);font-weight:500;font-size:.95rem;}
-  .fc-face .dir{position:absolute;top:8px;left:10px;font-size:.68rem;font-weight:700;color:var(--sub);text-transform:uppercase;}
-  .fc-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .fc-face.back{background:linear-gradient(160deg,var(--c1-l),#fff);transform:rotateY(180deg);font-weight:500;font-size:.98rem;}
+  .fc-face .dir{position:absolute;top:10px;left:12px;font-size:.68rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.03em;}
+  .fc-face .tap{position:absolute;bottom:8px;right:12px;font-size:.68rem;font-weight:500;color:#9AA3AE;}
+  .fc-face.known-flag::after{content:"Đã thuộc";position:absolute;top:10px;right:12px;font-size:.66rem;font-weight:700;color:var(--ok);background:var(--ok-l);border-radius:999px;padding:1px 8px;}
+  .fc-swiper{width:100%;max-width:420px;margin:0 auto 12px;padding:6px 14px 14px;overflow:hidden;}
+  .fc-swiper .swiper-slide{height:230px;border-radius:18px;}
+  .fc-swiper .fc-stage{height:100%;margin:0;}
+  .fc-nav{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+  /* Có Swiper: vuốt thay nút Trước/Sau, chỉ giữ số thứ tự thẻ */
+  #fc-view.co-swiper #fc-prev,#fc-view.co-swiper #fc-next{display:none;}
+  #fc-view.co-swiper .fc-nav{justify-content:center;margin-top:-4px;}
   .fc-mark{display:flex;gap:8px;margin-bottom:10px;}
-  .fc-mark button.known{border-color:var(--ok);color:var(--ok);}
-  .fc-mark button.review{border-color:var(--bad);color:var(--bad);}
-  .fc-filter{display:flex;align-items:center;gap:8px;font-size:.85rem;margin-bottom:10px;}
-  .test-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center;}
+  .fc-mark .btn{flex:1;justify-content:center;}
+  .fc-mark button.known{border-color:var(--ok);color:var(--ok);background:var(--ok-l);}
+  .fc-mark button.review{border-color:var(--bad);color:var(--bad);background:var(--bad-l);}
+  .test-result{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center;box-shadow:var(--shadow);}
   .test-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
 
   /* ===== Khối 4 — Quiz ===== */
-  .qz-progress{font-size:.85rem;color:var(--sub);margin-bottom:10px;}
-  .qz-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
-  .qz-item .ctx{font-size:.85rem;color:var(--sub);background:#F2F4F6;border-radius:6px;padding:8px;margin-bottom:8px;}
-  .qz-item .stem{font-weight:600;margin-bottom:8px;font-size:.92rem;}
-  .qz-item label{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;font-size:.88rem;border:1px solid transparent;}
-  .qz-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
-  .qz-item.graded label.correct{background:#E7F5EC;border-color:var(--ok);}
-  .qz-item.graded label.wrong-pick{background:#FBEAE9;border-color:var(--bad);}
-  .qz-explain{display:none;margin-top:8px;font-size:.84rem;background:#F2F4F6;border-radius:6px;padding:8px;}
+  .qz-progress{font-size:.85rem;color:var(--sub);margin-bottom:8px;}
+  .qz-bar{height:6px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:12px;}
+  .qz-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2));transition:width .3s;}
+  .qz-item{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);}
+  .qz-item .ctx{font-size:.85rem;color:var(--sub);background:#F2F4F6;border-radius:8px;padding:8px 10px;margin-bottom:8px;}
+  .qz-item .stem{font-weight:600;margin-bottom:8px;font-size:.93rem;}
+  .qz-item label{display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border-radius:10px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
+  .qz-item label.chon,.lua-chon-item label.chon{border-color:var(--c1);background:var(--c1-l);}
+  .qz-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--c1);}
+  .qz-item.graded label{cursor:default;}
+  .qz-item.graded label.correct{background:var(--ok-l);border-color:var(--ok);}
+  .qz-item.graded label.wrong-pick{background:var(--bad-l);border-color:var(--bad);}
+  .qz-explain{display:none;margin-top:8px;font-size:.84rem;background:#F2F4F6;border-radius:8px;padding:8px 10px;}
   .qz-item.graded .qz-explain{display:block;}
-  .qz-result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px;display:none;}
+  .qz-result{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center;margin-bottom:14px;display:none;box-shadow:var(--shadow);}
   .qz-result.show{display:block;}
   .qz-result .score{font-size:2rem;font-weight:800;color:var(--c1);}
+  #qz-submit{width:100%;justify-content:center;min-height:46px;}
 
-  footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px;}
+  footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px 16px calc(16px + env(safe-area-inset-bottom));}
+
+  /* ===== Tối ưu điện thoại (SOP mục IX.1b) ===== */
+  button,label,.fc-card,.branch-head,.keo-tha li{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+  .mm-svg-wrap,.fc-swiper{overscroll-behavior:contain;}
+  main{overflow-wrap:break-word;}
+  .bang-cuon{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0;}
+  .bang-cuon > table{margin:0 !important;}
+  #nhac-trinh-duyet{display:flex;align-items:center;gap:10px;background:#FFF4E5;color:#7A4100;border-bottom:1px solid #F5C77E;padding:6px 8px 6px 14px;padding-top:max(6px,env(safe-area-inset-top));font-size:.85rem;}
+  #nhac-trinh-duyet span{flex:1;min-width:0;}
+  .nut-dong{flex:none;width:40px;height:40px;border:none;border-radius:50%;background:transparent;color:inherit;font-size:1.1rem;cursor:pointer;}
+  .dai-bao{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;max-width:560px;margin:0 auto;background:#1F2937;color:#fff;border-radius:12px;padding:12px 14px;font-size:.85rem;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25);}
+  @media (prefers-reduced-motion:reduce){ .fc-card,.branch-body,.qz-bar span{transition:none !important;} }
 
   /* ===== In ===== */
   .print-only{display:none;}
   @media print{
-    nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,footer,button{display:none !important;}
-    section.panel{display:block !important;page-break-after:always;}
+    @page{margin:12mm;}
+    #nojs,#nhac-trinh-duyet,#dai-mat-mang,nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,.qz-bar,footer,button,.hd-btn,.mm-svg-wrap,.fc-swiper,.kt-nut{display:none !important;}
+    section.panel{display:block !important;animation:none !important;break-after:page;}
+    #mindmap{display:flex !important;}
     .branch-body{max-height:none !important;}
     .print-only{display:block;}
     .fc-stage{display:none;}
     body{background:#fff;font-size:12px;}
-    header{background:#fff !important;color:#000 !important;border-bottom:2px solid #000;}
+    header.hd{background:#fff !important;color:#000 !important;border-bottom:2px solid #000;padding:0 0 6px;}
+    .task,.qz-item,.branch{box-shadow:none;break-inside:avoid;}
     .branch-head{color:#000 !important;background:#eee !important;border:1px solid #000;}
-    .qz-item label{border:1px solid #999;}
+    .branch-head .mark{display:none;}
+    .center-node{background:#fff !important;color:#000 !important;border:2px solid #000;}
+    .qz-item label,.lua-chon-item label{border:1px solid #999;background:#fff !important;}
     h2.block-title{border-bottom:1px solid #000;padding-bottom:4px;}
     .dap-an-goi-y .noi-dung-dap-an{display:none !important;}
   }
@@ -127,20 +218,29 @@
 </head>
 <body>
 
-<!-- ===================== ỨNG DỤNG ===================== -->
+<div id="nojs"><b>Trình xem này chưa chạy được học liệu.</b>Mở bằng Safari hoặc Chrome: bấm nút Chia sẻ → Mở bằng trình duyệt, hoặc mở đường link web do giáo viên gửi.</div>
+
 <div id="app-shell">
 
-<header>
-  <button id="print-btn" type="button">🖨 In / Lưu PDF</button>
-  <h1>Bài 2. Thực hành sử dụng hệ điều hành</h1>
-  <p>Tin học 11 · Trường THCS & THPT Vĩnh Hưng · Học liệu số dùng offline</p>
+<div id="nhac-trinh-duyet" class="an" role="note"><span>Mở bằng Chrome/Safari để giữ bài làm: bấm ⋯ → Mở bằng trình duyệt.</span><button type="button" class="nut-dong" id="nhac-dong" aria-label="Đóng lời nhắc">✕</button></div>
+
+<header class="hd">
+  <div class="hd-row">
+    <div class="hd-text">
+      <h1>Bài 2. Thực hành sử dụng hệ điều hành</h1>
+      <p>Tin học 11 · Trường THCS & THPT Vĩnh Hưng</p>
+    </div>
+    <button id="print-btn" class="hd-btn" type="button" title="In hoặc lưu PDF" aria-label="In hoặc lưu PDF"><i data-lucide="printer"></i><span class="ico-in" aria-hidden="true">🖨</span><span class="lbl">In / PDF</span></button>
+  </div>
 </header>
 
 <nav class="tabs">
-  <button class="tab-btn active" data-panel="p1">Sơ đồ tư duy</button>
-  <button class="tab-btn" data-panel="p2">Phiếu học tập</button>
-  <button class="tab-btn" data-panel="p3">Thẻ ghi nhớ</button>
-  <button class="tab-btn" data-panel="p4">Quiz</button>
+  <div class="tabs-in">
+    <button class="tab-btn active" data-panel="p1"><i data-lucide="network"></i><span>Sơ đồ tư duy</span></button>
+    <button class="tab-btn" data-panel="p2"><i data-lucide="clipboard-list"></i><span>Phiếu học tập</span></button>
+    <button class="tab-btn" data-panel="p3"><i data-lucide="layers"></i><span>Thẻ ghi nhớ</span></button>
+    <button class="tab-btn" data-panel="p4"><i data-lucide="circle-check-big"></i><span>Quiz</span></button>
+  </div>
 </nav>
 <main>
 
@@ -148,9 +248,15 @@
   <section id="p1" class="panel active">
     <h2 class="block-title">1. Sơ đồ tư duy</h2>
     <div class="toolbar">
-      <button class="btn primary" id="mm-open-all">Mở tất cả</button>
-      <button class="btn" id="mm-close-all">Đóng tất cả</button>
+      <button class="btn primary" id="mm-open-all"><i data-lucide="unfold-vertical"></i>Mở tất cả</button>
+      <button class="btn" id="mm-close-all"><i data-lucide="fold-vertical"></i>Đóng tất cả</button>
+      <button class="btn ghost an" id="mm-fit"><i data-lucide="scan"></i>Vừa khung</button>
+      <button class="btn ghost an" id="mm-view"><i data-lucide="list"></i><span>Dạng danh sách</span></button>
       <span class="counter" id="mm-counter"></span>
+    </div>
+    <div class="mm-svg-wrap an" id="mm-svg-wrap">
+      <svg id="mm-svg"></svg>
+      <div class="mm-hint">Chạm vào dấu tròn ở cuối mỗi nhánh để mở hoặc đóng. Dùng hai ngón tay để phóng to, kéo để di chuyển.</div>
     </div>
     <div class="mindmap" id="mindmap"></div>
   </section>
@@ -159,19 +265,19 @@
   <section id="p2" class="panel">
     <h2 class="block-title">2. Phiếu học tập / thực hành</h2>
     <div class="toolbar">
-      <button class="btn ghost" id="p2-reset" type="button">Xóa câu trả lời đã lưu</button>
+      <button class="btn ghost" id="p2-reset" type="button"><i data-lucide="eraser"></i>Xóa câu trả lời đã lưu</button>
     </div>
     <p class="print-only" style="font-size:.85rem;color:#555;">Họ tên: .................................... Lớp: ............. Nhóm: ............</p>
     <div id="p2-content"></div>
   </section>
 
-  <!-- ===================== KHỐI 3 — THẻ GHI NHỚ ===================== -->
+  <!-- ===================== KHỐI 3 — THẺ GHI NHỚ ===================== -->
   <section id="p3" class="panel">
     <h2 class="block-title">3. Thẻ ghi nhớ</h2>
     <div class="toolbar">
-      <button class="btn" id="fc-shuffle">Xáo trộn</button>
-      <button class="btn" id="fc-test">Tự kiểm tra</button>
-      <button class="btn ghost" id="fc-reset">Xóa tiến độ</button>
+      <button class="btn" id="fc-shuffle"><i data-lucide="shuffle"></i>Xáo trộn</button>
+      <button class="btn" id="fc-test"><i data-lucide="timer"></i>Tự kiểm tra</button>
+      <button class="btn ghost" id="fc-reset"><i data-lucide="rotate-ccw"></i>Xóa tiến độ</button>
     </div>
     <div class="fc-filter">
       <input type="checkbox" id="fc-filter-unknown">
@@ -179,41 +285,44 @@
     </div>
     <p class="fc-status" id="fc-status"></p>
     <div id="fc-view">
-      <div class="fc-stage">
+      <div class="fc-swiper swiper an" id="fc-swiper"><div class="swiper-wrapper" id="fc-swiper-wrapper"></div></div>
+      <div class="fc-stage" id="fc-single">
         <div class="fc-card" id="fc-card">
-          <div class="fc-face front"><span class="dir" id="fc-dir-f"></span><span id="fc-front-text"></span></div>
+          <div class="fc-face front" id="fc-front-face"><span class="dir" id="fc-dir-f"></span><span id="fc-front-text"></span><span class="tap">Chạm để lật</span></div>
           <div class="fc-face back"><span class="dir">Trả lời</span><span id="fc-back-text"></span></div>
         </div>
       </div>
       <div class="fc-nav">
-        <button class="btn" id="fc-prev">← Trước</button>
-        <span class="counter" id="fc-counter" style="align-self:center;"></span>
-        <button class="btn" id="fc-next">Sau →</button>
+        <button class="btn" id="fc-prev"><i data-lucide="chevron-left"></i>Trước</button>
+        <span class="counter" id="fc-counter" style="margin:0 auto;"></span>
+        <button class="btn" id="fc-next">Sau<i data-lucide="chevron-right"></i></button>
       </div>
       <div class="fc-mark">
-        <button class="btn review" id="fc-mark-review">Cần ôn lại</button>
-        <button class="btn known" id="fc-mark-known">Đã thuộc</button>
+        <button class="btn review" id="fc-mark-review"><i data-lucide="repeat"></i>Cần ôn lại</button>
+        <button class="btn known" id="fc-mark-known"><i data-lucide="check"></i>Đã thuộc</button>
       </div>
     </div>
     <div id="fc-test-view" style="display:none;">
       <div class="fc-stage">
         <div class="fc-card" id="fct-card">
-          <div class="fc-face front"><span class="dir" id="fct-dir-f"></span><span id="fct-front-text"></span></div>
+          <div class="fc-face front"><span class="dir" id="fct-dir-f"></span><span id="fct-front-text"></span><span class="tap">Chạm để lật</span></div>
           <div class="fc-face back"><span class="dir">Trả lời</span><span id="fct-back-text"></span></div>
         </div>
       </div>
       <p class="fc-status" id="fct-progress"></p>
       <div class="fc-mark">
-        <button class="btn review" id="fct-wrong">Chưa biết</button>
-        <button class="btn known" id="fct-right">Biết rồi</button>
+        <button class="btn review" id="fct-wrong"><i data-lucide="x"></i>Chưa biết</button>
+        <button class="btn known" id="fct-right"><i data-lucide="check"></i>Biết rồi</button>
       </div>
     </div>
     <div id="fc-result-view" style="display:none;">
       <div class="test-result">
         <p>Kết quả tự kiểm tra</p>
         <div class="score" id="fc-score"></div>
-        <button class="btn primary" id="fc-test-again" style="margin-top:10px;">Kiểm tra lại</button>
-        <button class="btn" id="fc-test-exit">Quay lại thẻ</button>
+        <div class="toolbar" style="justify-content:center;margin:10px 0 0;">
+          <button class="btn primary" id="fc-test-again"><i data-lucide="rotate-cw"></i>Kiểm tra lại</button>
+          <button class="btn" id="fc-test-exit"><i data-lucide="layers"></i>Quay lại thẻ</button>
+        </div>
       </div>
     </div>
     <!-- Bản in: toàn bộ thẻ dạng lưới có đường cắt -->
@@ -224,36 +333,85 @@
   <section id="p4" class="panel">
     <h2 class="block-title">4. Quiz tự chấm</h2>
     <div class="toolbar">
-      <button class="btn" id="qz-shuffle">Xáo trộn câu hỏi</button>
-      <button class="btn" id="qz-reset">Làm lại</button>
+      <button class="btn" id="qz-shuffle"><i data-lucide="shuffle"></i>Xáo trộn câu hỏi</button>
+      <button class="btn" id="qz-reset"><i data-lucide="rotate-ccw"></i>Làm lại</button>
     </div>
     <p class="qz-progress" id="qz-progress"></p>
+    <div class="qz-bar"><span id="qz-bar"></span></div>
     <div class="qz-result" id="qz-result">
       <p>Kết quả</p>
       <div class="score" id="qz-score"></div>
     </div>
     <form id="qz-form"></form>
-    <button class="btn primary" id="qz-submit" style="width:100%;">Nộp bài</button>
+    <button class="btn primary" id="qz-submit"><i data-lucide="send"></i>Nộp bài</button>
   </section>
 
 </main>
 
-<footer>Học liệu số — Bài 2 Tin học 11 ICT — Trường THCS & THPT Vĩnh Hưng. Mở bằng Chrome hoặc Safari, không cần Internet.</footer>
+<footer>Học liệu số — Bài 2 Tin học 11 ICT — Trường THCS & THPT Vĩnh Hưng. <span id="che-do-thu-vien">Mở bằng Chrome hoặc Safari.</span></footer>
+
+<div id="dai-mat-mang" class="dai-bao an" role="status" aria-live="polite">Đang mất mạng, bài làm vẫn lưu trên máy.</div>
 
 </div><!-- /#app-shell -->
 
-<script type="application/json" id="hls-data">{"worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — thực hành (SGK trang 10-12)<\/span>\n  <h3>Chức năng cơ bản của hệ điều hành máy tính cá nhân<\/h3>\n  <p>Cặp A-B thực hiện trên File Explorer (Windows) hoặc trình quản lí tệp (Ubuntu), đánh dấu thao tác đã làm được:<\/p>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"nv1-1\"> Tạo mới một thư mục theo tên quy ước.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv1-2\"> Đổi tên thư mục vừa tạo.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv1-3\"> Di chuyển thư mục sang vị trí khác.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv1-4\"> Xoá thư mục thử, không xoá nhầm thư mục khác.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv1-5\"> Đổi vai: bạn B làm lại bốn thao tác trên một thư mục khác.<\/label>\n  <\/div>\n  <p>Nêu hai lỗi thường gặp khi quản lí tệp, thư mục.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"nv1-loi\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Xoá nhầm đối tượng (không đúng thư mục yêu cầu); đặt tên thư mục có kí tự đặc biệt. Ngoài ra dễ nhầm nháy chuột với nháy đúp chuột.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: nháy chuột phải vào vùng trống để thấy lệnh tạo mới; nháy chuột phải vào thư mục để thấy lệnh đổi tên, xoá.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — thực hành (SGK trang 12-13)<\/span>\n  <h3>Kiểm tra đĩa và hợp mảnh<\/h3>\n  <p>Ghi ba bước mở tiện ích Check disk / Optimize (Hình 2.7):<\/p>\n  <table class=\"data-table\">\n    <tr><th>Bước<\/th><th>Thao tác<\/th><\/tr>\n    <tr><td>1<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"nv2-b1\"><\/td><\/tr>\n    <tr><td>2<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"nv2-b2\"><\/td><\/tr>\n    <tr><td>3<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"nv2-b3\"><\/td><\/tr>\n  <\/table>\n  <p>a) Check disk và Optimize có vai trò gì? Vì sao tệp bị phân mảnh làm chậm đọc, ghi?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"nv2-vaitro\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>b) Máy dùng ổ thể rắn (SSD) có cần chạy Optimize hợp mảnh không?<\/p>\n  <div class=\"lua-chon-item\" data-id=\"nv2-ssd\">\n    <label><input type=\"radio\" name=\"nv2-ssd\" value=\"co\"> Có<\/label>\n    <label><input type=\"radio\" name=\"nv2-ssd\" value=\"khong\"> Không<\/label>\n  <\/div>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Bước 1: mở cửa sổ Properties của ổ đĩa; Bước 2: chọn thẻ Tools; Bước 3: chọn Check hoặc Optimize. a) Check disk khử lỗi liên cung mất liên kết, cung hỏng; Optimize gom các phần tệp nằm rải rác lại liền nhau — tệp phân mảnh khiến đầu đọc đĩa từ phải di chuyển nhiều vị trí nên chậm. b) Không, hợp mảnh chỉ có tác dụng với đĩa từ.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý: nháy chuột phải vào biểu tượng ổ đĩa để thấy mục Properties. Kiểm tra đúng ổ đĩa trước khi chọn.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — thực hành (SGK trang 13-14)<\/span>\n  <h3>Tiện ích trên thiết bị di động<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"nv3-1\"> Thêm một liên hệ vào danh bạ.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv3-2\"> Đặt một lời nhắc theo giờ định trước.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv3-3\"> Xem danh sách ứng dụng đã cài trên điện thoại.<\/label>\n  <\/div>\n  <p>Điện thoại nhóm em dùng hệ điều hành nào? Có điểm gì khác so với hình trong SGK?<\/p>\n  <input type=\"text\" class=\"dien-ngan\" data-id=\"nv3-hdh\">\n  <p>Khi xoá ứng dụng cần lưu ý gì?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"nv3-luuy\" rows=\"2\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Android và iOS đặt biểu tượng ở vị trí khác nhau, cần đối chiếu theo đúng chức năng. Chỉ xoá ứng dụng không cần thiết, không xoá ứng dụng hệ thống để tránh ảnh hưởng hoạt động của máy.<\/div>\n  <\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 4 — luyện tập (SGK trang 14)<\/span>\n  <h3>Mở rộng tiện ích danh bạ và đồng hồ<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"lt-1\"> Tạo một nhóm danh bạ, đăng kí một liên hệ vào nhóm, xoá thử một nhóm.<\/label>\n    <label><input type=\"checkbox\" data-id=\"lt-2\"> Dùng chức năng đếm thời gian tiến hoặc lùi của đồng hồ.<\/label>\n  <\/div>\n  <p>Trên điện thoại của em, chức năng đếm thời gian có tên là gì?<\/p>\n  <input type=\"text\" class=\"dien-ngan\" data-id=\"lt-ten\">\n  <div class=\"hint\">Gợi ý: mỗi máy đặt tên khác nhau (Bộ đếm giờ, Đồng hồ bấm giờ); tìm theo biểu tượng hình đồng hồ.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Câu hỏi mở rộng — vận dụng (SGK trang 14)<\/span>\n  <h3>Dọn đĩa và đăng nhập sinh trắc học (chọn 1 hoặc cả 2)<\/h3>\n  <p>1) Tiện ích dọn đĩa (Disk Cleanup) ở trang General của cửa sổ Properties có chức năng gì, dùng thế nào?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-1\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) So sánh điểm mạnh, điểm yếu của đăng nhập bằng vân tay, khuôn mặt, khẩu hình trên thiết bị di động.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-2\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>3) Sau bài học: giao diện Windows (Hình 2.1) và Ubuntu (Hình 2.2) giống nhau ở điểm nào?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-3\" rows=\"2\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý: tìm hiểu trong phần Cài đặt của điện thoại; hỏi người thân có điện thoại khác loại.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Làm đủ bốn thao tác quản lí thư mục, đặt tên đúng quy ước.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Mở đúng thẻ Tools, xác định đúng nút Check và Optimize.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Hoàn thành ba yêu cầu trên điện thoại, không xoá ứng dụng hệ thống.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Hoàn thành hai câu Luyện tập.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-5\"> Hai bạn đổi vai, đối chiếu kết quả với phiếu nhiệm vụ.<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. Chức năng cơ bản của hệ điều hành máy tính cá nhân", "cls": "b1", "items": ["Giao diện đồ hoạ: biểu tượng, cửa sổ, con trỏ, thanh công việc, thanh trạng thái (Hình 2.1, 2.2)", "Windows và Ubuntu đều dùng cửa sổ, biểu tượng, con trỏ để thao tác", "File Explorer / trình quản lí tệp (Hình 2.3-2.5)", "Bốn thao tác: tạo mới, đổi tên, di chuyển, xoá tệp và thư mục", "Lỗi cần tránh: xoá nhầm đối tượng, đặt tên có kí tự đặc biệt"]}, {"title": "2. Tiện ích nâng cao hiệu quả máy tính", "cls": "b2", "items": ["Ba bước: Properties của ổ đĩa → thẻ Tools → Check hoặc Optimize (Hình 2.6, 2.7)", "Check disk: khử lỗi liên cung mất liên kết, cung hỏng", "Optimize (hợp mảnh): gom các phần tệp phân mảnh", "Hợp mảnh chỉ có tác dụng với đĩa từ, ổ thể rắn không cần", "Disk Cleanup (trang General): dọn tệp tạm, giải phóng dung lượng"]}, {"title": "3. Tiện ích trên thiết bị di động", "cls": "b3", "items": ["Danh bạ: thêm, sửa, xoá liên hệ; tạo, xoá nhóm danh bạ", "Đồng hồ: đặt lịch, hẹn giờ, nhắc việc; đếm thời gian tiến hoặc lùi", "Quản lí ứng dụng: xem, xoá ứng dụng (Hình 2.8, 2.9)", "Chỉ xoá ứng dụng không cần thiết, không xoá ứng dụng hệ thống", "Android và iOS: đối chiếu theo chức năng, không theo vị trí biểu tượng", "Đăng nhập sinh trắc học: vân tay, khuôn mặt, khẩu hình"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "Nêu các thành phần của giao diện đồ hoạ.", "back": "Biểu tượng, cửa sổ, con trỏ, thanh công việc, thanh trạng thái."}, {"id": "fc02", "dir": "Hỏi ngược", "front": "Công cụ nào trên Windows dùng quản lí tệp, thư mục?", "back": "File Explorer."}, {"id": "fc03", "dir": "Hỏi xuôi", "front": "Nêu 4 thao tác quản lí thư mục đã thực hành.", "back": "Tạo mới, đổi tên, di chuyển, xoá."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "Nêu 3 bước mở tiện ích kiểm tra đĩa, hợp mảnh.", "back": "Mở Properties của ổ đĩa; chọn thẻ Tools; chọn Check hoặc Optimize."}, {"id": "fc05", "dir": "Hỏi ngược", "front": "Tiện ích nào khử lỗi liên cung mất liên kết, cung hỏng?", "back": "Check disk (kiểm tra đĩa)."}, {"id": "fc06", "dir": "Hỏi xuôi", "front": "Hợp mảnh (Optimize) có tác dụng gì?", "back": "Gom các phần của tệp nằm rải rác lại liền nhau, đọc ghi nhanh hơn."}, {"id": "fc07", "dir": "Hỏi xuôi", "front": "Ổ thể rắn (SSD) có cần hợp mảnh không?", "back": "Không, hợp mảnh chỉ có tác dụng với đĩa từ."}, {"id": "fc08", "dir": "Hỏi ngược", "front": "Tiện ích nào ở trang General của Properties dọn tệp tạm?", "back": "Disk Cleanup (dọn đĩa)."}, {"id": "fc09", "dir": "Hỏi xuôi", "front": "Tiện ích danh bạ làm được gì?", "back": "Thêm, sửa, xoá liên hệ; tạo, xoá nhóm và đăng kí liên hệ vào nhóm."}, {"id": "fc10", "dir": "Hỏi ngược", "front": "Muốn điện thoại nhắc việc theo giờ định trước thì dùng tiện ích nào?", "back": "Đồng hồ: báo thức, hẹn giờ, nhắc việc."}, {"id": "fc11", "dir": "Hỏi xuôi", "front": "Lưu ý gì khi xoá ứng dụng trên điện thoại?", "back": "Chỉ xoá ứng dụng không cần thiết, không xoá ứng dụng hệ thống."}, {"id": "fc12", "dir": "Hỏi xuôi", "front": "Giao diện Windows và Ubuntu giống nhau ở điểm nào?", "back": "Đều dùng cửa sổ, biểu tượng và con trỏ để người dùng thao tác."}, {"id": "fc13", "dir": "Hỏi ngược", "front": "Nêu 3 phương pháp đăng nhập sinh trắc học trên điện thoại.", "back": "Vân tay, khuôn mặt, khẩu hình."}], "quiz": [{"id": "q01", "stem": "Trên Windows, công cụ nào dùng để tạo mới, đổi tên, di chuyển, xoá tệp và thư mục?", "opts": [{"l": "A", "t": "File Explorer"}, {"l": "B", "t": "Control Panel"}, {"l": "C", "t": "Task Manager"}, {"l": "D", "t": "Paint"}], "ans": "A", "ngu_canh": null, "explain": "File Explorer (trên Ubuntu là trình quản lí tệp) dùng để quản lí tệp và thư mục: tạo mới, đổi tên, di chuyển, xoá."}, {"id": "q02", "stem": "Để kiểm tra đĩa hoặc hợp mảnh, sau khi mở cửa sổ Properties của ổ đĩa, em chọn thẻ nào?", "opts": [{"l": "A", "t": "General"}, {"l": "B", "t": "Sharing"}, {"l": "C", "t": "Tools"}, {"l": "D", "t": "Security"}], "ans": "C", "ngu_canh": null, "explain": "Ba bước: mở Properties của ổ đĩa, chọn thẻ Tools, chọn Check (kiểm tra đĩa) hoặc Optimize (hợp mảnh)."}, {"id": "q03", "stem": "Tiện ích Check disk dùng để", "opts": [{"l": "A", "t": "xoá các ứng dụng không cần thiết."}, {"l": "B", "t": "kiểm tra và sửa lỗi đĩa như liên cung mất liên kết, cung hỏng."}, {"l": "C", "t": "đổi tên ổ đĩa."}, {"l": "D", "t": "sao chép dữ liệu sang điện thoại."}], "ans": "B", "ngu_canh": null, "explain": "Check disk kiểm tra đĩa, khử lỗi liên cung mất liên kết và cung hỏng."}, {"id": "q04", "stem": "Tiện ích nào trên điện thoại dùng để thêm, sửa, xoá số điện thoại và thông tin liên hệ?", "opts": [{"l": "A", "t": "Đồng hồ"}, {"l": "B", "t": "Danh bạ"}, {"l": "C", "t": "Máy ảnh"}, {"l": "D", "t": "Cài đặt màn hình"}], "ans": "B", "ngu_canh": null, "explain": "Tiện ích danh bạ cho phép thêm, sửa, xoá liên hệ và quản lí nhóm danh bạ."}, {"id": "q05", "stem": "Vì sao tệp bị phân mảnh trên đĩa từ làm chậm việc đọc, ghi dữ liệu?", "opts": [{"l": "A", "t": "Vì tệp bị nén lại nên phải giải nén trước khi đọc."}, {"l": "B", "t": "Vì các phần của tệp nằm rải rác ở nhiều vị trí trên đĩa, đầu đọc phải di chuyển nhiều lần."}, {"l": "C", "t": "Vì tệp bị nhiễm virus."}, {"l": "D", "t": "Vì tệp bị đổi sang định dạng khác."}], "ans": "B", "ngu_canh": null, "explain": "Tệp phân mảnh gồm nhiều phần nằm rải rác; đầu đọc của đĩa từ phải di chuyển qua nhiều vị trí nên đọc, ghi chậm. Hợp mảnh gom các phần lại liền nhau."}, {"id": "q06", "stem": "Tiện ích hợp mảnh (Optimize) có tác dụng với loại ổ đĩa nào?", "opts": [{"l": "A", "t": "Chỉ với đĩa từ (đĩa cứng)."}, {"l": "B", "t": "Chỉ với ổ thể rắn (SSD)."}, {"l": "C", "t": "Với thẻ nhớ điện thoại."}, {"l": "D", "t": "Với mọi loại ổ đĩa như nhau."}], "ans": "A", "ngu_canh": null, "explain": "Hợp mảnh chỉ có tác dụng với đĩa từ; ổ thể rắn không cần hợp mảnh."}, {"id": "q07", "stem": "Khi quản lí ứng dụng trên điện thoại, lưu ý nào sau đây đúng?", "opts": [{"l": "A", "t": "Xoá hết các ứng dụng để máy chạy nhanh."}, {"l": "B", "t": "Chỉ xoá ứng dụng không cần thiết, không xoá ứng dụng hệ thống."}, {"l": "C", "t": "Xoá ứng dụng hệ thống trước vì chiếm nhiều bộ nhớ."}, {"l": "D", "t": "Không bao giờ được xoá bất kì ứng dụng nào."}], "ans": "B", "ngu_canh": null, "explain": "Chỉ xoá ứng dụng không cần thiết; xoá ứng dụng hệ thống có thể ảnh hưởng hoạt động của máy."}, {"id": "q08", "stem": "Cách làm nào phù hợp nhất?", "opts": [{"l": "A", "t": "Xoá hết các tệp rồi soạn lại trong một thư mục mới."}, {"l": "B", "t": "Tạo thư mục mới tên TinHoc11 rồi di chuyển các tệp bài tập vào thư mục đó."}, {"l": "C", "t": "Đổi tên từng tệp thành TinHoc11."}, {"l": "D", "t": "Sao chép các tệp vào thư mục mới rồi xoá luôn thư mục đó."}], "ans": "B", "ngu_canh": "Màn hình nền máy tính của Lan có nhiều tệp bài tập Tin học nằm rải rác. Lan muốn gom tất cả vào một thư mục tên TinHoc11.", "explain": "Tạo mới thư mục rồi di chuyển tệp vào giúp gom tệp đúng chỗ mà không mất dữ liệu."}, {"id": "q09", "stem": "Minh nên dùng chức năng nào trên điện thoại?", "opts": [{"l": "A", "t": "Đếm thời gian lùi 6 giờ 30 phút."}, {"l": "B", "t": "Đặt báo thức 6 giờ 30 lặp lại hằng ngày trong tiện ích đồng hồ."}, {"l": "C", "t": "Thêm một liên hệ mới vào danh bạ."}, {"l": "D", "t": "Xem danh sách ứng dụng đã cài."}], "ans": "B", "ngu_canh": "Minh muốn điện thoại nhắc dậy lúc 6 giờ 30 mỗi sáng để kịp đến trường.", "explain": "Nhắc việc theo giờ định trước, lặp lại hằng ngày thì dùng chức năng báo thức, hẹn giờ của tiện ích đồng hồ."}, {"id": "q10", "stem": "Nhận xét nào sau đây đúng?", "opts": [{"l": "A", "t": "Chạy Optimize nhiều lần sẽ làm ổ SSD nhanh hơn hẳn."}, {"l": "B", "t": "Không cần hợp mảnh ổ SSD vì hợp mảnh chỉ có tác dụng với đĩa từ; nên kiểm tra lỗi đĩa hoặc dọn đĩa để giải phóng dung lượng."}, {"l": "C", "t": "Phải xoá ổ SSD rồi cài lại hệ điều hành."}, {"l": "D", "t": "Chỉ cần đổi tên ổ đĩa là máy chạy nhanh."}], "ans": "B", "ngu_canh": "Máy tính dùng ổ thể rắn (SSD) của Tuấn chạy chậm. Tuấn định chạy Optimize để hợp mảnh ổ SSD nhiều lần liên tiếp.", "explain": "Hợp mảnh chỉ có tác dụng với đĩa từ; với ổ thể rắn nên dùng Check disk kiểm tra lỗi hoặc Disk Cleanup dọn tệp tạm."}]}</script>
+<script type="application/json" id="hls-data">{"tieu_de": "Bài 2. Thực hành sử dụng hệ điều hành", "tieu_de_trung_tam": "Bài 2. Thực hành sử dụng hệ điều hành", "worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — thực hành (SGK trang 10-12)<\/span>\n  <h3>Chức năng cơ bản của hệ điều hành máy tính cá nhân<\/h3>\n  <p>Cặp A-B thực hiện trên File Explorer (Windows) hoặc trình quản lí tệp (Ubuntu), đánh dấu thao tác đã làm được:<\/p>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"nv1-1\"> Tạo mới một thư mục theo tên quy ước.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv1-2\"> Đổi tên thư mục vừa tạo.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv1-3\"> Di chuyển thư mục sang vị trí khác.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv1-4\"> Xoá thư mục thử, không xoá nhầm thư mục khác.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv1-5\"> Đổi vai: bạn B làm lại bốn thao tác trên một thư mục khác.<\/label>\n  <\/div>\n  <p>Nêu hai lỗi thường gặp khi quản lí tệp, thư mục.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"nv1-loi\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Xoá nhầm đối tượng (không đúng thư mục yêu cầu); đặt tên thư mục có kí tự đặc biệt. Ngoài ra dễ nhầm nháy chuột với nháy đúp chuột.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: nháy chuột phải vào vùng trống để thấy lệnh tạo mới; nháy chuột phải vào thư mục để thấy lệnh đổi tên, xoá.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — thực hành (SGK trang 12-13)<\/span>\n  <h3>Kiểm tra đĩa và hợp mảnh<\/h3>\n  <p>Ghi ba bước mở tiện ích Check disk / Optimize (Hình 2.7):<\/p>\n  <table class=\"data-table\">\n    <tr><th>Bước<\/th><th>Thao tác<\/th><\/tr>\n    <tr><td>1<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"nv2-b1\"><\/td><\/tr>\n    <tr><td>2<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"nv2-b2\"><\/td><\/tr>\n    <tr><td>3<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"nv2-b3\"><\/td><\/tr>\n  <\/table>\n  <p>a) Check disk và Optimize có vai trò gì? Vì sao tệp bị phân mảnh làm chậm đọc, ghi?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"nv2-vaitro\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>b) Máy dùng ổ thể rắn (SSD) có cần chạy Optimize hợp mảnh không?<\/p>\n  <div class=\"lua-chon-item\" data-id=\"nv2-ssd\">\n    <label><input type=\"radio\" name=\"nv2-ssd\" value=\"co\"> Có<\/label>\n    <label><input type=\"radio\" name=\"nv2-ssd\" value=\"khong\"> Không<\/label>\n  <\/div>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Bước 1: mở cửa sổ Properties của ổ đĩa; Bước 2: chọn thẻ Tools; Bước 3: chọn Check hoặc Optimize. a) Check disk khử lỗi liên cung mất liên kết, cung hỏng; Optimize gom các phần tệp nằm rải rác lại liền nhau — tệp phân mảnh khiến đầu đọc đĩa từ phải di chuyển nhiều vị trí nên chậm. b) Không, hợp mảnh chỉ có tác dụng với đĩa từ.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý: nháy chuột phải vào biểu tượng ổ đĩa để thấy mục Properties. Kiểm tra đúng ổ đĩa trước khi chọn.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — thực hành (SGK trang 13-14)<\/span>\n  <h3>Tiện ích trên thiết bị di động<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"nv3-1\"> Thêm một liên hệ vào danh bạ.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv3-2\"> Đặt một lời nhắc theo giờ định trước.<\/label>\n    <label><input type=\"checkbox\" data-id=\"nv3-3\"> Xem danh sách ứng dụng đã cài trên điện thoại.<\/label>\n  <\/div>\n  <p>Điện thoại nhóm em dùng hệ điều hành nào? Có điểm gì khác so với hình trong SGK?<\/p>\n  <input type=\"text\" class=\"dien-ngan\" data-id=\"nv3-hdh\">\n  <p>Khi xoá ứng dụng cần lưu ý gì?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"nv3-luuy\" rows=\"2\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Android và iOS đặt biểu tượng ở vị trí khác nhau, cần đối chiếu theo đúng chức năng. Chỉ xoá ứng dụng không cần thiết, không xoá ứng dụng hệ thống để tránh ảnh hưởng hoạt động của máy.<\/div>\n  <\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 4 — luyện tập (SGK trang 14)<\/span>\n  <h3>Mở rộng tiện ích danh bạ và đồng hồ<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"lt-1\"> Tạo một nhóm danh bạ, đăng kí một liên hệ vào nhóm, xoá thử một nhóm.<\/label>\n    <label><input type=\"checkbox\" data-id=\"lt-2\"> Dùng chức năng đếm thời gian tiến hoặc lùi của đồng hồ.<\/label>\n  <\/div>\n  <p>Trên điện thoại của em, chức năng đếm thời gian có tên là gì?<\/p>\n  <input type=\"text\" class=\"dien-ngan\" data-id=\"lt-ten\">\n  <div class=\"hint\">Gợi ý: mỗi máy đặt tên khác nhau (Bộ đếm giờ, Đồng hồ bấm giờ); tìm theo biểu tượng hình đồng hồ.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Câu hỏi mở rộng — vận dụng (SGK trang 14)<\/span>\n  <h3>Dọn đĩa và đăng nhập sinh trắc học (chọn 1 hoặc cả 2)<\/h3>\n  <p>1) Tiện ích dọn đĩa (Disk Cleanup) ở trang General của cửa sổ Properties có chức năng gì, dùng thế nào?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-1\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) So sánh điểm mạnh, điểm yếu của đăng nhập bằng vân tay, khuôn mặt, khẩu hình trên thiết bị di động.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-2\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>3) Sau bài học: giao diện Windows (Hình 2.1) và Ubuntu (Hình 2.2) giống nhau ở điểm nào?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-3\" rows=\"2\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý: tìm hiểu trong phần Cài đặt của điện thoại; hỏi người thân có điện thoại khác loại.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Làm đủ bốn thao tác quản lí thư mục, đặt tên đúng quy ước.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Mở đúng thẻ Tools, xác định đúng nút Check và Optimize.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Hoàn thành ba yêu cầu trên điện thoại, không xoá ứng dụng hệ thống.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Hoàn thành hai câu Luyện tập.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-5\"> Hai bạn đổi vai, đối chiếu kết quả với phiếu nhiệm vụ.<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. Chức năng cơ bản của hệ điều hành máy tính cá nhân", "cls": "b1", "items": ["Giao diện đồ hoạ: biểu tượng, cửa sổ, con trỏ, thanh công việc, thanh trạng thái (Hình 2.1, 2.2)", "Windows và Ubuntu đều dùng cửa sổ, biểu tượng, con trỏ để thao tác", "File Explorer / trình quản lí tệp (Hình 2.3-2.5)", "Bốn thao tác: tạo mới, đổi tên, di chuyển, xoá tệp và thư mục", "Lỗi cần tránh: xoá nhầm đối tượng, đặt tên có kí tự đặc biệt"]}, {"title": "2. Tiện ích nâng cao hiệu quả máy tính", "cls": "b2", "items": ["Ba bước: Properties của ổ đĩa → thẻ Tools → Check hoặc Optimize (Hình 2.6, 2.7)", "Check disk: khử lỗi liên cung mất liên kết, cung hỏng", "Optimize (hợp mảnh): gom các phần tệp phân mảnh", "Hợp mảnh chỉ có tác dụng với đĩa từ, ổ thể rắn không cần", "Disk Cleanup (trang General): dọn tệp tạm, giải phóng dung lượng"]}, {"title": "3. Tiện ích trên thiết bị di động", "cls": "b3", "items": ["Danh bạ: thêm, sửa, xoá liên hệ; tạo, xoá nhóm danh bạ", "Đồng hồ: đặt lịch, hẹn giờ, nhắc việc; đếm thời gian tiến hoặc lùi", "Quản lí ứng dụng: xem, xoá ứng dụng (Hình 2.8, 2.9)", "Chỉ xoá ứng dụng không cần thiết, không xoá ứng dụng hệ thống", "Android và iOS: đối chiếu theo chức năng, không theo vị trí biểu tượng", "Đăng nhập sinh trắc học: vân tay, khuôn mặt, khẩu hình"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "Nêu các thành phần của giao diện đồ hoạ.", "back": "Biểu tượng, cửa sổ, con trỏ, thanh công việc, thanh trạng thái."}, {"id": "fc02", "dir": "Hỏi ngược", "front": "Công cụ nào trên Windows dùng quản lí tệp, thư mục?", "back": "File Explorer."}, {"id": "fc03", "dir": "Hỏi xuôi", "front": "Nêu 4 thao tác quản lí thư mục đã thực hành.", "back": "Tạo mới, đổi tên, di chuyển, xoá."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "Nêu 3 bước mở tiện ích kiểm tra đĩa, hợp mảnh.", "back": "Mở Properties của ổ đĩa; chọn thẻ Tools; chọn Check hoặc Optimize."}, {"id": "fc05", "dir": "Hỏi ngược", "front": "Tiện ích nào khử lỗi liên cung mất liên kết, cung hỏng?", "back": "Check disk (kiểm tra đĩa)."}, {"id": "fc06", "dir": "Hỏi xuôi", "front": "Hợp mảnh (Optimize) có tác dụng gì?", "back": "Gom các phần của tệp nằm rải rác lại liền nhau, đọc ghi nhanh hơn."}, {"id": "fc07", "dir": "Hỏi xuôi", "front": "Ổ thể rắn (SSD) có cần hợp mảnh không?", "back": "Không, hợp mảnh chỉ có tác dụng với đĩa từ."}, {"id": "fc08", "dir": "Hỏi ngược", "front": "Tiện ích nào ở trang General của Properties dọn tệp tạm?", "back": "Disk Cleanup (dọn đĩa)."}, {"id": "fc09", "dir": "Hỏi xuôi", "front": "Tiện ích danh bạ làm được gì?", "back": "Thêm, sửa, xoá liên hệ; tạo, xoá nhóm và đăng kí liên hệ vào nhóm."}, {"id": "fc10", "dir": "Hỏi ngược", "front": "Muốn điện thoại nhắc việc theo giờ định trước thì dùng tiện ích nào?", "back": "Đồng hồ: báo thức, hẹn giờ, nhắc việc."}, {"id": "fc11", "dir": "Hỏi xuôi", "front": "Lưu ý gì khi xoá ứng dụng trên điện thoại?", "back": "Chỉ xoá ứng dụng không cần thiết, không xoá ứng dụng hệ thống."}, {"id": "fc12", "dir": "Hỏi xuôi", "front": "Giao diện Windows và Ubuntu giống nhau ở điểm nào?", "back": "Đều dùng cửa sổ, biểu tượng và con trỏ để người dùng thao tác."}, {"id": "fc13", "dir": "Hỏi ngược", "front": "Nêu 3 phương pháp đăng nhập sinh trắc học trên điện thoại.", "back": "Vân tay, khuôn mặt, khẩu hình."}], "quiz": [{"id": "q01", "stem": "Trên Windows, công cụ nào dùng để tạo mới, đổi tên, di chuyển, xoá tệp và thư mục?", "opts": [{"l": "A", "t": "File Explorer"}, {"l": "B", "t": "Control Panel"}, {"l": "C", "t": "Task Manager"}, {"l": "D", "t": "Paint"}], "ans": "A", "ngu_canh": null, "explain": "File Explorer (trên Ubuntu là trình quản lí tệp) dùng để quản lí tệp và thư mục: tạo mới, đổi tên, di chuyển, xoá."}, {"id": "q02", "stem": "Để kiểm tra đĩa hoặc hợp mảnh, sau khi mở cửa sổ Properties của ổ đĩa, em chọn thẻ nào?", "opts": [{"l": "A", "t": "General"}, {"l": "B", "t": "Sharing"}, {"l": "C", "t": "Tools"}, {"l": "D", "t": "Security"}], "ans": "C", "ngu_canh": null, "explain": "Ba bước: mở Properties của ổ đĩa, chọn thẻ Tools, chọn Check (kiểm tra đĩa) hoặc Optimize (hợp mảnh)."}, {"id": "q03", "stem": "Tiện ích Check disk dùng để", "opts": [{"l": "A", "t": "xoá các ứng dụng không cần thiết."}, {"l": "B", "t": "kiểm tra và sửa lỗi đĩa như liên cung mất liên kết, cung hỏng."}, {"l": "C", "t": "đổi tên ổ đĩa."}, {"l": "D", "t": "sao chép dữ liệu sang điện thoại."}], "ans": "B", "ngu_canh": null, "explain": "Check disk kiểm tra đĩa, khử lỗi liên cung mất liên kết và cung hỏng."}, {"id": "q04", "stem": "Tiện ích nào trên điện thoại dùng để thêm, sửa, xoá số điện thoại và thông tin liên hệ?", "opts": [{"l": "A", "t": "Đồng hồ"}, {"l": "B", "t": "Danh bạ"}, {"l": "C", "t": "Máy ảnh"}, {"l": "D", "t": "Cài đặt màn hình"}], "ans": "B", "ngu_canh": null, "explain": "Tiện ích danh bạ cho phép thêm, sửa, xoá liên hệ và quản lí nhóm danh bạ."}, {"id": "q05", "stem": "Vì sao tệp bị phân mảnh trên đĩa từ làm chậm việc đọc, ghi dữ liệu?", "opts": [{"l": "A", "t": "Vì tệp bị nén lại nên phải giải nén trước khi đọc."}, {"l": "B", "t": "Vì các phần của tệp nằm rải rác ở nhiều vị trí trên đĩa, đầu đọc phải di chuyển nhiều lần."}, {"l": "C", "t": "Vì tệp bị nhiễm virus."}, {"l": "D", "t": "Vì tệp bị đổi sang định dạng khác."}], "ans": "B", "ngu_canh": null, "explain": "Tệp phân mảnh gồm nhiều phần nằm rải rác; đầu đọc của đĩa từ phải di chuyển qua nhiều vị trí nên đọc, ghi chậm. Hợp mảnh gom các phần lại liền nhau."}, {"id": "q06", "stem": "Tiện ích hợp mảnh (Optimize) có tác dụng với loại ổ đĩa nào?", "opts": [{"l": "A", "t": "Chỉ với đĩa từ (đĩa cứng)."}, {"l": "B", "t": "Chỉ với ổ thể rắn (SSD)."}, {"l": "C", "t": "Với thẻ nhớ điện thoại."}, {"l": "D", "t": "Với mọi loại ổ đĩa như nhau."}], "ans": "A", "ngu_canh": null, "explain": "Hợp mảnh chỉ có tác dụng với đĩa từ; ổ thể rắn không cần hợp mảnh."}, {"id": "q07", "stem": "Khi quản lí ứng dụng trên điện thoại, lưu ý nào sau đây đúng?", "opts": [{"l": "A", "t": "Xoá hết các ứng dụng để máy chạy nhanh."}, {"l": "B", "t": "Chỉ xoá ứng dụng không cần thiết, không xoá ứng dụng hệ thống."}, {"l": "C", "t": "Xoá ứng dụng hệ thống trước vì chiếm nhiều bộ nhớ."}, {"l": "D", "t": "Không bao giờ được xoá bất kì ứng dụng nào."}], "ans": "B", "ngu_canh": null, "explain": "Chỉ xoá ứng dụng không cần thiết; xoá ứng dụng hệ thống có thể ảnh hưởng hoạt động của máy."}, {"id": "q08", "stem": "Cách làm nào phù hợp nhất?", "opts": [{"l": "A", "t": "Xoá hết các tệp rồi soạn lại trong một thư mục mới."}, {"l": "B", "t": "Tạo thư mục mới tên TinHoc11 rồi di chuyển các tệp bài tập vào thư mục đó."}, {"l": "C", "t": "Đổi tên từng tệp thành TinHoc11."}, {"l": "D", "t": "Sao chép các tệp vào thư mục mới rồi xoá luôn thư mục đó."}], "ans": "B", "ngu_canh": "Màn hình nền máy tính của Lan có nhiều tệp bài tập Tin học nằm rải rác. Lan muốn gom tất cả vào một thư mục tên TinHoc11.", "explain": "Tạo mới thư mục rồi di chuyển tệp vào giúp gom tệp đúng chỗ mà không mất dữ liệu."}, {"id": "q09", "stem": "Minh nên dùng chức năng nào trên điện thoại?", "opts": [{"l": "A", "t": "Đếm thời gian lùi 6 giờ 30 phút."}, {"l": "B", "t": "Đặt báo thức 6 giờ 30 lặp lại hằng ngày trong tiện ích đồng hồ."}, {"l": "C", "t": "Thêm một liên hệ mới vào danh bạ."}, {"l": "D", "t": "Xem danh sách ứng dụng đã cài."}], "ans": "B", "ngu_canh": "Minh muốn điện thoại nhắc dậy lúc 6 giờ 30 mỗi sáng để kịp đến trường.", "explain": "Nhắc việc theo giờ định trước, lặp lại hằng ngày thì dùng chức năng báo thức, hẹn giờ của tiện ích đồng hồ."}, {"id": "q10", "stem": "Nhận xét nào sau đây đúng?", "opts": [{"l": "A", "t": "Chạy Optimize nhiều lần sẽ làm ổ SSD nhanh hơn hẳn."}, {"l": "B", "t": "Không cần hợp mảnh ổ SSD vì hợp mảnh chỉ có tác dụng với đĩa từ; nên kiểm tra lỗi đĩa hoặc dọn đĩa để giải phóng dung lượng."}, {"l": "C", "t": "Phải xoá ổ SSD rồi cài lại hệ điều hành."}, {"l": "D", "t": "Chỉ cần đổi tên ổ đĩa là máy chạy nhanh."}], "ans": "B", "ngu_canh": "Máy tính dùng ổ thể rắn (SSD) của Tuấn chạy chậm. Tuấn định chạy Optimize để hợp mảnh ổ SSD nhiều lần liên tiếp.", "explain": "Hợp mảnh chỉ có tác dụng với đĩa từ; với ổ thể rắn nên dùng Check disk kiểm tra lỗi hoặc Disk Cleanup dọn tệp tạm."}]}</script>
 <script>
 (function(){
 "use strict";
 
+/* Chạy được JavaScript thì bỏ cảnh báo */
+var nojs = document.getElementById("nojs");
+if(nojs && nojs.parentNode) nojs.parentNode.removeChild(nojs);
+
+/* ===================== THƯ VIỆN ONLINE (CDN jsDelivr, ghim phiên bản) =====================
+   Lõi 4 khối viết bằng JavaScript thuần, đủ chức năng khi không tải được thư viện.
+   Thư viện tải xong thì nâng cấp giao diện. Đổi phiên bản: sửa bảng này và SOP mục IX.1. */
+var CDN = "https://cdn.jsdelivr.net/npm/";
+var THU_VIEN = {
+  lucide:    CDN + "lucide@0.469.0/dist/umd/lucide.min.js",
+  d3:        CDN + "d3@7.9.0/dist/d3.min.js",
+  markmap:   CDN + "markmap-view@0.18.12/dist/browser/index.js",
+  swiperJs:  CDN + "swiper@11.2.10/swiper-bundle.min.js",
+  swiperCss: CDN + "swiper@11.2.10/swiper-bundle.min.css",
+  sortable:  CDN + "sortablejs@1.15.6/Sortable.min.js",
+  confetti:  CDN + "canvas-confetti@1.9.3/dist/confetti.browser.js",
+  hljsJs:    CDN + "@highlightjs/cdn-assets@11.11.1/highlight.min.js",
+  hljsCss:   CDN + "@highlightjs/cdn-assets@11.11.1/styles/github.min.css"
+};
+var HET_GIO = 12000;
+
+function taiJS(url){
+  return new Promise(function(ok, loi){
+    var s = document.createElement("script");
+    var t = setTimeout(function(){ loi(new Error("Hết giờ tải " + url)); }, HET_GIO);
+    s.src = url; s.async = true;
+    s.onload = function(){ clearTimeout(t); ok(); };
+    s.onerror = function(){ clearTimeout(t); loi(new Error("Lỗi tải " + url)); };
+    document.head.appendChild(s);
+  });
+}
+function taiCSS(url){
+  var l = document.createElement("link");
+  l.rel = "stylesheet"; l.href = url;
+  document.head.appendChild(l);
+}
+function thu(fn){ try{ fn(); }catch(e){ if(window.console) console.warn(e); } }
+function escHtml(s){
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+function moiPhanTu(ds, fn){ Array.prototype.forEach.call(ds, fn); }
+
 /* ===================== ỨNG DỤNG — DỰNG NGAY, KHÔNG QUA XÁC THỰC ===================== */
 var payload = JSON.parse(document.getElementById("hls-data").textContent);
-buildApp(payload);
+var app = null;
+app = buildApp(payload);
+if(window.Promise) nangCapThuVien(app);
 
 function buildApp(payload){
 
-/* ---------- Lưu trữ an toàn (tiến độ thẻ ghi nhớ) ---------- */
+/* ---------- Lưu trữ an toàn ---------- */
 var STORE_KEY = "tin11_bai02";
 function loadStore(){
   try{
@@ -262,10 +420,49 @@ function loadStore(){
   }catch(e){ return {known:{}}; }
 }
 function saveStore(s){
-  try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){ /* im lặng, tệp file:// có thể chặn */ }
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){ /* trình duyệt chặn bộ nhớ: bỏ qua */ }
 }
 var store = loadStore();
 if(!store.known) store.known = {};
+if(!store.ui) store.ui = {};
+var henGhi = null;
+function ghiTre(){ clearTimeout(henGhi); henGhi = setTimeout(function(){ saveStore(store); }, 300); }
+function ghiNgay(){ clearTimeout(henGhi); saveStore(store); }
+/* Trình duyệt điện thoại có thể đóng tab ngầm: ghi lại khi trang bị ẩn hoặc rời đi */
+window.addEventListener("pagehide", ghiNgay);
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState === "hidden") ghiNgay(); });
+
+/* ---------- Dải báo mất mạng ---------- */
+var daiMang = document.getElementById("dai-mat-mang");
+function capNhatMang(){ daiMang.classList.toggle("an", navigator.onLine !== false); }
+window.addEventListener("offline", capNhatMang);
+window.addEventListener("online", capNhatMang);
+capNhatMang();
+
+/* ---------- Nhắc mở bằng trình duyệt khi đang ở trình duyệt nội bộ Zalo/Messenger ---------- */
+(function(){
+  var ua = navigator.userAgent || "";
+  if(!/Zalo|FBAN|FBAV|FB_IAB|Messenger/i.test(ua)) return;
+  var daDong = false;
+  try{ daDong = sessionStorage.getItem("hls_an_nhac") === "1"; }catch(e){}
+  if(daDong) return;
+  var nhac = document.getElementById("nhac-trinh-duyet");
+  nhac.classList.remove("an");
+  document.getElementById("nhac-dong").addEventListener("click", function(){
+    nhac.classList.add("an");
+    try{ sessionStorage.setItem("hls_an_nhac", "1"); }catch(e){}
+  });
+})();
+
+/* ---------- Cuộn ô đang gõ ra giữa màn hình để bàn phím ảo không che ---------- */
+document.addEventListener("focusin", function(e){
+  var el = e.target;
+  if(!el || !el.tagName) return;
+  var ten = el.tagName.toLowerCase();
+  var kieu = (el.getAttribute("type") || "text").toLowerCase();
+  if(!(ten === "textarea" || (ten === "input" && /^(text|search|number|tel|url|email)$/.test(kieu)))) return;
+  setTimeout(function(){ thu(function(){ el.scrollIntoView({block:"center", behavior:"smooth"}); }); }, 300);
+});
 
 /* ---------- In / Xuất PDF ---------- */
 document.getElementById("print-btn").addEventListener("click", function(){ window.print(); });
@@ -273,14 +470,41 @@ document.getElementById("print-btn").addEventListener("click", function(){ windo
 /* ---------- Chuyển tab ---------- */
 var tabBtns = document.querySelectorAll(".tab-btn");
 var panels = document.querySelectorAll(".panel");
-tabBtns.forEach(function(btn){
+var khiMoTab = {};
+/* Tab đang xem ghi trên đường link: gửi được link mở thẳng một khối, nút Quay lại về tab trước */
+var TAB_HASH = {p1:"so-do", p2:"phieu", p3:"the-nho", p4:"quiz"};
+var HASH_TAB = {"so-do":"p1", "phieu":"p2", "the-nho":"p3", "quiz":"p4"};
+function tabTuHash(){ return HASH_TAB[(location.hash || "").replace(/^#/, "")] || null; }
+function moTab(id){
+  if(!TAB_HASH[id]) id = "p1";
+  moiPhanTu(tabBtns, function(b){ b.classList.toggle("active", b.dataset.panel === id); });
+  moiPhanTu(panels, function(p){ p.classList.toggle("active", p.id === id); });
+  store.ui.tab = id;
+  ghiTre();
+  if(khiMoTab[id]) khiMoTab[id]();
+}
+moiPhanTu(tabBtns, function(btn){
   btn.addEventListener("click", function(){
-    tabBtns.forEach(function(b){ b.classList.remove("active"); });
-    panels.forEach(function(p){ p.classList.remove("active"); });
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.panel).classList.add("active");
+    var id = btn.dataset.panel;
+    if(tabTuHash() !== id && window.history && history.pushState){
+      thu(function(){ history.pushState(null, "", "#" + TAB_HASH[id]); });
+    }
+    moTab(id);
+    var hd = document.querySelector("header.hd");
+    var cao = hd ? hd.offsetHeight : 0;
+    if((window.pageYOffset || 0) > cao) window.scrollTo(0, cao);
   });
 });
+window.addEventListener("popstate", function(){ moTab(tabTuHash() || "p1"); });
+window.addEventListener("hashchange", function(){ var t = tabTuHash(); if(t) moTab(t); });
+
+/* Tô nền lựa chọn đang chọn (thay cho :has, chạy cả trình duyệt cũ) */
+function danhDauChon(goc){
+  moiPhanTu(goc.querySelectorAll("label"), function(lb){
+    var inp = lb.querySelector("input[type=radio], input[type=checkbox]");
+    if(inp) lb.classList.toggle("chon", inp.checked);
+  });
+}
 
 /* ---------- Phiếu học tập ---------- */
 document.getElementById("p2-content").innerHTML = payload.worksheetHtml || "";
@@ -290,11 +514,12 @@ enhanceWorksheet();
 /* ===================== KHỐI 1 — SƠ ĐỒ TƯ DUY ===================== */
 var mindmapData = payload.mindmap || [];
 var branchColorClass = ["b1","b2","b3","b4","b5","b6"];
+var tieuDeTrungTam = payload.tieu_de_trung_tam || payload.tieu_de || document.title.replace("Học liệu số — ","");
 
 var mmRoot = document.getElementById("mindmap");
 var center = document.createElement("div");
 center.className = "center-node";
-center.textContent = payload.tieu_de_trung_tam || (document.title.replace("Học liệu số — ",""));
+center.textContent = tieuDeTrungTam;
 mmRoot.appendChild(center);
 
 mindmapData.forEach(function(b, idx){
@@ -322,37 +547,47 @@ mindmapData.forEach(function(b, idx){
   mmRoot.appendChild(branch);
 });
 
+/* Trạng thái mở/đóng từng nhánh dùng chung cho dạng danh sách và dạng Markmap */
+var mm = { markmap:null, mo:[], dongBoMarkmap:null };
+mindmapData.forEach(function(){ mm.mo.push(false); });
+
 function updateMmCounter(){
-  var total = mindmapData.length;
-  var open = document.querySelectorAll(".branch.open").length;
-  document.getElementById("mm-counter").textContent = "Đã mở " + open + "/" + total + " phần";
+  var open = mm.mo.filter(Boolean).length;
+  document.getElementById("mm-counter").textContent = "Đã mở " + open + "/" + mm.mo.length + " phần";
+}
+function veDanhSach(){
+  moiPhanTu(document.querySelectorAll(".branch"), function(br){
+    var i = +br.dataset.idx;
+    br.classList.toggle("open", mm.mo[i]);
+    br.querySelector(".mark").textContent = mm.mo[i] ? "−" : "?";
+  });
 }
 function toggleBranch(branch){
-  var isOpen = branch.classList.toggle("open");
-  var mark = branch.querySelector(".mark");
-  mark.textContent = isOpen ? "−" : "?";
+  var i = +branch.dataset.idx;
+  mm.mo[i] = !mm.mo[i];
+  veDanhSach();
+  if(mm.dongBoMarkmap) mm.dongBoMarkmap(false);
   updateMmCounter();
 }
-document.getElementById("mm-open-all").addEventListener("click", function(){
-  document.querySelectorAll(".branch").forEach(function(br){
-    br.classList.add("open");
-    br.querySelector(".mark").textContent = "−";
-  });
+function datTatCa(trangThai){
+  for(var i = 0; i < mm.mo.length; i++) mm.mo[i] = trangThai;
+  veDanhSach();
+  if(mm.dongBoMarkmap) mm.dongBoMarkmap(true);
   updateMmCounter();
-});
-document.getElementById("mm-close-all").addEventListener("click", function(){
-  document.querySelectorAll(".branch").forEach(function(br){
-    br.classList.remove("open");
-    br.querySelector(".mark").textContent = "?";
-  });
-  updateMmCounter();
-});
+}
+document.getElementById("mm-open-all").addEventListener("click", function(){ datTatCa(true); });
+document.getElementById("mm-close-all").addEventListener("click", function(){ datTatCa(false); });
 updateMmCounter();
 
 /* ===================== KHỐI 3 — THẺ GHI NHỚ ===================== */
 var flashcards = payload.flashcards || [];
 var fcOrder = flashcards.map(function(c,i){ return i; });
-var fcPos = 0;
+if(Array.isArray(store.ui.fcOrder) && store.ui.fcOrder.length === fcOrder.length
+   && store.ui.fcOrder.slice().sort(function(a,b){ return a-b; }).join(",") === fcOrder.join(",")){
+  fcOrder = store.ui.fcOrder.slice();
+}
+var fcPos = typeof store.ui.fcPos === "number" ? store.ui.fcPos : 0;
+var fc = { swiper:null };
 
 function fcVisibleOrder(){
   var onlyUnknown = document.getElementById("fc-filter-unknown").checked;
@@ -362,38 +597,77 @@ function fcVisibleOrder(){
   }
   return order;
 }
+function fcCapNhatDem(order){
+  document.getElementById("fc-counter").textContent = order.length ? (fcPos+1) + "/" + order.length : "0/0";
+  store.ui.fcPos = fcPos;
+  ghiTre();
+  var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
+  document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
+}
+function fcTheHtml(card){
+  return '<div class="fc-stage"><div class="fc-card">'
+    + '<div class="fc-face front' + (store.known[card.id] ? ' known-flag' : '') + '"><span class="dir">' + escHtml(card.dir) + '</span><span>' + escHtml(card.front) + '</span><span class="tap">Chạm để lật · vuốt để chuyển</span></div>'
+    + '<div class="fc-face back"><span class="dir">Trả lời</span><span>' + escHtml(card.back) + '</span></div>'
+    + '</div></div>';
+}
 function fcRender(){
   var order = fcVisibleOrder();
+  var single = document.getElementById("fc-single");
+  var swEl = document.getElementById("fc-swiper");
   if(order.length === 0){
+    swEl.classList.add("an");
+    single.classList.remove("an");
+    document.getElementById("fc-dir-f").textContent = "";
     document.getElementById("fc-front-text").textContent = "Không còn thẻ nào trong bộ lọc — mọi thẻ đã được đánh dấu Đã thuộc.";
     document.getElementById("fc-back-text").textContent = "Bỏ lọc để xem lại toàn bộ bộ thẻ.";
-    document.getElementById("fc-counter").textContent = "0/0";
-    document.getElementById("fc-status").textContent = "";
+    document.getElementById("fc-front-face").classList.remove("known-flag");
+    document.getElementById("fc-card").classList.remove("flipped");
+    fcPos = 0;
+    fcCapNhatDem(order);
     return;
   }
   if(fcPos >= order.length) fcPos = 0;
   if(fcPos < 0) fcPos = order.length - 1;
-  var card = flashcards[order[fcPos]];
-  document.getElementById("fc-dir-f").textContent = card.dir;
-  document.getElementById("fc-front-text").textContent = card.front;
-  document.getElementById("fc-back-text").textContent = card.back;
-  document.getElementById("fc-counter").textContent = (fcPos+1) + "/" + order.length;
-  var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
-  document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
-  var el = document.getElementById("fc-card");
-  el.classList.remove("flipped");
-}
-document.getElementById("fc-card").addEventListener("click", function(){
-  this.classList.toggle("flipped");
-});
-document.getElementById("fc-prev").addEventListener("click", function(){ fcPos--; fcRender(); });
-document.getElementById("fc-next").addEventListener("click", function(){ fcPos++; fcRender(); });
-document.getElementById("fc-filter-unknown").addEventListener("change", function(){ fcPos = 0; fcRender(); });
-document.getElementById("fc-shuffle").addEventListener("click", function(){
-  for(var i = fcOrder.length - 1; i > 0; i--){
-    var j = Math.floor(Math.random() * (i+1));
-    var t = fcOrder[i]; fcOrder[i] = fcOrder[j]; fcOrder[j] = t;
+
+  if(fc.swiper){
+    single.classList.add("an");
+    swEl.classList.remove("an");
+    document.getElementById("fc-swiper-wrapper").innerHTML = order.map(function(i){
+      return '<div class="swiper-slide">' + fcTheHtml(flashcards[i]) + '</div>';
+    }).join("");
+    fc.swiper.update();
+    fc.swiper.slideTo(fcPos, 0, false);
+  } else {
+    var card = flashcards[order[fcPos]];
+    document.getElementById("fc-dir-f").textContent = card.dir;
+    document.getElementById("fc-front-text").textContent = card.front;
+    document.getElementById("fc-back-text").textContent = card.back;
+    document.getElementById("fc-front-face").classList.toggle("known-flag", !!store.known[card.id]);
+    document.getElementById("fc-card").classList.remove("flipped");
   }
+  fcCapNhatDem(order);
+}
+document.getElementById("fc-card").addEventListener("click", function(){ this.classList.toggle("flipped"); });
+function fcDi(buoc){
+  var n = fcVisibleOrder().length;
+  if(fc.swiper && n){
+    fcPos = (fcPos + buoc + n) % n;
+    fc.swiper.slideTo(fcPos);
+  } else { fcPos += buoc; fcRender(); }
+}
+document.getElementById("fc-prev").addEventListener("click", function(){ fcDi(-1); });
+document.getElementById("fc-next").addEventListener("click", function(){ fcDi(1); });
+document.getElementById("fc-filter-unknown").addEventListener("change", function(){ fcPos = 0; fcRender(); });
+function xaoTron(arr){
+  for(var i = arr.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i+1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  return arr;
+}
+document.getElementById("fc-shuffle").addEventListener("click", function(){
+  xaoTron(fcOrder);
+  store.ui.fcOrder = fcOrder.slice();
   fcPos = 0;
   fcRender();
 });
@@ -403,7 +677,8 @@ function fcMark(known){
   var card = flashcards[order[fcPos]];
   if(known){ store.known[card.id] = true; } else { delete store.known[card.id]; }
   saveStore(store);
-  fcPos++;
+  /* Đang lọc "chưa thuộc": thẻ vừa thuộc rời khỏi bộ, giữ vị trí là sang thẻ kế */
+  if(!(known && document.getElementById("fc-filter-unknown").checked)) fcPos++;
   fcRender();
 }
 document.getElementById("fc-mark-known").addEventListener("click", function(){ fcMark(true); });
@@ -419,11 +694,7 @@ var testOrder = [];
 var testPos = 0;
 var testRight = 0;
 function startTest(){
-  testOrder = fcOrder.slice();
-  for(var i = testOrder.length - 1; i > 0; i--){
-    var j = Math.floor(Math.random() * (i+1));
-    var t = testOrder[i]; testOrder[i] = testOrder[j]; testOrder[j] = t;
-  }
+  testOrder = xaoTron(fcOrder.slice());
   testPos = 0; testRight = 0;
   document.getElementById("fc-view").style.display = "none";
   document.getElementById("fc-result-view").style.display = "none";
@@ -448,6 +719,7 @@ function finishTest(){
   document.getElementById("fc-result-view").style.display = "block";
   var pct = testOrder.length ? Math.round((testRight / testOrder.length) * 100) : 0;
   document.getElementById("fc-score").textContent = pct + "% (" + testRight + "/" + testOrder.length + ")";
+  chucMung(pct);
 }
 document.getElementById("fc-test-again").addEventListener("click", startTest);
 document.getElementById("fc-test-exit").addEventListener("click", function(){
@@ -461,7 +733,7 @@ document.getElementById("fc-test-exit").addEventListener("click", function(){
   var wrap = document.getElementById("fc-print-grid");
   var style = document.createElement("style");
   style.textContent = ".pf-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}"
-    + ".pf-card{border:1px dashed #999;padding:10px;min-height:110px;font-size:11px;}"
+    + ".pf-card{border:1px dashed #999;padding:10px;min-height:110px;font-size:11px;break-inside:avoid;}"
     + ".pf-card b{display:block;margin-bottom:6px;}";
   wrap.appendChild(style);
   var grid = document.createElement("div");
@@ -469,7 +741,7 @@ document.getElementById("fc-test-exit").addEventListener("click", function(){
   flashcards.forEach(function(c){
     var d = document.createElement("div");
     d.className = "pf-card";
-    d.innerHTML = "<b>" + c.dir + ": " + c.front + "</b>" + c.back;
+    d.innerHTML = "<b>" + escHtml(c.dir) + ": " + escHtml(c.front) + "</b>" + escHtml(c.back);
     grid.appendChild(d);
   });
   wrap.appendChild(grid);
@@ -482,6 +754,12 @@ var quiz = payload.quiz || [];
 var quizOrder = quiz.map(function(c,i){ return i; });
 var graded = false;
 
+function capNhatTienDoQuiz(){
+  var da = 0;
+  quiz.forEach(function(q){ if(document.querySelector('input[name="' + q.id + '"]:checked')) da++; });
+  document.getElementById("qz-bar").style.width = (quiz.length ? da / quiz.length * 100 : 0) + "%";
+  if(!graded) document.getElementById("qz-progress").textContent = "Đã chọn " + da + "/" + quiz.length + " câu — chọn xong bấm Nộp bài để tự chấm điểm.";
+}
 function renderQuiz(){
   var form = document.getElementById("qz-form");
   form.innerHTML = "";
@@ -500,12 +778,17 @@ function renderQuiz(){
     box.innerHTML = html;
     form.appendChild(box);
   });
-  document.getElementById("qz-progress").textContent = quiz.length + " câu trắc nghiệm — chọn xong bấm Nộp bài để tự chấm điểm.";
-  document.getElementById("qz-result").classList.remove("show");
   graded = false;
-  document.querySelectorAll(".qz-item").forEach(function(it){ it.classList.remove("graded"); });
+  document.getElementById("qz-result").classList.remove("show");
+  document.getElementById("qz-submit").disabled = false;
+  capNhatTienDoQuiz();
+  boBangCuon(form);
+  if(app && app.toMauMa) app.toMauMa(form);
 }
-renderQuiz();
+document.getElementById("qz-form").addEventListener("change", function(){
+  danhDauChon(document.getElementById("qz-form"));
+  capNhatTienDoQuiz();
+});
 
 document.getElementById("qz-submit").addEventListener("click", function(){
   if(graded) return;
@@ -516,34 +799,72 @@ document.getElementById("qz-submit").addEventListener("click", function(){
     box.classList.add("graded");
     var isCorrect = chosen && chosen.value === q.ans;
     if(isCorrect) right++;
-    box.querySelectorAll("label").forEach(function(lb){
+    moiPhanTu(box.querySelectorAll("label"), function(lb){
+      lb.classList.remove("chon");
       if(lb.dataset.l === q.ans) lb.classList.add("correct");
       else if(chosen && lb.dataset.l === chosen.value) lb.classList.add("wrong-pick");
     });
     box.querySelector(".qz-explain").textContent = "Đáp án đúng: " + q.ans + ". " + q.explain;
-    box.querySelectorAll("input").forEach(function(inp){ inp.disabled = true; });
+    moiPhanTu(box.querySelectorAll("input"), function(inp){ inp.disabled = true; });
   });
   var pct = quiz.length ? Math.round((right / quiz.length) * 100) : 0;
   document.getElementById("qz-score").textContent = pct + "% (" + right + "/" + quiz.length + " câu)";
   document.getElementById("qz-result").classList.add("show");
+  document.getElementById("qz-progress").textContent = "Đã chấm. Xem giải thích dưới từng câu, bấm Làm lại để làm lần nữa.";
+  document.getElementById("qz-submit").disabled = true;
   graded = true;
+  document.getElementById("qz-result").scrollIntoView({behavior:"smooth", block:"center"});
+  chucMung(pct);
 });
 document.getElementById("qz-reset").addEventListener("click", renderQuiz);
 document.getElementById("qz-shuffle").addEventListener("click", function(){
-  for(var i = quizOrder.length - 1; i > 0; i--){
-    var j = Math.floor(Math.random() * (i+1));
-    var t = quizOrder[i]; quizOrder[i] = quizOrder[j]; quizOrder[j] = t;
-  }
+  xaoTron(quizOrder);
   renderQuiz();
 });
+renderQuiz();
 
-/* ========== Phiếu học tập — điền/chọn đáp án + lưu tạm ========== */
+/* Pháo giấy khi đạt từ 80% (chỉ khi đã tải canvas-confetti) */
+/* Pháo giấy khi đạt từ 80%: chỉ tải canvas-confetti vào lúc cần, máy bật giảm chuyển động thì bỏ qua */
+function chucMung(pct){
+  if(pct < 80) return;
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function ban(){ thu(function(){ window.confetti({particleCount:120, spread:75, origin:{y:.7}, disableForReducedMotion:true}); }); }
+  if(typeof window.confetti === "function"){ ban(); return; }
+  if(window.Promise && navigator.onLine !== false) taiJS(THU_VIEN.confetti).then(ban, function(){});
+}
+
+/* Bảng rộng cuộn ngang trong khung riêng, trang chính không cuộn ngang */
+function boBangCuon(goc){
+  moiPhanTu(goc.querySelectorAll("table"), function(tb){
+    var cha = tb.parentNode;
+    if(cha.classList && cha.classList.contains("bang-cuon")) return;
+    var w = document.createElement("div");
+    w.className = "bang-cuon";
+    cha.insertBefore(w, tb);
+    w.appendChild(tb);
+  });
+}
+
+/* ========== Phiếu học tập — điền/chọn đáp án, kéo thả sắp xếp, lưu tạm ========== */
 function enhanceWorksheet(){
   var scope = document.getElementById("p2-content");
   if(!scope) return;
 
+  boBangCuon(scope);
+
+  /* Thuộc tính bàn phím điện thoại cho ô nhập (không ghi đè nếu người soạn đã đặt) */
+  function datNeuChua(el, ten, gt){ if(!el.hasAttribute(ten)) el.setAttribute(ten, gt); }
+  moiPhanTu(scope.querySelectorAll("input.dien-ngan"), function(el){
+    datNeuChua(el, "autocomplete", "off");
+    datNeuChua(el, "autocapitalize", "off");
+    datNeuChua(el, "spellcheck", "false");
+    datNeuChua(el, "enterkeyhint", "done");
+    el.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); el.blur(); } });
+  });
+  moiPhanTu(scope.querySelectorAll("textarea.dien-dai"), function(el){ datNeuChua(el, "autocomplete", "off"); });
+
   /* Ô nhập câu trả lời (ngắn: input, dài: textarea) */
-  scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]").forEach(function(el){
+  moiPhanTu(scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]"), function(el){
     var id = el.dataset.id;
     if(store.phieu[id] !== undefined) el.value = store.phieu[id];
     el.addEventListener("input", function(){
@@ -553,33 +874,67 @@ function enhanceWorksheet(){
   });
 
   /* Trắc nghiệm / Đúng — Sai (radio hoặc checkbox), mỗi câu bọc trong .lua-chon-item[data-id] */
-  scope.querySelectorAll(".lua-chon-item[data-id]").forEach(function(item){
+  moiPhanTu(scope.querySelectorAll(".lua-chon-item[data-id]"), function(item){
     var id = item.dataset.id;
     var saved = store.phieu[id];
     var boxes = item.querySelectorAll("input[type=checkbox]");
     if(boxes.length){
-      boxes.forEach(function(inp){
+      moiPhanTu(boxes, function(inp){
         if(Array.isArray(saved) && saved.indexOf(inp.value) !== -1) inp.checked = true;
         inp.addEventListener("change", function(){
           var chon = [];
-          item.querySelectorAll("input[type=checkbox]:checked").forEach(function(c){ chon.push(c.value); });
+          moiPhanTu(item.querySelectorAll("input[type=checkbox]:checked"), function(c){ chon.push(c.value); });
           store.phieu[id] = chon;
           saveStore(store);
+          danhDauChon(item);
         });
       });
     } else {
-      item.querySelectorAll("input[type=radio]").forEach(function(inp){
+      moiPhanTu(item.querySelectorAll("input[type=radio]"), function(inp){
         if(saved === inp.value) inp.checked = true;
         inp.addEventListener("change", function(){
           store.phieu[id] = inp.value;
           saveStore(store);
+          danhDauChon(item);
         });
       });
     }
+    danhDauChon(item);
+  });
+
+  /* Checklist tự đánh giá: ô có data-id riêng thì tự lưu */
+  moiPhanTu(scope.querySelectorAll(".checklist input[type=checkbox][data-id]"), function(inp){
+    var id = inp.dataset.id;
+    if(store.phieu[id] === true) inp.checked = true;
+    inp.addEventListener("change", function(){ store.phieu[id] = inp.checked; saveStore(store); });
+  });
+
+  /* Kéo thả sắp xếp: <ol class="keo-tha" data-id="..."><li data-v="...">...</li></ol>
+     Luôn có nút ▲ ▼ (chạy khi không có thư viện); tải được SortableJS thì kéo thả trực tiếp. */
+  moiPhanTu(scope.querySelectorAll(".keo-tha[data-id]"), function(list){
+    var id = list.dataset.id;
+    var goc = [];
+    moiPhanTu(list.children, function(li){
+      goc.push(li.dataset.v);
+      li.innerHTML = '<span class="kt-text">' + li.innerHTML + '</span>'
+        + '<button type="button" class="kt-nut" data-huong="-1" aria-label="Chuyển lên">▲</button>'
+        + '<button type="button" class="kt-nut" data-huong="1" aria-label="Chuyển xuống">▼</button>';
+    });
+    list.dataset.goc = goc.join("|");
+    if(Array.isArray(store.phieu[id])) datThuTu(list, store.phieu[id]);
+    list.addEventListener("click", function(e){
+      var nut = e.target;
+      while(nut && nut !== list && !(nut.classList && nut.classList.contains("kt-nut"))) nut = nut.parentNode;
+      if(!nut || nut === list) return;
+      var li = nut.parentNode;
+      if(nut.dataset.huong === "-1" && li.previousElementSibling) list.insertBefore(li, li.previousElementSibling);
+      else if(nut.dataset.huong === "1" && li.nextElementSibling) list.insertBefore(li.nextElementSibling, li);
+      luuThuTu(list);
+    });
   });
 
   /* Nút xem đáp án gợi ý (không tự chấm, chỉ hiện/ẩn) */
-  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+  moiPhanTu(scope.querySelectorAll(".dap-an-goi-y"), function(block){
     var btn = block.querySelector(".nut-xem-dap-an");
     if(!btn) return;
     btn.addEventListener("click", function(){
@@ -594,9 +949,11 @@ function enhanceWorksheet(){
     resetBtn.addEventListener("click", function(){
       store.phieu = {};
       saveStore(store);
-      scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){ el.value = ""; });
-      scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){ inp.checked = false; });
-      scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+      moiPhanTu(scope.querySelectorAll(".dien-ngan, .dien-dai"), function(el){ el.value = ""; });
+      moiPhanTu(scope.querySelectorAll("input[type=radio], input[type=checkbox]"), function(inp){ inp.checked = false; });
+      moiPhanTu(scope.querySelectorAll("label.chon"), function(lb){ lb.classList.remove("chon"); });
+      moiPhanTu(scope.querySelectorAll(".keo-tha[data-id]"), function(list){ datThuTu(list, list.dataset.goc.split("|")); });
+      moiPhanTu(scope.querySelectorAll(".dap-an-goi-y.hien"), function(block){
         block.classList.remove("hien");
         var b = block.querySelector(".nut-xem-dap-an");
         if(b) b.textContent = "Xem đáp án gợi ý";
@@ -604,39 +961,250 @@ function enhanceWorksheet(){
     });
   }
 }
+function datThuTu(list, thuTu){
+  var theoV = {};
+  moiPhanTu(list.children, function(li){ theoV[li.dataset.v] = li; });
+  thuTu.forEach(function(v){ if(theoV[v]) list.appendChild(theoV[v]); });
+}
+function luuThuTu(list){
+  var t = [];
+  moiPhanTu(list.children, function(li){ t.push(li.dataset.v); });
+  store.phieu[list.dataset.id] = t;
+  saveStore(store);
+}
 
-/* Khi in: đưa phiếu về trạng thái trống như bản gốc (không lộ đáp án đã điền/chọn), sau khi in thì khôi phục lại trên màn hình */
+/* Khi in: đưa phiếu về trạng thái trống như bản gốc (không lộ bài làm), in xong khôi phục trên màn hình */
+var giuThuTu = {};
 window.addEventListener("beforeprint", function(){
   var scope = document.getElementById("p2-content");
   if(!scope) return;
-  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+  moiPhanTu(scope.querySelectorAll(".dien-ngan, .dien-dai"), function(el){
     el.dataset.printGiuLai = el.value;
     el.value = "";
   });
-  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+  moiPhanTu(scope.querySelectorAll("input[type=radio], input[type=checkbox]"), function(inp){
     if(inp.checked){ inp.dataset.printGiuLai = "1"; inp.checked = false; }
   });
-  scope.querySelectorAll(".dap-an-goi-y.hien").forEach(function(block){
+  moiPhanTu(scope.querySelectorAll("label.chon"), function(lb){ lb.classList.remove("chon"); lb.dataset.printChon = "1"; });
+  moiPhanTu(scope.querySelectorAll(".dap-an-goi-y.hien"), function(block){
     block.dataset.printGiuLai = "1";
     block.classList.remove("hien");
+  });
+  moiPhanTu(scope.querySelectorAll(".keo-tha[data-id]"), function(list){
+    var t = [];
+    moiPhanTu(list.children, function(li){ t.push(li.dataset.v); });
+    giuThuTu[list.dataset.id] = t;
+    datThuTu(list, list.dataset.goc.split("|"));
   });
 });
 window.addEventListener("afterprint", function(){
   var scope = document.getElementById("p2-content");
   if(!scope) return;
-  scope.querySelectorAll(".dien-ngan, .dien-dai").forEach(function(el){
+  moiPhanTu(scope.querySelectorAll(".dien-ngan, .dien-dai"), function(el){
     if(el.dataset.printGiuLai !== undefined){ el.value = el.dataset.printGiuLai; delete el.dataset.printGiuLai; }
   });
-  scope.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(function(inp){
+  moiPhanTu(scope.querySelectorAll("input[type=radio], input[type=checkbox]"), function(inp){
     if(inp.dataset.printGiuLai){ inp.checked = true; delete inp.dataset.printGiuLai; }
   });
-  scope.querySelectorAll(".dap-an-goi-y").forEach(function(block){
+  moiPhanTu(scope.querySelectorAll("label[data-print-chon]"), function(lb){ lb.classList.add("chon"); delete lb.dataset.printChon; });
+  moiPhanTu(scope.querySelectorAll(".dap-an-goi-y"), function(block){
     if(block.dataset.printGiuLai){ block.classList.add("hien"); delete block.dataset.printGiuLai; }
+  });
+  moiPhanTu(scope.querySelectorAll(".keo-tha[data-id]"), function(list){
+    if(giuThuTu[list.dataset.id]) datThuTu(list, giuThuTu[list.dataset.id]);
   });
 });
 
+/* Mở đúng tab: theo đường link (#quiz...), không có thì theo lần học trước */
+(function(){
+  var t = tabTuHash();
+  if(!t && store.ui.tab && store.ui.tab !== "p1" && TAB_HASH[store.ui.tab]){
+    t = store.ui.tab;
+    if(window.history && history.replaceState) thu(function(){ history.replaceState(null, "", "#" + TAB_HASH[t]); });
+  }
+  moTab(t || "p1");
+})();
+
+return {
+  mm:mm, mindmapData:mindmapData, tieuDeTrungTam:tieuDeTrungTam,
+  updateMmCounter:updateMmCounter, veDanhSach:veDanhSach,
+  fc:fc, fcRender:fcRender, fcCapNhatDem:fcCapNhatDem, fcVisibleOrder:fcVisibleOrder,
+  datFcPos:function(p){ fcPos = p; }, khiMoTab:khiMoTab, luuThuTu:luuThuTu, toMauMa:null
+};
 
 } /* hết buildApp */
+
+/* ===================== NÂNG CẤP BẰNG THƯ VIỆN ONLINE ===================== */
+function nangCapThuVien(app){
+  var loiTai = 0;
+  function sau(p, fn){
+    return p.then(function(){ thu(fn); }, function(e){ loiTai++; if(window.console) console.warn(e.message); });
+  }
+  var viec = [];
+
+  /* Icon */
+  viec.push(sau(taiJS(THU_VIEN.lucide), function(){ window.lucide.createIcons(); }));
+
+  /* Sơ đồ tư duy Markmap (cần d3 trước; cần ResizeObserver) */
+  if(window.ResizeObserver && app.mindmapData.length){
+    viec.push(sau(taiJS(THU_VIEN.d3).then(function(){ return taiJS(THU_VIEN.markmap); }), function(){ dungMarkmap(app); }));
+  }
+
+  /* Thẻ ghi nhớ Swiper */
+  taiCSS(THU_VIEN.swiperCss);
+  viec.push(sau(taiJS(THU_VIEN.swiperJs), function(){ dungSwiper(app); }));
+
+  /* Kéo thả SortableJS — chỉ tải khi phiếu có danh sách kéo thả */
+  if(document.querySelector(".keo-tha[data-id]")){
+    viec.push(sau(taiJS(THU_VIEN.sortable), function(){ dungSortable(app); }));
+  }
+
+  /* Tô màu mã nguồn — chỉ tải khi có <pre><code> */
+  if(document.querySelector("pre code")){
+    taiCSS(THU_VIEN.hljsCss);
+    viec.push(sau(taiJS(THU_VIEN.hljsJs), function(){
+      app.toMauMa = function(goc){
+        moiPhanTu((goc || document).querySelectorAll("pre code"), function(el){
+          if(!el.dataset.highlighted) window.hljs.highlightElement(el);
+        });
+      };
+      app.toMauMa(document);
+    }));
+  }
+
+  Promise.all(viec).then(function(){
+    var el = document.getElementById("che-do-thu-vien");
+    if(el && loiTai) el.textContent = "Chưa tải được một số thư viện (mạng yếu hoặc mất mạng), đang dùng giao diện gọn, vẫn đủ chức năng.";
+  });
+}
+
+function dungMarkmap(app){
+  var M = window.markmap && window.markmap.Markmap;
+  if(!M) return;
+  var mauNhanh = ["#2E86AB","#A23B72","#F18F01","#3B8686","#7A5195","#C0587E"];
+  var soMau = {b1:0,b2:1,b3:2,b4:3,b5:4,b6:5};
+  function mauCua(i){
+    var b = app.mindmapData[i];
+    var k = b && b.cls && soMau[b.cls] !== undefined ? soMau[b.cls] : i;
+    return mauNhanh[k % mauNhanh.length];
+  }
+  function noiDungNhanh(i){
+    return escHtml(app.mindmapData[i].title) + (app.mm.mo[i] ? "" : '<span class="mm-q">?</span>');
+  }
+  var root = {
+    content: "<b>" + escHtml(app.tieuDeTrungTam) + "</b>",
+    payload: { fold: 0 },
+    children: app.mindmapData.map(function(b, i){
+      return {
+        content: noiDungNhanh(i),
+        payload: { fold: app.mm.mo[i] ? 0 : 1, nhanh: i },
+        children: (b.items || []).map(function(t){ return { content: escHtml(t), children: [], payload: { nhanhCha: i } }; })
+      };
+    })
+  };
+  function mauNut(node){
+    var p = node.payload || {};
+    if(p.nhanh !== undefined) return mauCua(p.nhanh);
+    if(p.nhanhCha !== undefined) return mauCua(p.nhanhCha);
+    return "#1F2937";
+  }
+
+  var wrap = document.getElementById("mm-svg-wrap");
+  var list = document.getElementById("mindmap");
+  var nutFit = document.getElementById("mm-fit");
+  var nutXem = document.getElementById("mm-view");
+  wrap.classList.remove("an");
+  list.classList.add("an");
+  nutFit.classList.remove("an");
+  nutXem.classList.remove("an");
+
+  var mk = M.create("#mm-svg", {
+    autoFit: false, duration: 350, maxWidth: 240, spacingHorizontal: 50, spacingVertical: 8,
+    paddingX: 10, initialExpandLevel: -1, color: mauNut
+  }, root);
+  app.mm.markmap = mk;
+  /* Chỉ căn khung khi sơ đồ đang hiển thị (ẩn thì kích thước bằng 0, căn sẽ lỗi) */
+  function canKhung(){
+    var svg = document.getElementById("mm-svg");
+    if(svg.getBoundingClientRect().width > 0) mk.fit();
+  }
+  setTimeout(canKhung, 60);
+
+  /* Bấm nhánh cấp 1 trên sơ đồ: đồng bộ bộ đếm, dấu "?" và dạng danh sách */
+  var gocToggle = mk.toggleNode.bind(mk);
+  mk.toggleNode = function(d){
+    var p = d && d.payload;
+    if(!p || p.nhanh === undefined) return gocToggle(d, false);
+    var i = p.nhanh;
+    app.mm.mo[i] = !!p.fold;
+    d.content = noiDungNhanh(i);
+    app.veDanhSach();
+    app.updateMmCounter();
+    return gocToggle(d, false);
+  };
+  /* Từ nút Mở tất cả / Đóng tất cả hoặc dạng danh sách sang sơ đồ */
+  app.mm.dongBoMarkmap = function(canFit){
+    var data = mk.state.data;
+    if(!data) return;
+    data.children.forEach(function(c){
+      var i = c.payload.nhanh;
+      c.payload = { fold: app.mm.mo[i] ? 0 : 1, nhanh: i };
+      c.content = noiDungNhanh(i);
+    });
+    mk.setData(data).then(function(){ if(canFit) canKhung(); });
+  };
+
+  nutFit.addEventListener("click", canKhung);
+  nutXem.addEventListener("click", function(){
+    var dangSoDo = !wrap.classList.contains("an");
+    wrap.classList.toggle("an", dangSoDo);
+    list.classList.toggle("an", !dangSoDo);
+    nutFit.classList.toggle("an", dangSoDo);
+    nutXem.querySelector("span").textContent = dangSoDo ? "Dạng sơ đồ" : "Dạng danh sách";
+    if(!dangSoDo) setTimeout(canKhung, 50);
+  });
+  app.khiMoTab.p1 = function(){ setTimeout(canKhung, 50); };
+}
+
+function dungSwiper(app){
+  if(typeof window.Swiper !== "function") return;
+  /* Swiper phải khởi tạo khi khung thẻ đang hiển thị (đo được kích thước) */
+  function khoiTao(){
+    if(app.fc.swiper) { app.fc.swiper.update(); return; }
+    var swEl = document.getElementById("fc-swiper");
+    swEl.classList.remove("an");
+    document.getElementById("fc-single").classList.add("an");
+    var sw = new window.Swiper(swEl, {
+      effect: "cards", grabCursor: true, keyboard: { enabled: true },
+      cardsEffect: { slideShadows: false, perSlideOffset: 7, perSlideRotate: 2 }
+    });
+    app.fc.swiper = sw;
+    document.getElementById("fc-view").classList.add("co-swiper");
+    sw.on("slideChange", function(){
+      app.datFcPos(sw.activeIndex);
+      moiPhanTu(document.querySelectorAll("#fc-swiper .fc-card.flipped"), function(c){ c.classList.remove("flipped"); });
+      app.fcCapNhatDem(app.fcVisibleOrder());
+    });
+    sw.on("click", function(s, e){
+      var c = e && e.target;
+      while(c && c !== document && !(c.classList && c.classList.contains("fc-card"))) c = c.parentNode;
+      if(c && c !== document) c.classList.toggle("flipped");
+    });
+    app.fcRender();
+  }
+  app.khiMoTab.p3 = khoiTao;
+  if(document.getElementById("p3").classList.contains("active")) khoiTao();
+}
+
+function dungSortable(app){
+  if(!window.Sortable) return;
+  moiPhanTu(document.querySelectorAll(".keo-tha[data-id]"), function(list){
+    window.Sortable.create(list, {
+      animation: 160, delay: 120, delayOnTouchOnly: true, filter: ".kt-nut", preventOnFilter: false,
+      onEnd: function(){ app.luuThuTu(list); }
+    });
+  });
+}
 
 })();
 </script>

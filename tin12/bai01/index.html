@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#2E86AB">
+<meta name="description" content="Tin 12 – Bài 1: sơ đồ tư duy, phiếu học tập, thẻ ghi nhớ, quiz">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:site_name" content="Học liệu số Tin học — Trường THCS &amp; THPT Vĩnh Hưng">
+<meta property="og:title" content="Bài 1. Làm quen với Trí tuệ nhân tạo">
+<meta property="og:description" content="Tin 12 – Bài 1: sơ đồ tư duy, phiếu học tập, thẻ ghi nhớ, quiz">
+<meta property="og:url" content="https://robbie1992.github.io/HocLieu/tin12/bai01/">
+<meta property="og:image" content="https://robbie1992.github.io/HocLieu/anh-bia.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <title>Học liệu số — Bài 1. Làm quen với Trí tuệ nhân tạo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -68,7 +78,7 @@
 
   /* ===== Khối 1 — Sơ đồ tư duy ===== */
   .mm-svg-wrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;}
-  #mm-svg{display:block;width:100%;height:62vh;min-height:360px;max-height:640px;touch-action:none;}
+  #mm-svg{display:block;width:100%;height:62vh;height:62dvh;min-height:360px;max-height:640px;touch-action:none;}
   .mm-hint{font-size:.78rem;color:var(--sub);padding:6px 12px;border-top:1px solid var(--line);background:#FAFBFC;}
   .markmap-node .mm-q{display:inline-block;margin-left:6px;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#FDEAC9;color:#9A5A00;font-weight:800;font-size:12px;}
   .mindmap{display:flex;flex-direction:column;gap:10px;}
@@ -106,7 +116,7 @@
   .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:10px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
   .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--c1);}
   .dap-an-goi-y{margin-top:10px;}
-  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:36px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:8px;cursor:pointer;font-weight:600;}
+  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:40px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:8px;cursor:pointer;font-weight:600;}
   .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 8px 8px 0;padding:8px 10px;}
   .dap-an-goi-y.hien .noi-dung-dap-an{display:block;}
   .dap-an-goi-y.hien .nut-xem-dap-an{background:var(--c1);color:#fff;}
@@ -115,7 +125,7 @@
   .keo-tha li{counter-increment:kt;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 8px 8px 10px;margin-bottom:6px;font-size:.88rem;cursor:grab;}
   .keo-tha li::before{content:counter(kt);flex:none;width:24px;height:24px;border-radius:50%;background:var(--c1-l);color:var(--c1);font-weight:700;font-size:.78rem;display:flex;align-items:center;justify-content:center;}
   .keo-tha li .kt-text{flex:1;min-width:0;}
-  .keo-tha li .kt-nut{flex:none;width:34px;height:34px;border:1px solid var(--line);border-radius:8px;background:#F7F8FA;color:var(--sub);cursor:pointer;font-size:.8rem;}
+  .keo-tha li .kt-nut{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:8px;background:#F7F8FA;color:var(--sub);cursor:pointer;font-size:.8rem;}
   .keo-tha li.sortable-ghost{opacity:.4;}
   .keo-tha li.sortable-chosen{border-color:var(--c1);box-shadow:0 4px 14px rgba(46,134,171,.25);}
   /* Mã nguồn */
@@ -172,11 +182,23 @@
 
   footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px 16px calc(16px + env(safe-area-inset-bottom));}
 
+  /* ===== Tối ưu điện thoại (SOP mục IX.1b) ===== */
+  button,label,.fc-card,.branch-head,.keo-tha li{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+  .mm-svg-wrap,.fc-swiper{overscroll-behavior:contain;}
+  main{overflow-wrap:break-word;}
+  .bang-cuon{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0;}
+  .bang-cuon > table{margin:0 !important;}
+  #nhac-trinh-duyet{display:flex;align-items:center;gap:10px;background:#FFF4E5;color:#7A4100;border-bottom:1px solid #F5C77E;padding:6px 8px 6px 14px;padding-top:max(6px,env(safe-area-inset-top));font-size:.85rem;}
+  #nhac-trinh-duyet span{flex:1;min-width:0;}
+  .nut-dong{flex:none;width:40px;height:40px;border:none;border-radius:50%;background:transparent;color:inherit;font-size:1.1rem;cursor:pointer;}
+  .dai-bao{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;max-width:560px;margin:0 auto;background:#1F2937;color:#fff;border-radius:12px;padding:12px 14px;font-size:.85rem;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25);}
+  @media (prefers-reduced-motion:reduce){ .fc-card,.branch-body,.qz-bar span{transition:none !important;} }
+
   /* ===== In ===== */
   .print-only{display:none;}
   @media print{
     @page{margin:12mm;}
-    #nojs,nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,.qz-bar,footer,button,.hd-btn,.mm-svg-wrap,.fc-swiper,.kt-nut{display:none !important;}
+    #nojs,#nhac-trinh-duyet,#dai-mat-mang,nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,.qz-bar,footer,button,.hd-btn,.mm-svg-wrap,.fc-swiper,.kt-nut{display:none !important;}
     section.panel{display:block !important;animation:none !important;break-after:page;}
     #mindmap{display:flex !important;}
     .branch-body{max-height:none !important;}
@@ -199,6 +221,8 @@
 <div id="nojs"><b>Trình xem này chưa chạy được học liệu.</b>Mở bằng Safari hoặc Chrome: bấm nút Chia sẻ → Mở bằng trình duyệt, hoặc mở đường link web do giáo viên gửi.</div>
 
 <div id="app-shell">
+
+<div id="nhac-trinh-duyet" class="an" role="note"><span>Mở bằng Chrome/Safari để giữ bài làm: bấm ⋯ → Mở bằng trình duyệt.</span><button type="button" class="nut-dong" id="nhac-dong" aria-label="Đóng lời nhắc">✕</button></div>
 
 <header class="hd">
   <div class="hd-row">
@@ -326,6 +350,8 @@
 
 <footer>Học liệu số — Bài 1 Tin học 12 ICT — Trường THCS & THPT Vĩnh Hưng. <span id="che-do-thu-vien">Mở bằng Chrome hoặc Safari.</span></footer>
 
+<div id="dai-mat-mang" class="dai-bao an" role="status" aria-live="polite">Đang mất mạng, bài làm vẫn lưu trên máy.</div>
+
 </div><!-- /#app-shell -->
 
 <script type="application/json" id="hls-data">{"tieu_de": "Bài 1. Làm quen với Trí tuệ nhân tạo", "tieu_de_trung_tam": "Bài 1. Làm quen với Trí tuệ nhân tạo", "worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — cốt lõi<\/span>\n  <h3>Phân loại: AI hay tự động hoá thông thường?<\/h3>\n  <p>Với mỗi thiết bị/phần mềm sau, chọn Có nếu là ứng dụng AI, Không nếu chỉ là tự động hoá thông thường, và ghi ngắn gọn lí do:<\/p>\n  <table class=\"data-table\">\n    <tr><th>Thiết bị / phần mềm<\/th><th>Có AI?<\/th><th>Lí do<\/th><\/tr>\n    <tr>\n      <td>Ấm đun nước tự ngắt điện khi nước sôi<\/td>\n      <td class=\"lua-chon-item\" data-id=\"pl-1\" style=\"margin-top:0;\"><label><input type=\"radio\" name=\"pl-1\" value=\"co\"> Có<\/label><label><input type=\"radio\" name=\"pl-1\" value=\"khong\"> Không<\/label><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"pl-1-lido\"><\/td>\n    <\/tr>\n    <tr>\n      <td>Máy tìm kiếm thông tin Google (Google Search)<\/td>\n      <td class=\"lua-chon-item\" data-id=\"pl-2\" style=\"margin-top:0;\"><label><input type=\"radio\" name=\"pl-2\" value=\"co\"> Có<\/label><label><input type=\"radio\" name=\"pl-2\" value=\"khong\"> Không<\/label><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"pl-2-lido\"><\/td>\n    <\/tr>\n    <tr>\n      <td>Cửa tự động mở khi có người tới gần<\/td>\n      <td class=\"lua-chon-item\" data-id=\"pl-3\" style=\"margin-top:0;\"><label><input type=\"radio\" name=\"pl-3\" value=\"co\"> Có<\/label><label><input type=\"radio\" name=\"pl-3\" value=\"khong\"> Không<\/label><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"pl-3-lido\"><\/td>\n    <\/tr>\n    <tr>\n      <td>Trợ lí ảo trả lời câu hỏi bằng giọng nói<\/td>\n      <td class=\"lua-chon-item\" data-id=\"pl-4\" style=\"margin-top:0;\"><label><input type=\"radio\" name=\"pl-4\" value=\"co\"> Có<\/label><label><input type=\"radio\" name=\"pl-4\" value=\"khong\"> Không<\/label><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"pl-4-lido\"><\/td>\n    <\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Gợi ý: ấm đun nước và cửa tự động — Không (chỉ phản ứng theo cơ chế cố định, không \"học\" hay \"suy luận\"); Google Search và trợ lí ảo — Có (cần xử lí ngôn ngữ, học từ dữ liệu để trả kết quả phù hợp).<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: chỉ hỏi một câu duy nhất — thiết bị này có cần \"học\" hay \"suy luận\" từ dữ liệu để đưa ra kết quả không, hay chỉ phản ứng theo một cơ chế cố định?<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — cốt lõi<\/span>\n  <h3>Đối chiếu đặc trưng của AI<\/h3>\n  <p>Với ứng dụng dịch máy (Google dịch) và trợ lí ảo (Google Assistant/Siri), hãy chỉ ra ít nhất hai đặc trưng cơ bản của AI mà mỗi ứng dụng thể hiện rõ nhất:<\/p>\n  <p>a) Dịch máy thể hiện:<\/p>\n  <textarea class=\"dien-dai\" data-id=\"dc-a\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>b) Trợ lí ảo thể hiện:<\/p>\n  <textarea class=\"dien-dai\" data-id=\"dc-b\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: đối chiếu với 5 đặc trưng đã học — khả năng học, suy luận, nhận thức, hiểu ngôn ngữ, giải quyết vấn đề.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — cốt lõi<\/span>\n  <h3>Kể tên ứng dụng AI trong thực tế<\/h3>\n  <p>Nêu tên và mô tả sơ bộ chức năng hoạt động của một ứng dụng AI mà em biết ngoài các ví dụ đã học trong bài (không nhắc lại MYCIN, Asimo, Google dịch, nhận dạng khuôn mặt/chữ viết tay, trợ lí ảo).<\/p>\n  <textarea class=\"dien-dai\" data-id=\"ke-ung-dung\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: nghĩ tới các ứng dụng trên điện thoại hoặc mạng xã hội em hay dùng — gợi ý video, gợi ý kết bạn, lọc thư rác...<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Câu hỏi mở rộng — vận dụng<\/span>\n  <h3>Liên hệ thực tế<\/h3>\n  <p>1) Đề xuất một ứng dụng AI có thể giúp bà con nuôi tôm hoặc trồng lúa ở địa phương phát hiện sớm dịch bệnh. Mô tả ngắn gọn cách ứng dụng đó hoạt động.<\/p>\n  <p>2) Vì sao người dân vẫn cần đối chiếu thực tế, không nên tin tuyệt đối vào khuyến cáo của một ứng dụng AI?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"lien-he-thuc-te\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Bạn A nêu ý kiến phân loại từng thiết bị, bạn B đối chiếu và bổ sung lí do.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Hai bạn thống nhất được tiêu chí phân biệt AI với tự động hoá thông thường.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Hoàn thành đủ ba nhiệm vụ cốt lõi trong đúng thời gian quy định.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Nêu được lí do cụ thể, không trả lời chung chung \"có\"/\"không\".<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. Khái niệm về AI", "cls": "b1", "items": ["AI: máy tính làm được việc mang tính trí tuệ như con người", "5 đặc trưng: học, suy luận, nhận thức, hiểu ngôn ngữ, giải quyết vấn đề", "Phép thử Turing (Alan Turing, 1950)", "Hội thảo Dartmouth (1956) — thuật ngữ AI ra đời", "AI hẹp (AI yếu) và AI tổng quát (AI mạnh)", "Phân biệt AI với tự động hoá thông thường"]}, {"title": "2. Một số ứng dụng của AI", "cls": "b2", "items": ["Hệ chuyên gia MYCIN — chẩn đoán nhiễm trùng máu", "Robot Asimo — điều khiển, nhận dạng hình ảnh và tiếng nói", "Google dịch — dịch thuật tự động", "Nhận dạng khuôn mặt, nhận dạng chữ viết tay", "Trợ lí ảo: Google Assistant, Siri, Bixby, Cortana"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "Trí tuệ nhân tạo (AI) là gì?", "back": "Khả năng của máy tính làm được những công việc mang tính trí tuệ của con người như đọc chữ, hiểu tiếng nói, dịch thuật, học và ra quyết định."}, {"id": "fc02", "dir": "Hỏi xuôi", "front": "Phép thử Turing dùng để làm gì?", "back": "Đánh giá khả năng của máy tính trong việc thể hiện hành vi thông minh, do Alan Turing đề xuất năm 1950."}, {"id": "fc03", "dir": "Hỏi xuôi", "front": "Hội thảo nào đánh dấu sự ra đời của thuật ngữ AI, tổ chức năm nào?", "back": "Hội thảo Dartmouth, năm 1956, tại Đại học Dartmouth (Mỹ)."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "Kể tên 5 đặc trưng cơ bản của AI.", "back": "Khả năng học, khả năng suy luận, khả năng nhận thức, khả năng hiểu ngôn ngữ, khả năng giải quyết vấn đề."}, {"id": "fc05", "dir": "Hỏi ngược", "front": "Hệ thống khuyến nghị video trên YouTube học từ lịch sử xem để đề xuất video mới thể hiện đặc trưng nào?", "back": "Khả năng học."}, {"id": "fc06", "dir": "Hỏi ngược", "front": "Xe tự lái dùng cảm biến radar, camera để phát hiện chướng ngại vật, biển báo, người đi bộ thể hiện đặc trưng nào?", "back": "Khả năng nhận thức."}, {"id": "fc07", "dir": "Hỏi xuôi", "front": "Vì sao ấm đun nước tự ngắt điện không được coi là ứng dụng AI?", "back": "Vì chỉ hoạt động theo cơ chế ngắt mạch cơ - nhiệt - điện cố định, không học hay suy luận từ dữ liệu."}, {"id": "fc08", "dir": "Hỏi xuôi", "front": "AI hẹp (AI yếu) khác AI tổng quát (AI mạnh) ở điểm nào?", "back": "AI hẹp được thiết kế cho một nhiệm vụ cụ thể; AI tổng quát có khả năng tự học, tự thích nghi và làm được nhiều việc như con người (hiện chưa đạt được trong thực tế)."}, {"id": "fc09", "dir": "Hỏi xuôi", "front": "Hệ chuyên gia MYCIN dùng để làm gì?", "back": "Chẩn đoán nhiễm trùng máu và đề xuất kháng sinh, phát triển tại Đại học Stanford từ năm 1972."}, {"id": "fc10", "dir": "Hỏi xuôi", "front": "Robot Asimo tích hợp những ứng dụng AI nào?", "back": "Tự động điều khiển (di chuyển hai chân), nhận dạng hình ảnh và nhận dạng tiếng nói."}, {"id": "fc11", "dir": "Hỏi ngược", "front": "Google Assistant, Siri, Bixby, Cortana thuộc nhóm ứng dụng AI nào?", "back": "Trợ lí ảo."}, {"id": "fc12", "dir": "Hỏi ngược", "front": "Ứng dụng chuyển hình ảnh chữ viết tay thành văn bản có thể xử lí được, dùng trong xử lí hoá đơn, gọi là gì?", "back": "Nhận dạng chữ viết tay."}], "quiz": [{"id": "q01", "stem": "Theo cách hiểu thông thường, Trí tuệ nhân tạo (AI) là", "opts": [{"l": "A", "t": "khả năng của máy tính có thể làm những công việc mang tính trí tuệ của con người như đọc chữ, hiểu tiếng nói, dịch thuật, học và ra quyết định."}, {"l": "B", "t": "khả năng của máy tính chạy được nhiều phần mềm khác nhau cùng một lúc."}, {"l": "C", "t": "khả năng lưu trữ dữ liệu với dung lượng rất lớn của các thiết bị số hiện đại."}, {"l": "D", "t": "khả năng kết nối Internet tốc độ cao của điện thoại thông minh."}], "ans": "A", "ngu_canh": null, "explain": "SGK định nghĩa AI là khả năng của máy tính làm được những công việc mang tính trí tuệ của con người."}, {"id": "q02", "stem": "Đặc trưng nào sau đây KHÔNG phải là đặc trưng cơ bản của AI?", "opts": [{"l": "A", "t": "Khả năng học"}, {"l": "B", "t": "Khả năng suy luận"}, {"l": "C", "t": "Khả năng nạp điện không dây"}, {"l": "D", "t": "Khả năng giải quyết vấn đề"}], "ans": "C", "ngu_canh": null, "explain": "Năm đặc trưng cơ bản là học, suy luận, nhận thức, hiểu ngôn ngữ, giải quyết vấn đề; nạp điện không liên quan."}, {"id": "q03", "stem": "Phép thử Turing (năm 1950) dùng để làm gì?", "opts": [{"l": "A", "t": "Đo tốc độ xử lí của máy tính."}, {"l": "B", "t": "Đánh giá khả năng của máy tính trong việc thể hiện hành vi thông minh."}, {"l": "C", "t": "Kiểm tra dung lượng lưu trữ của chương trình."}, {"l": "D", "t": "Xác định tốc độ truyền dữ liệu mạng."}], "ans": "B", "ngu_canh": null, "explain": "Phép thử Turing bước đầu đánh giá khả năng máy tính thể hiện hành vi thông minh."}, {"id": "q04", "stem": "Trong bốn thiết bị sau, thiết bị nào KHÔNG được coi là ứng dụng của AI?", "opts": [{"l": "A", "t": "Máy tìm kiếm Google (Google Search)."}, {"l": "B", "t": "Ấm đun nước tự ngắt điện khi nước sôi."}, {"l": "C", "t": "Trợ lí ảo trả lời bằng giọng nói."}, {"l": "D", "t": "Phần mềm nhận dạng khuôn mặt để mở khoá điện thoại."}], "ans": "B", "ngu_canh": null, "explain": "Ấm nước chỉ ngắt theo cơ chế cố định, không học hay suy luận từ dữ liệu."}, {"id": "q05", "stem": "Phần mềm dịch máy và kiểm tra lỗi chính tả thể hiện rõ nhất đặc trưng nào của AI?", "opts": [{"l": "A", "t": "Khả năng nhận thức."}, {"l": "B", "t": "Khả năng hiểu ngôn ngữ."}, {"l": "C", "t": "Khả năng giải quyết vấn đề hình học."}, {"l": "D", "t": "Khả năng nạp năng lượng tự động."}], "ans": "B", "ngu_canh": null, "explain": "Cả hai đều xử lí ngôn ngữ tự nhiên của con người."}, {"id": "q06", "stem": "Hệ chuyên gia MYCIN ứng dụng AI trong lĩnh vực nào?", "opts": [{"l": "A", "t": "Dịch thuật văn bản."}, {"l": "B", "t": "Chẩn đoán nhiễm trùng máu và đề xuất kháng sinh."}, {"l": "C", "t": "Điều khiển robot hình người."}, {"l": "D", "t": "Nhận dạng khuôn mặt."}], "ans": "B", "ngu_canh": null, "explain": "MYCIN dùng khoảng 600 luật suy diễn để chẩn đoán nhiễm trùng máu."}, {"id": "q07", "stem": "Robot Asimo của hãng Honda tích hợp ứng dụng AI nào?", "opts": [{"l": "A", "t": "Tự động điều khiển, nhận dạng hình ảnh và nhận dạng tiếng nói."}, {"l": "B", "t": "Chẩn đoán bệnh từ xa."}, {"l": "C", "t": "Dịch máy nhiều thứ tiếng."}, {"l": "D", "t": "Quét lỗi chính tả văn bản."}], "ans": "A", "ngu_canh": null, "explain": "Asimo tích hợp tự động điều khiển, nhận dạng hình ảnh và nhận dạng tiếng nói."}, {"id": "q08", "stem": "AI được chia thành hai loại theo chức năng. Chương trình chơi cờ thuộc loại nào?", "opts": [{"l": "A", "t": "AI tổng quát (AI mạnh)."}, {"l": "B", "t": "AI hẹp (AI yếu)."}, {"l": "C", "t": "Không thuộc loại AI nào."}, {"l": "D", "t": "AI tổng quát vì đã đạt mục tiêu dài hạn của nghiên cứu AI."}], "ans": "B", "ngu_canh": null, "explain": "Chương trình chơi cờ thiết kế cho một nhiệm vụ cụ thể nên là AI hẹp."}, {"id": "q09", "stem": "Một hợp tác xã nuôi tôm dùng ứng dụng chụp ảnh con tôm nghi bệnh, ứng dụng tự đưa ra nhận định về loại bệnh. Ứng dụng này được coi là AI chủ yếu vì", "opts": [{"l": "A", "t": "chạy được trên điện thoại có 4G."}, {"l": "B", "t": "học từ dữ liệu ảnh và có khả năng nhận thức để đưa ra nhận định, không chỉ phản ứng cố định."}, {"l": "C", "t": "có dung lượng cài đặt lớn."}, {"l": "D", "t": "được tải miễn phí."}], "ans": "B", "ngu_canh": null, "explain": "Điểm phân biệt AI với tự động hoá là khả năng học và nhận thức từ dữ liệu."}, {"id": "q10", "stem": "Trợ lí ảo (Google Assistant, Siri...) khi trả lời yêu cầu bằng giọng nói thể hiện rõ nhất hai đặc trưng nào?", "opts": [{"l": "A", "t": "Khả năng hiểu ngôn ngữ và khả năng giải quyết vấn đề."}, {"l": "B", "t": "Khả năng lưu trữ và khả năng truyền tin tốc độ cao."}, {"l": "C", "t": "Khả năng in ấn và khả năng quét mã vạch."}, {"l": "D", "t": "Khả năng sạc pin nhanh và khả năng chống nước."}], "ans": "A", "ngu_canh": null, "explain": "Trợ lí ảo phải hiểu ngôn ngữ nói rồi giải quyết đúng yêu cầu người dùng."}]}</script>
@@ -398,6 +424,45 @@ function saveStore(s){
 }
 var store = loadStore();
 if(!store.known) store.known = {};
+if(!store.ui) store.ui = {};
+var henGhi = null;
+function ghiTre(){ clearTimeout(henGhi); henGhi = setTimeout(function(){ saveStore(store); }, 300); }
+function ghiNgay(){ clearTimeout(henGhi); saveStore(store); }
+/* Trình duyệt điện thoại có thể đóng tab ngầm: ghi lại khi trang bị ẩn hoặc rời đi */
+window.addEventListener("pagehide", ghiNgay);
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState === "hidden") ghiNgay(); });
+
+/* ---------- Dải báo mất mạng ---------- */
+var daiMang = document.getElementById("dai-mat-mang");
+function capNhatMang(){ daiMang.classList.toggle("an", navigator.onLine !== false); }
+window.addEventListener("offline", capNhatMang);
+window.addEventListener("online", capNhatMang);
+capNhatMang();
+
+/* ---------- Nhắc mở bằng trình duyệt khi đang ở trình duyệt nội bộ Zalo/Messenger ---------- */
+(function(){
+  var ua = navigator.userAgent || "";
+  if(!/Zalo|FBAN|FBAV|FB_IAB|Messenger/i.test(ua)) return;
+  var daDong = false;
+  try{ daDong = sessionStorage.getItem("hls_an_nhac") === "1"; }catch(e){}
+  if(daDong) return;
+  var nhac = document.getElementById("nhac-trinh-duyet");
+  nhac.classList.remove("an");
+  document.getElementById("nhac-dong").addEventListener("click", function(){
+    nhac.classList.add("an");
+    try{ sessionStorage.setItem("hls_an_nhac", "1"); }catch(e){}
+  });
+})();
+
+/* ---------- Cuộn ô đang gõ ra giữa màn hình để bàn phím ảo không che ---------- */
+document.addEventListener("focusin", function(e){
+  var el = e.target;
+  if(!el || !el.tagName) return;
+  var ten = el.tagName.toLowerCase();
+  var kieu = (el.getAttribute("type") || "text").toLowerCase();
+  if(!(ten === "textarea" || (ten === "input" && /^(text|search|number|tel|url|email)$/.test(kieu)))) return;
+  setTimeout(function(){ thu(function(){ el.scrollIntoView({block:"center", behavior:"smooth"}); }); }, 300);
+});
 
 /* ---------- In / Xuất PDF ---------- */
 document.getElementById("print-btn").addEventListener("click", function(){ window.print(); });
@@ -406,15 +471,32 @@ document.getElementById("print-btn").addEventListener("click", function(){ windo
 var tabBtns = document.querySelectorAll(".tab-btn");
 var panels = document.querySelectorAll(".panel");
 var khiMoTab = {};
+/* Tab đang xem ghi trên đường link: gửi được link mở thẳng một khối, nút Quay lại về tab trước */
+var TAB_HASH = {p1:"so-do", p2:"phieu", p3:"the-nho", p4:"quiz"};
+var HASH_TAB = {"so-do":"p1", "phieu":"p2", "the-nho":"p3", "quiz":"p4"};
+function tabTuHash(){ return HASH_TAB[(location.hash || "").replace(/^#/, "")] || null; }
+function moTab(id){
+  if(!TAB_HASH[id]) id = "p1";
+  moiPhanTu(tabBtns, function(b){ b.classList.toggle("active", b.dataset.panel === id); });
+  moiPhanTu(panels, function(p){ p.classList.toggle("active", p.id === id); });
+  store.ui.tab = id;
+  ghiTre();
+  if(khiMoTab[id]) khiMoTab[id]();
+}
 moiPhanTu(tabBtns, function(btn){
   btn.addEventListener("click", function(){
-    moiPhanTu(tabBtns, function(b){ b.classList.remove("active"); });
-    moiPhanTu(panels, function(p){ p.classList.remove("active"); });
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.panel).classList.add("active");
-    if(khiMoTab[btn.dataset.panel]) khiMoTab[btn.dataset.panel]();
+    var id = btn.dataset.panel;
+    if(tabTuHash() !== id && window.history && history.pushState){
+      thu(function(){ history.pushState(null, "", "#" + TAB_HASH[id]); });
+    }
+    moTab(id);
+    var hd = document.querySelector("header.hd");
+    var cao = hd ? hd.offsetHeight : 0;
+    if((window.pageYOffset || 0) > cao) window.scrollTo(0, cao);
   });
 });
+window.addEventListener("popstate", function(){ moTab(tabTuHash() || "p1"); });
+window.addEventListener("hashchange", function(){ var t = tabTuHash(); if(t) moTab(t); });
 
 /* Tô nền lựa chọn đang chọn (thay cho :has, chạy cả trình duyệt cũ) */
 function danhDauChon(goc){
@@ -500,7 +582,11 @@ updateMmCounter();
 /* ===================== KHỐI 3 — THẺ GHI NHỚ ===================== */
 var flashcards = payload.flashcards || [];
 var fcOrder = flashcards.map(function(c,i){ return i; });
-var fcPos = 0;
+if(Array.isArray(store.ui.fcOrder) && store.ui.fcOrder.length === fcOrder.length
+   && store.ui.fcOrder.slice().sort(function(a,b){ return a-b; }).join(",") === fcOrder.join(",")){
+  fcOrder = store.ui.fcOrder.slice();
+}
+var fcPos = typeof store.ui.fcPos === "number" ? store.ui.fcPos : 0;
 var fc = { swiper:null };
 
 function fcVisibleOrder(){
@@ -513,6 +599,8 @@ function fcVisibleOrder(){
 }
 function fcCapNhatDem(order){
   document.getElementById("fc-counter").textContent = order.length ? (fcPos+1) + "/" + order.length : "0/0";
+  store.ui.fcPos = fcPos;
+  ghiTre();
   var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
   document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
 }
@@ -579,6 +667,7 @@ function xaoTron(arr){
 }
 document.getElementById("fc-shuffle").addEventListener("click", function(){
   xaoTron(fcOrder);
+  store.ui.fcOrder = fcOrder.slice();
   fcPos = 0;
   fcRender();
 });
@@ -693,6 +782,7 @@ function renderQuiz(){
   document.getElementById("qz-result").classList.remove("show");
   document.getElementById("qz-submit").disabled = false;
   capNhatTienDoQuiz();
+  boBangCuon(form);
   if(app && app.toMauMa) app.toMauMa(form);
 }
 document.getElementById("qz-form").addEventListener("change", function(){
@@ -734,16 +824,44 @@ document.getElementById("qz-shuffle").addEventListener("click", function(){
 renderQuiz();
 
 /* Pháo giấy khi đạt từ 80% (chỉ khi đã tải canvas-confetti) */
+/* Pháo giấy khi đạt từ 80%: chỉ tải canvas-confetti vào lúc cần, máy bật giảm chuyển động thì bỏ qua */
 function chucMung(pct){
-  if(pct >= 80 && typeof window.confetti === "function"){
-    thu(function(){ window.confetti({particleCount:120, spread:75, origin:{y:.7}, disableForReducedMotion:true}); });
-  }
+  if(pct < 80) return;
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function ban(){ thu(function(){ window.confetti({particleCount:120, spread:75, origin:{y:.7}, disableForReducedMotion:true}); }); }
+  if(typeof window.confetti === "function"){ ban(); return; }
+  if(window.Promise && navigator.onLine !== false) taiJS(THU_VIEN.confetti).then(ban, function(){});
+}
+
+/* Bảng rộng cuộn ngang trong khung riêng, trang chính không cuộn ngang */
+function boBangCuon(goc){
+  moiPhanTu(goc.querySelectorAll("table"), function(tb){
+    var cha = tb.parentNode;
+    if(cha.classList && cha.classList.contains("bang-cuon")) return;
+    var w = document.createElement("div");
+    w.className = "bang-cuon";
+    cha.insertBefore(w, tb);
+    w.appendChild(tb);
+  });
 }
 
 /* ========== Phiếu học tập — điền/chọn đáp án, kéo thả sắp xếp, lưu tạm ========== */
 function enhanceWorksheet(){
   var scope = document.getElementById("p2-content");
   if(!scope) return;
+
+  boBangCuon(scope);
+
+  /* Thuộc tính bàn phím điện thoại cho ô nhập (không ghi đè nếu người soạn đã đặt) */
+  function datNeuChua(el, ten, gt){ if(!el.hasAttribute(ten)) el.setAttribute(ten, gt); }
+  moiPhanTu(scope.querySelectorAll("input.dien-ngan"), function(el){
+    datNeuChua(el, "autocomplete", "off");
+    datNeuChua(el, "autocapitalize", "off");
+    datNeuChua(el, "spellcheck", "false");
+    datNeuChua(el, "enterkeyhint", "done");
+    el.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); el.blur(); } });
+  });
+  moiPhanTu(scope.querySelectorAll("textarea.dien-dai"), function(el){ datNeuChua(el, "autocomplete", "off"); });
 
   /* Ô nhập câu trả lời (ngắn: input, dài: textarea) */
   moiPhanTu(scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]"), function(el){
@@ -897,6 +1015,16 @@ window.addEventListener("afterprint", function(){
   });
 });
 
+/* Mở đúng tab: theo đường link (#quiz...), không có thì theo lần học trước */
+(function(){
+  var t = tabTuHash();
+  if(!t && store.ui.tab && store.ui.tab !== "p1" && TAB_HASH[store.ui.tab]){
+    t = store.ui.tab;
+    if(window.history && history.replaceState) thu(function(){ history.replaceState(null, "", "#" + TAB_HASH[t]); });
+  }
+  moTab(t || "p1");
+})();
+
 return {
   mm:mm, mindmapData:mindmapData, tieuDeTrungTam:tieuDeTrungTam,
   updateMmCounter:updateMmCounter, veDanhSach:veDanhSach,
@@ -943,9 +1071,6 @@ function nangCapThuVien(app){
       app.toMauMa(document);
     }));
   }
-
-  /* Pháo giấy */
-  viec.push(sau(taiJS(THU_VIEN.confetti), function(){}));
 
   Promise.all(viec).then(function(){
     var el = document.getElementById("che-do-thu-vien");

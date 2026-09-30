@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#2E86AB">
+<meta name="description" content="Tin 12 – Bài 3: sơ đồ tư duy, phiếu học tập, thẻ ghi nhớ, quiz">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:site_name" content="Học liệu số Tin học — Trường THCS &amp; THPT Vĩnh Hưng">
+<meta property="og:title" content="Bài 3. Một số thiết bị mạng thông dụng">
+<meta property="og:description" content="Tin 12 – Bài 3: sơ đồ tư duy, phiếu học tập, thẻ ghi nhớ, quiz">
+<meta property="og:url" content="https://robbie1992.github.io/HocLieu/tin12/bai03/">
+<meta property="og:image" content="https://robbie1992.github.io/HocLieu/anh-bia.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <title>Học liệu số — Bài 3. Một số thiết bị mạng thông dụng</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -68,7 +78,7 @@
 
   /* ===== Khối 1 — Sơ đồ tư duy ===== */
   .mm-svg-wrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;}
-  #mm-svg{display:block;width:100%;height:62vh;min-height:360px;max-height:640px;touch-action:none;}
+  #mm-svg{display:block;width:100%;height:62vh;height:62dvh;min-height:360px;max-height:640px;touch-action:none;}
   .mm-hint{font-size:.78rem;color:var(--sub);padding:6px 12px;border-top:1px solid var(--line);background:#FAFBFC;}
   .markmap-node .mm-q{display:inline-block;margin-left:6px;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#FDEAC9;color:#9A5A00;font-weight:800;font-size:12px;}
   .mindmap{display:flex;flex-direction:column;gap:10px;}
@@ -106,7 +116,7 @@
   .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:10px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
   .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--c1);}
   .dap-an-goi-y{margin-top:10px;}
-  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:36px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:8px;cursor:pointer;font-weight:600;}
+  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:40px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:8px;cursor:pointer;font-weight:600;}
   .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 8px 8px 0;padding:8px 10px;}
   .dap-an-goi-y.hien .noi-dung-dap-an{display:block;}
   .dap-an-goi-y.hien .nut-xem-dap-an{background:var(--c1);color:#fff;}
@@ -115,7 +125,7 @@
   .keo-tha li{counter-increment:kt;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 8px 8px 10px;margin-bottom:6px;font-size:.88rem;cursor:grab;}
   .keo-tha li::before{content:counter(kt);flex:none;width:24px;height:24px;border-radius:50%;background:var(--c1-l);color:var(--c1);font-weight:700;font-size:.78rem;display:flex;align-items:center;justify-content:center;}
   .keo-tha li .kt-text{flex:1;min-width:0;}
-  .keo-tha li .kt-nut{flex:none;width:34px;height:34px;border:1px solid var(--line);border-radius:8px;background:#F7F8FA;color:var(--sub);cursor:pointer;font-size:.8rem;}
+  .keo-tha li .kt-nut{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:8px;background:#F7F8FA;color:var(--sub);cursor:pointer;font-size:.8rem;}
   .keo-tha li.sortable-ghost{opacity:.4;}
   .keo-tha li.sortable-chosen{border-color:var(--c1);box-shadow:0 4px 14px rgba(46,134,171,.25);}
   /* Mã nguồn */
@@ -172,11 +182,23 @@
 
   footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px 16px calc(16px + env(safe-area-inset-bottom));}
 
+  /* ===== Tối ưu điện thoại (SOP mục IX.1b) ===== */
+  button,label,.fc-card,.branch-head,.keo-tha li{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+  .mm-svg-wrap,.fc-swiper{overscroll-behavior:contain;}
+  main{overflow-wrap:break-word;}
+  .bang-cuon{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0;}
+  .bang-cuon > table{margin:0 !important;}
+  #nhac-trinh-duyet{display:flex;align-items:center;gap:10px;background:#FFF4E5;color:#7A4100;border-bottom:1px solid #F5C77E;padding:6px 8px 6px 14px;padding-top:max(6px,env(safe-area-inset-top));font-size:.85rem;}
+  #nhac-trinh-duyet span{flex:1;min-width:0;}
+  .nut-dong{flex:none;width:40px;height:40px;border:none;border-radius:50%;background:transparent;color:inherit;font-size:1.1rem;cursor:pointer;}
+  .dai-bao{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;max-width:560px;margin:0 auto;background:#1F2937;color:#fff;border-radius:12px;padding:12px 14px;font-size:.85rem;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25);}
+  @media (prefers-reduced-motion:reduce){ .fc-card,.branch-body,.qz-bar span{transition:none !important;} }
+
   /* ===== In ===== */
   .print-only{display:none;}
   @media print{
     @page{margin:12mm;}
-    #nojs,nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,.qz-bar,footer,button,.hd-btn,.mm-svg-wrap,.fc-swiper,.kt-nut{display:none !important;}
+    #nojs,#nhac-trinh-duyet,#dai-mat-mang,nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,.qz-bar,footer,button,.hd-btn,.mm-svg-wrap,.fc-swiper,.kt-nut{display:none !important;}
     section.panel{display:block !important;animation:none !important;break-after:page;}
     #mindmap{display:flex !important;}
     .branch-body{max-height:none !important;}
@@ -199,6 +221,8 @@
 <div id="nojs"><b>Trình xem này chưa chạy được học liệu.</b>Mở bằng Safari hoặc Chrome: bấm nút Chia sẻ → Mở bằng trình duyệt, hoặc mở đường link web do giáo viên gửi.</div>
 
 <div id="app-shell">
+
+<div id="nhac-trinh-duyet" class="an" role="note"><span>Mở bằng Chrome/Safari để giữ bài làm: bấm ⋯ → Mở bằng trình duyệt.</span><button type="button" class="nut-dong" id="nhac-dong" aria-label="Đóng lời nhắc">✕</button></div>
 
 <header class="hd">
   <div class="hd-row">
@@ -326,6 +350,8 @@
 
 <footer>Học liệu số — Bài 3 Tin học 12 ICT — Trường THCS & THPT Vĩnh Hưng. <span id="che-do-thu-vien">Mở bằng Chrome hoặc Safari.</span></footer>
 
+<div id="dai-mat-mang" class="dai-bao an" role="status" aria-live="polite">Đang mất mạng, bài làm vẫn lưu trên máy.</div>
+
 </div><!-- /#app-shell -->
 
 <script type="application/json" id="hls-data">{"tieu_de": "Bài 3. Một số thiết bị mạng thông dụng", "tieu_de_trung_tam": "Bài 3. Một số thiết bị mạng thông dụng", "worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — cốt lõi<\/span>\n  <h3>Chức năng các thiết bị mạng (4 trạm, SGK trang 14-17)<\/h3>\n  <p>Ghi chức năng chính của từng thiết bị:<\/p>\n  <table class=\"data-table\">\n    <tr><th>Thiết bị<\/th><th>Chức năng chính<\/th><\/tr>\n    <tr><td>Hub<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-1\"><\/td><\/tr>\n    <tr><td>Switch<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-2\"><\/td><\/tr>\n    <tr><td>Wireless Access Point<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-3\"><\/td><\/tr>\n    <tr><td>Router<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-4\"><\/td><\/tr>\n    <tr><td>Modem<\/td><td><input type=\"text\" class=\"dien-ngan\" data-id=\"tb-5\"><\/td><\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Hub: kết nối máy tính trong LAN qua cáp, phát tán tín hiệu tới tất cả các cổng. Switch: kết nối máy tính trong LAN qua cáp, chỉ kết nối đúng cặp cổng gửi - nhận. Wireless Access Point: kết nối thiết bị đầu cuối qua sóng Wi-Fi. Router: dẫn đường cho dữ liệu khi kết nối các mạng khác nhau. Modem: chuyển đổi tín hiệu số sang tín hiệu tương tự và ngược lại.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: hỏi xem thiết bị đó kết nối bằng cáp hay sóng, kết nối trong một mạng hay giữa các mạng, có đổi dạng tín hiệu hay không.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — cốt lõi<\/span>\n  <h3>Hub hay switch?<\/h3>\n  <p>a) Thiết bị nào chỉ kết nối đúng cặp cổng gửi - nhận?<\/p>\n  <div class=\"lua-chon-item\" data-id=\"hub-switch\">\n    <label><input type=\"radio\" name=\"hub-switch\" value=\"hub\"> Hub<\/label>\n    <label><input type=\"radio\" name=\"hub-switch\" value=\"switch\"> Switch<\/label>\n  <\/div>\n  <p>b) Giải thích vì sao mạng Wi-Fi hoặc mạng cục bộ dễ chậm khi nhiều máy cùng truyền dữ liệu qua hub, và cách khắc phục.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"giai-thich-cham\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">a) Switch. b) Hub phát tán tín hiệu tới tất cả các cổng nên dễ xảy ra xung đột tín hiệu khi nhiều máy cùng truyền; dùng switch hoặc bố trí lại thiết bị kết nối (switch, điểm truy cập không dây, router) sẽ giảm được tình trạng này.<\/div>\n  <\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — thực hành (SGK trang 18-20)<\/span>\n  <h3>Kết nối máy tính với thiết bị mạng<\/h3>\n  <p>Đánh dấu các bước đã làm được:<\/p>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"th-1\"> Nhận biết được cổng RJ45, giắc cắm RJ45 và cáp UTP (Hình 3.8).<\/label>\n    <label><input type=\"checkbox\" data-id=\"th-2\"> Cắm cáp nối máy tính với switch đúng chiều, khớp chốt; đèn tín hiệu trên switch sáng.<\/label>\n    <label><input type=\"checkbox\" data-id=\"th-3\"> Tìm thấy đúng tên trạm thu phát Wi-Fi của phòng học.<\/label>\n    <label><input type=\"checkbox\" data-id=\"th-4\"> Nhập mật khẩu, thiết bị báo đã kết nối và mở được một trang web.<\/label>\n  <\/div>\n  <p>So sánh kết nối có dây và không dây: vì sao phòng thực hành vẫn dùng cáp mạng?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"co-day-khong-day\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Kết nối không dây tiện hơn nhưng kết nối có dây ổn định, tốc độ và bảo mật cao hơn. Lưu ý: nối cáp chỉ là kết nối vật lí, còn cần thiết lập địa chỉ và cách kết nối ra ngoài mới giao tiếp được với Internet.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: quan sát chiều chốt giắc trước khi cắm; trước khi nhập mật khẩu Wi-Fi, kiểm tra đúng tên trạm và biểu tượng khoá bảo mật.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 4 — luyện tập (SGK trang 20)<\/span>\n  <h3>Chọn thiết bị phù hợp tình huống<\/h3>\n  <p>1) Mạng gia đình em nên dùng thiết bị kết nối nào? Vì sao?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"lt-1\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) Làm thế nào để máy tính xách tay truy cập Internet qua mạng điện thoại di động?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"lt-2\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">1) Router Wi-Fi, vì đã tích hợp sẵn modem, switch và điểm truy cập không dây. 2) Dùng modem GSM có khe cắm SIM hoặc chia sẻ kết nối 3G/4G/5G từ điện thoại thông minh.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý: câu 2 liên hệ các loại modem GSM 3G/4G/5G đã học.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Câu hỏi mở rộng — vận dụng (chọn 1 đề tài)<\/span>\n  <h3>Bố trí thiết bị mạng trong thực tế<\/h3>\n  <div class=\"lua-chon-item\" data-id=\"de-tai\">\n    <label><input type=\"radio\" name=\"de-tai\" value=\"1\"> Đề tài 1: Sơ đồ mạng máy tính của trường<\/label>\n    <label><input type=\"radio\" name=\"de-tai\" value=\"2\"> Đề tài 2: Cách cung cấp Wi-Fi cho hành khách trên xe khách đường dài<\/label>\n  <\/div>\n  <textarea class=\"dien-dai\" data-id=\"vd-noi-dung\" rows=\"5\" placeholder=\"Mô tả sơ đồ hoặc nguyên lí, nêu rõ các thiết bị được dùng...\"><\/textarea>\n  <div class=\"hint\">Gợi ý: đề tài 1 liên hệ bộ phận CNTT nhà trường; đề tài 2 liên hệ modem GSM và điểm truy cập không dây.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Nêu đúng chức năng của đủ 5 thiết bị.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Phân biệt đúng cách truyền tín hiệu của hub và switch.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Cả hai bạn tự cắm được cáp RJ45 đúng chiều, khớp chốt.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Kết nối đúng mạng Wi-Fi và mở được trang web.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-5\"> Câu Luyện tập chọn đúng thiết bị và có giải thích.<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. Thiết bị mạng thông dụng", "cls": "b1", "items": ["Hub: phát tán tín hiệu tới tất cả các cổng", "Switch: chỉ kết nối đúng cặp cổng gửi - nhận, giảm xung đột tín hiệu", "Wireless Access Point: kết nối thiết bị đầu cuối qua sóng Wi-Fi", "Router: dẫn đường (định tuyến) dữ liệu giữa các mạng", "Modem: chuyển đổi tín hiệu số ↔ tín hiệu tương tự", "Các loại modem: dial-up, ADSL, quang, GSM 3G/4G/5G", "Router Wi-Fi gia đình: tích hợp modem, switch, điểm truy cập không dây"]}, {"title": "2. Thực hành kết nối máy tính với thiết bị mạng", "cls": "b2", "items": ["Nhiệm vụ 1: cáp UTP, giắc cắm RJ45, cổng RJ45 (Hình 3.8)", "Cắm giắc đúng chiều, nghe tiếng khớp chốt", "Nối cáp chỉ là kết nối vật lí, còn cần thiết lập địa chỉ", "Nhiệm vụ 2: kết nối Wi-Fi theo 2 bước (Hình 3.9, 3.10)", "Bước 1: tìm trạm thu phát Wi-Fi; Bước 2: chọn kết nối, nhập mật khẩu", "Có dây: ổn định, tốc độ, bảo mật cao hơn không dây"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "Hub truyền tín hiệu như thế nào?", "back": "Phát tán tín hiệu tới tất cả các cổng đang kết nối."}, {"id": "fc02", "dir": "Hỏi xuôi", "front": "Switch khác hub ở điểm nào?", "back": "Switch chỉ kết nối đúng cặp cổng gửi - nhận nên giảm xung đột tín hiệu."}, {"id": "fc03", "dir": "Hỏi ngược", "front": "Thiết bị nào kết nối thiết bị đầu cuối vào mạng qua sóng Wi-Fi?", "back": "Điểm truy cập không dây (Wireless Access Point - WAP)."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "Router có chức năng gì?", "back": "Chuyển tiếp dữ liệu và chọn đường (định tuyến) để dữ liệu tới đúng mạng đích."}, {"id": "fc05", "dir": "Hỏi ngược", "front": "Thiết bị nào chuyển đổi tín hiệu số sang tín hiệu tương tự và ngược lại?", "back": "Modem."}, {"id": "fc06", "dir": "Hỏi xuôi", "front": "Kể tên một số loại modem.", "back": "Dial-up, ADSL, modem quang, modem GSM 3G/4G/5G."}, {"id": "fc07", "dir": "Hỏi ngược", "front": "Thiết bị gia đình nào tích hợp sẵn modem, switch và điểm truy cập không dây?", "back": "Router Wi-Fi."}, {"id": "fc08", "dir": "Hỏi xuôi", "front": "Cổng RJ45 dùng để làm gì?", "back": "Cắm giắc RJ45 của cáp mạng UTP, nối máy tính với switch, hub hoặc cổng LAN của router."}, {"id": "fc09", "dir": "Hỏi ngược", "front": "Cắm cáp mạng xong, đèn switch sáng nhưng chưa vào Internet. Vì sao?", "back": "Mới có kết nối vật lí; còn cần thiết lập địa chỉ và cách kết nối ra ngoài."}, {"id": "fc10", "dir": "Hỏi xuôi", "front": "Nêu 2 bước kết nối Wi-Fi.", "back": "Tìm trạm thu phát Wi-Fi; chọn kết nối và nhập mật khẩu (nếu có)."}, {"id": "fc11", "dir": "Hỏi xuôi", "front": "Vì sao phòng thực hành vẫn dùng cáp mạng?", "back": "Kết nối có dây ổn định, tốc độ và bảo mật cao hơn không dây."}, {"id": "fc12", "dir": "Hỏi ngược", "front": "Laptop cần vào Internet qua mạng điện thoại di động thì dùng gì?", "back": "Modem GSM có khe SIM hoặc chia sẻ kết nối 3G/4G/5G từ điện thoại."}], "quiz": [{"id": "q01", "stem": "Thiết bị nào sau đây dùng để kết nối các thiết bị đầu cuối vào mạng qua sóng Wi-Fi?", "opts": [{"l": "A", "t": "Hub"}, {"l": "B", "t": "Switch"}, {"l": "C", "t": "Điểm truy cập không dây (Wireless Access Point)"}, {"l": "D", "t": "Modem"}], "ans": "C", "ngu_canh": null, "explain": "Điểm truy cập không dây (WAP) kết nối các thiết bị đầu cuối vào mạng qua sóng Wi-Fi; hub và switch kết nối qua cáp mạng, modem chuyển đổi tín hiệu."}, {"id": "q02", "stem": "Chức năng chính của modem là", "opts": [{"l": "A", "t": "chuyển đổi tín hiệu số sang tín hiệu tương tự và ngược lại."}, {"l": "B", "t": "phát tín hiệu tới tất cả các cổng đang kết nối."}, {"l": "C", "t": "phát sóng Wi-Fi cho điện thoại trong phòng."}, {"l": "D", "t": "lưu trữ dữ liệu cho các máy tính trong mạng."}], "ans": "A", "ngu_canh": null, "explain": "Modem có chức năng chuyển đổi tín hiệu số sang tín hiệu tương tự và ngược lại, ví dụ modem ADSL, modem quang, modem GSM."}, {"id": "q03", "stem": "Router được dùng để", "opts": [{"l": "A", "t": "cắm cáp mạng cho máy in."}, {"l": "B", "t": "dẫn đường cho dữ liệu khi kết nối các mạng khác nhau, mạng diện rộng."}, {"l": "C", "t": "chuyển đổi tín hiệu điện thoại sang tín hiệu số."}, {"l": "D", "t": "tăng tốc độ xử lí của máy tính."}], "ans": "B", "ngu_canh": null, "explain": "Router chuyển tiếp dữ liệu và chọn đường (định tuyến) để dữ liệu tới đúng mạng đích khi kết nối các mạng khác nhau."}, {"id": "q04", "stem": "Để nối máy tính với switch bằng cáp UTP, đầu cáp được cắm vào cổng nào trên máy tính?", "opts": [{"l": "A", "t": "Cổng USB"}, {"l": "B", "t": "Cổng HDMI"}, {"l": "C", "t": "Cổng RJ45"}, {"l": "D", "t": "Cổng VGA"}], "ans": "C", "ngu_canh": null, "explain": "Cáp UTP được bấm đầu giắc RJ45 và cắm vào cổng RJ45 (cổng mạng) của máy tính và switch."}, {"id": "q05", "stem": "Phát biểu nào sau đây phân biệt đúng cách truyền tín hiệu của hub và switch?", "opts": [{"l": "A", "t": "Hub chỉ gửi tín hiệu tới đúng cổng nhận, switch gửi tới tất cả các cổng."}, {"l": "B", "t": "Hub phát tán tín hiệu tới tất cả các cổng, switch chỉ kết nối đúng cặp cổng gửi - nhận."}, {"l": "C", "t": "Hub và switch đều chỉ gửi tín hiệu tới đúng cổng nhận."}, {"l": "D", "t": "Hub kết nối không dây, switch kết nối có dây."}], "ans": "B", "ngu_canh": null, "explain": "Hub phát tán tín hiệu tới tất cả các cổng; switch chỉ kết nối đúng cặp cổng gửi - nhận nên giảm được xung đột tín hiệu."}, {"id": "q06", "stem": "Vì sao mạng cục bộ dùng hub dễ bị chậm khi nhiều máy cùng truyền dữ liệu?", "opts": [{"l": "A", "t": "Hub không có cổng RJ45."}, {"l": "B", "t": "Hub chỉ hoạt động khi có Wi-Fi."}, {"l": "C", "t": "Tín hiệu bị phát tán tới mọi cổng nên dễ xảy ra xung đột tín hiệu."}, {"l": "D", "t": "Hub tự chặn các máy không có địa chỉ IP."}], "ans": "C", "ngu_canh": null, "explain": "Hub phát tán tín hiệu tới tất cả các cổng, nhiều máy cùng truyền thì tín hiệu dễ xung đột, mạng chậm; dùng switch giảm được hiện tượng này."}, {"id": "q07", "stem": "Kết nối không dây tiện hơn, nhưng phòng thực hành máy tính vẫn thường dùng cáp mạng. Lí do phù hợp nhất là", "opts": [{"l": "A", "t": "cáp mạng rẻ hơn mọi thiết bị Wi-Fi."}, {"l": "B", "t": "kết nối có dây ổn định, tốc độ và bảo mật cao hơn."}, {"l": "C", "t": "máy tính để bàn không thể kết nối Wi-Fi."}, {"l": "D", "t": "kết nối có dây không cần thiết lập địa chỉ."}], "ans": "B", "ngu_canh": null, "explain": "Phòng thực hành ưu tiên cáp mạng vì kết nối ổn định, tốc độ và bảo mật cao hơn kết nối không dây."}, {"id": "q08", "stem": "Thiết bị phù hợp nhất cho mạng gia đình này là", "opts": [{"l": "A", "t": "một hub."}, {"l": "B", "t": "một switch."}, {"l": "C", "t": "một router Wi-Fi tích hợp modem, switch và điểm truy cập không dây."}, {"l": "D", "t": "một modem GSM không có cổng LAN."}], "ans": "C", "ngu_canh": "Gia đình bạn An ở xã Châu Thới có đường truyền Internet của nhà mạng, cần kết nối 1 máy tính để bàn bằng cáp và 3 điện thoại, 1 máy tính xách tay qua Wi-Fi.", "explain": "Mạng gia đình quy mô nhỏ nên dùng router Wi-Fi vì đã tích hợp sẵn modem (kết nối Internet), switch (cổng cáp) và điểm truy cập không dây (Wi-Fi)."}, {"id": "q09", "stem": "Cách nào giúp máy tính xách tay truy cập được Internet trong tình huống trên?", "opts": [{"l": "A", "t": "Dùng hub nối máy tính xách tay với điện thoại."}, {"l": "B", "t": "Dùng modem GSM có khe cắm SIM hoặc chia sẻ kết nối 3G/4G/5G từ điện thoại thông minh."}, {"l": "C", "t": "Cắm cáp RJ45 từ máy tính xách tay vào ổ điện."}, {"l": "D", "t": "Dùng switch nối máy tính xách tay với loa."}], "ans": "B", "ngu_canh": "Thầy giáo đi công tác tại vùng nuôi tôm, không có cáp mạng hay Wi-Fi, chỉ có sóng điện thoại di động.", "explain": "Modem GSM 3G/4G/5G dùng tín hiệu điện thoại di động; điện thoại thông minh cũng chia sẻ được kết nối này cho máy tính xách tay."}, {"id": "q10", "stem": "Giải thích nào sau đây đúng?", "opts": [{"l": "A", "t": "Cáp mạng bị hỏng nên cần thay cáp mới."}, {"l": "B", "t": "Cắm cáp chỉ là kết nối vật lí; còn cần thiết lập địa chỉ và cách kết nối ra ngoài mới truy cập được Internet."}, {"l": "C", "t": "Switch không dùng được với máy tính để bàn."}, {"l": "D", "t": "Máy tính phải bật Wi-Fi thì cáp mạng mới hoạt động."}], "ans": "B", "ngu_canh": "Bình cắm cáp RJ45 đúng chiều, khớp chốt nối máy tính với switch; đèn tín hiệu trên switch đã sáng nhưng máy vẫn chưa vào được Internet.", "explain": "Nối cáp chỉ tạo kết nối vật lí; để giao tiếp với Internet còn cần thiết lập địa chỉ và cách kết nối ra ngoài."}]}</script>
@@ -398,6 +424,45 @@ function saveStore(s){
 }
 var store = loadStore();
 if(!store.known) store.known = {};
+if(!store.ui) store.ui = {};
+var henGhi = null;
+function ghiTre(){ clearTimeout(henGhi); henGhi = setTimeout(function(){ saveStore(store); }, 300); }
+function ghiNgay(){ clearTimeout(henGhi); saveStore(store); }
+/* Trình duyệt điện thoại có thể đóng tab ngầm: ghi lại khi trang bị ẩn hoặc rời đi */
+window.addEventListener("pagehide", ghiNgay);
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState === "hidden") ghiNgay(); });
+
+/* ---------- Dải báo mất mạng ---------- */
+var daiMang = document.getElementById("dai-mat-mang");
+function capNhatMang(){ daiMang.classList.toggle("an", navigator.onLine !== false); }
+window.addEventListener("offline", capNhatMang);
+window.addEventListener("online", capNhatMang);
+capNhatMang();
+
+/* ---------- Nhắc mở bằng trình duyệt khi đang ở trình duyệt nội bộ Zalo/Messenger ---------- */
+(function(){
+  var ua = navigator.userAgent || "";
+  if(!/Zalo|FBAN|FBAV|FB_IAB|Messenger/i.test(ua)) return;
+  var daDong = false;
+  try{ daDong = sessionStorage.getItem("hls_an_nhac") === "1"; }catch(e){}
+  if(daDong) return;
+  var nhac = document.getElementById("nhac-trinh-duyet");
+  nhac.classList.remove("an");
+  document.getElementById("nhac-dong").addEventListener("click", function(){
+    nhac.classList.add("an");
+    try{ sessionStorage.setItem("hls_an_nhac", "1"); }catch(e){}
+  });
+})();
+
+/* ---------- Cuộn ô đang gõ ra giữa màn hình để bàn phím ảo không che ---------- */
+document.addEventListener("focusin", function(e){
+  var el = e.target;
+  if(!el || !el.tagName) return;
+  var ten = el.tagName.toLowerCase();
+  var kieu = (el.getAttribute("type") || "text").toLowerCase();
+  if(!(ten === "textarea" || (ten === "input" && /^(text|search|number|tel|url|email)$/.test(kieu)))) return;
+  setTimeout(function(){ thu(function(){ el.scrollIntoView({block:"center", behavior:"smooth"}); }); }, 300);
+});
 
 /* ---------- In / Xuất PDF ---------- */
 document.getElementById("print-btn").addEventListener("click", function(){ window.print(); });
@@ -406,15 +471,32 @@ document.getElementById("print-btn").addEventListener("click", function(){ windo
 var tabBtns = document.querySelectorAll(".tab-btn");
 var panels = document.querySelectorAll(".panel");
 var khiMoTab = {};
+/* Tab đang xem ghi trên đường link: gửi được link mở thẳng một khối, nút Quay lại về tab trước */
+var TAB_HASH = {p1:"so-do", p2:"phieu", p3:"the-nho", p4:"quiz"};
+var HASH_TAB = {"so-do":"p1", "phieu":"p2", "the-nho":"p3", "quiz":"p4"};
+function tabTuHash(){ return HASH_TAB[(location.hash || "").replace(/^#/, "")] || null; }
+function moTab(id){
+  if(!TAB_HASH[id]) id = "p1";
+  moiPhanTu(tabBtns, function(b){ b.classList.toggle("active", b.dataset.panel === id); });
+  moiPhanTu(panels, function(p){ p.classList.toggle("active", p.id === id); });
+  store.ui.tab = id;
+  ghiTre();
+  if(khiMoTab[id]) khiMoTab[id]();
+}
 moiPhanTu(tabBtns, function(btn){
   btn.addEventListener("click", function(){
-    moiPhanTu(tabBtns, function(b){ b.classList.remove("active"); });
-    moiPhanTu(panels, function(p){ p.classList.remove("active"); });
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.panel).classList.add("active");
-    if(khiMoTab[btn.dataset.panel]) khiMoTab[btn.dataset.panel]();
+    var id = btn.dataset.panel;
+    if(tabTuHash() !== id && window.history && history.pushState){
+      thu(function(){ history.pushState(null, "", "#" + TAB_HASH[id]); });
+    }
+    moTab(id);
+    var hd = document.querySelector("header.hd");
+    var cao = hd ? hd.offsetHeight : 0;
+    if((window.pageYOffset || 0) > cao) window.scrollTo(0, cao);
   });
 });
+window.addEventListener("popstate", function(){ moTab(tabTuHash() || "p1"); });
+window.addEventListener("hashchange", function(){ var t = tabTuHash(); if(t) moTab(t); });
 
 /* Tô nền lựa chọn đang chọn (thay cho :has, chạy cả trình duyệt cũ) */
 function danhDauChon(goc){
@@ -500,7 +582,11 @@ updateMmCounter();
 /* ===================== KHỐI 3 — THẺ GHI NHỚ ===================== */
 var flashcards = payload.flashcards || [];
 var fcOrder = flashcards.map(function(c,i){ return i; });
-var fcPos = 0;
+if(Array.isArray(store.ui.fcOrder) && store.ui.fcOrder.length === fcOrder.length
+   && store.ui.fcOrder.slice().sort(function(a,b){ return a-b; }).join(",") === fcOrder.join(",")){
+  fcOrder = store.ui.fcOrder.slice();
+}
+var fcPos = typeof store.ui.fcPos === "number" ? store.ui.fcPos : 0;
 var fc = { swiper:null };
 
 function fcVisibleOrder(){
@@ -513,6 +599,8 @@ function fcVisibleOrder(){
 }
 function fcCapNhatDem(order){
   document.getElementById("fc-counter").textContent = order.length ? (fcPos+1) + "/" + order.length : "0/0";
+  store.ui.fcPos = fcPos;
+  ghiTre();
   var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
   document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
 }
@@ -579,6 +667,7 @@ function xaoTron(arr){
 }
 document.getElementById("fc-shuffle").addEventListener("click", function(){
   xaoTron(fcOrder);
+  store.ui.fcOrder = fcOrder.slice();
   fcPos = 0;
   fcRender();
 });
@@ -693,6 +782,7 @@ function renderQuiz(){
   document.getElementById("qz-result").classList.remove("show");
   document.getElementById("qz-submit").disabled = false;
   capNhatTienDoQuiz();
+  boBangCuon(form);
   if(app && app.toMauMa) app.toMauMa(form);
 }
 document.getElementById("qz-form").addEventListener("change", function(){
@@ -734,16 +824,44 @@ document.getElementById("qz-shuffle").addEventListener("click", function(){
 renderQuiz();
 
 /* Pháo giấy khi đạt từ 80% (chỉ khi đã tải canvas-confetti) */
+/* Pháo giấy khi đạt từ 80%: chỉ tải canvas-confetti vào lúc cần, máy bật giảm chuyển động thì bỏ qua */
 function chucMung(pct){
-  if(pct >= 80 && typeof window.confetti === "function"){
-    thu(function(){ window.confetti({particleCount:120, spread:75, origin:{y:.7}, disableForReducedMotion:true}); });
-  }
+  if(pct < 80) return;
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function ban(){ thu(function(){ window.confetti({particleCount:120, spread:75, origin:{y:.7}, disableForReducedMotion:true}); }); }
+  if(typeof window.confetti === "function"){ ban(); return; }
+  if(window.Promise && navigator.onLine !== false) taiJS(THU_VIEN.confetti).then(ban, function(){});
+}
+
+/* Bảng rộng cuộn ngang trong khung riêng, trang chính không cuộn ngang */
+function boBangCuon(goc){
+  moiPhanTu(goc.querySelectorAll("table"), function(tb){
+    var cha = tb.parentNode;
+    if(cha.classList && cha.classList.contains("bang-cuon")) return;
+    var w = document.createElement("div");
+    w.className = "bang-cuon";
+    cha.insertBefore(w, tb);
+    w.appendChild(tb);
+  });
 }
 
 /* ========== Phiếu học tập — điền/chọn đáp án, kéo thả sắp xếp, lưu tạm ========== */
 function enhanceWorksheet(){
   var scope = document.getElementById("p2-content");
   if(!scope) return;
+
+  boBangCuon(scope);
+
+  /* Thuộc tính bàn phím điện thoại cho ô nhập (không ghi đè nếu người soạn đã đặt) */
+  function datNeuChua(el, ten, gt){ if(!el.hasAttribute(ten)) el.setAttribute(ten, gt); }
+  moiPhanTu(scope.querySelectorAll("input.dien-ngan"), function(el){
+    datNeuChua(el, "autocomplete", "off");
+    datNeuChua(el, "autocapitalize", "off");
+    datNeuChua(el, "spellcheck", "false");
+    datNeuChua(el, "enterkeyhint", "done");
+    el.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); el.blur(); } });
+  });
+  moiPhanTu(scope.querySelectorAll("textarea.dien-dai"), function(el){ datNeuChua(el, "autocomplete", "off"); });
 
   /* Ô nhập câu trả lời (ngắn: input, dài: textarea) */
   moiPhanTu(scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]"), function(el){
@@ -897,6 +1015,16 @@ window.addEventListener("afterprint", function(){
   });
 });
 
+/* Mở đúng tab: theo đường link (#quiz...), không có thì theo lần học trước */
+(function(){
+  var t = tabTuHash();
+  if(!t && store.ui.tab && store.ui.tab !== "p1" && TAB_HASH[store.ui.tab]){
+    t = store.ui.tab;
+    if(window.history && history.replaceState) thu(function(){ history.replaceState(null, "", "#" + TAB_HASH[t]); });
+  }
+  moTab(t || "p1");
+})();
+
 return {
   mm:mm, mindmapData:mindmapData, tieuDeTrungTam:tieuDeTrungTam,
   updateMmCounter:updateMmCounter, veDanhSach:veDanhSach,
@@ -943,9 +1071,6 @@ function nangCapThuVien(app){
       app.toMauMa(document);
     }));
   }
-
-  /* Pháo giấy */
-  viec.push(sau(taiJS(THU_VIEN.confetti), function(){}));
 
   Promise.all(viec).then(function(){
     var el = document.getElementById("che-do-thu-vien");

@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#2E86AB">
+<meta name="description" content="Tin 12 – Bài 2: sơ đồ tư duy, phiếu học tập, thẻ ghi nhớ, quiz">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:site_name" content="Học liệu số Tin học — Trường THCS &amp; THPT Vĩnh Hưng">
+<meta property="og:title" content="Bài 2. Trí tuệ nhân tạo trong khoa học và đời sống">
+<meta property="og:description" content="Tin 12 – Bài 2: sơ đồ tư duy, phiếu học tập, thẻ ghi nhớ, quiz">
+<meta property="og:url" content="https://robbie1992.github.io/HocLieu/tin12/bai02/">
+<meta property="og:image" content="https://robbie1992.github.io/HocLieu/anh-bia.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <title>Học liệu số — Bài 2. Trí tuệ nhân tạo trong khoa học và đời sống</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -68,7 +78,7 @@
 
   /* ===== Khối 1 — Sơ đồ tư duy ===== */
   .mm-svg-wrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;}
-  #mm-svg{display:block;width:100%;height:62vh;min-height:360px;max-height:640px;touch-action:none;}
+  #mm-svg{display:block;width:100%;height:62vh;height:62dvh;min-height:360px;max-height:640px;touch-action:none;}
   .mm-hint{font-size:.78rem;color:var(--sub);padding:6px 12px;border-top:1px solid var(--line);background:#FAFBFC;}
   .markmap-node .mm-q{display:inline-block;margin-left:6px;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#FDEAC9;color:#9A5A00;font-weight:800;font-size:12px;}
   .mindmap{display:flex;flex-direction:column;gap:10px;}
@@ -106,7 +116,7 @@
   .lua-chon-item label{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:10px;font-size:.88rem;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;}
   .lua-chon-item input{width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--c1);}
   .dap-an-goi-y{margin-top:10px;}
-  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:36px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:8px;cursor:pointer;font-weight:600;}
+  .dap-an-goi-y .nut-xem-dap-an{font-size:.8rem;min-height:40px;padding:6px 12px;border:1px solid var(--c1);background:var(--c1-l);color:var(--c1);border-radius:8px;cursor:pointer;font-weight:600;}
   .dap-an-goi-y .noi-dung-dap-an{display:none;margin-top:8px;font-size:.85rem;background:var(--c1-l);border-left:3px solid var(--c1);border-radius:0 8px 8px 0;padding:8px 10px;}
   .dap-an-goi-y.hien .noi-dung-dap-an{display:block;}
   .dap-an-goi-y.hien .nut-xem-dap-an{background:var(--c1);color:#fff;}
@@ -115,7 +125,7 @@
   .keo-tha li{counter-increment:kt;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 8px 8px 10px;margin-bottom:6px;font-size:.88rem;cursor:grab;}
   .keo-tha li::before{content:counter(kt);flex:none;width:24px;height:24px;border-radius:50%;background:var(--c1-l);color:var(--c1);font-weight:700;font-size:.78rem;display:flex;align-items:center;justify-content:center;}
   .keo-tha li .kt-text{flex:1;min-width:0;}
-  .keo-tha li .kt-nut{flex:none;width:34px;height:34px;border:1px solid var(--line);border-radius:8px;background:#F7F8FA;color:var(--sub);cursor:pointer;font-size:.8rem;}
+  .keo-tha li .kt-nut{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:8px;background:#F7F8FA;color:var(--sub);cursor:pointer;font-size:.8rem;}
   .keo-tha li.sortable-ghost{opacity:.4;}
   .keo-tha li.sortable-chosen{border-color:var(--c1);box-shadow:0 4px 14px rgba(46,134,171,.25);}
   /* Mã nguồn */
@@ -172,11 +182,23 @@
 
   footer{text-align:center;font-size:.75rem;color:var(--sub);padding:16px 16px calc(16px + env(safe-area-inset-bottom));}
 
+  /* ===== Tối ưu điện thoại (SOP mục IX.1b) ===== */
+  button,label,.fc-card,.branch-head,.keo-tha li{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+  .mm-svg-wrap,.fc-swiper{overscroll-behavior:contain;}
+  main{overflow-wrap:break-word;}
+  .bang-cuon{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0;}
+  .bang-cuon > table{margin:0 !important;}
+  #nhac-trinh-duyet{display:flex;align-items:center;gap:10px;background:#FFF4E5;color:#7A4100;border-bottom:1px solid #F5C77E;padding:6px 8px 6px 14px;padding-top:max(6px,env(safe-area-inset-top));font-size:.85rem;}
+  #nhac-trinh-duyet span{flex:1;min-width:0;}
+  .nut-dong{flex:none;width:40px;height:40px;border:none;border-radius:50%;background:transparent;color:inherit;font-size:1.1rem;cursor:pointer;}
+  .dai-bao{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;max-width:560px;margin:0 auto;background:#1F2937;color:#fff;border-radius:12px;padding:12px 14px;font-size:.85rem;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25);}
+  @media (prefers-reduced-motion:reduce){ .fc-card,.branch-body,.qz-bar span{transition:none !important;} }
+
   /* ===== In ===== */
   .print-only{display:none;}
   @media print{
     @page{margin:12mm;}
-    #nojs,nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,.qz-bar,footer,button,.hd-btn,.mm-svg-wrap,.fc-swiper,.kt-nut{display:none !important;}
+    #nojs,#nhac-trinh-duyet,#dai-mat-mang,nav.tabs,.toolbar,.fc-nav,.fc-mark,.fc-filter,.fc-status,.qz-progress,.qz-bar,footer,button,.hd-btn,.mm-svg-wrap,.fc-swiper,.kt-nut{display:none !important;}
     section.panel{display:block !important;animation:none !important;break-after:page;}
     #mindmap{display:flex !important;}
     .branch-body{max-height:none !important;}
@@ -199,6 +221,8 @@
 <div id="nojs"><b>Trình xem này chưa chạy được học liệu.</b>Mở bằng Safari hoặc Chrome: bấm nút Chia sẻ → Mở bằng trình duyệt, hoặc mở đường link web do giáo viên gửi.</div>
 
 <div id="app-shell">
+
+<div id="nhac-trinh-duyet" class="an" role="note"><span>Mở bằng Chrome/Safari để giữ bài làm: bấm ⋯ → Mở bằng trình duyệt.</span><button type="button" class="nut-dong" id="nhac-dong" aria-label="Đóng lời nhắc">✕</button></div>
 
 <header class="hd">
   <div class="hd-row">
@@ -326,6 +350,8 @@
 
 <footer>Học liệu số — Bài 2 Tin học 12 ICT — Trường THCS & THPT Vĩnh Hưng. <span id="che-do-thu-vien">Mở bằng Chrome hoặc Safari.</span></footer>
 
+<div id="dai-mat-mang" class="dai-bao an" role="status" aria-live="polite">Đang mất mạng, bài làm vẫn lưu trên máy.</div>
+
 </div><!-- /#app-shell -->
 
 <script type="application/json" id="hls-data">{"tieu_de": "Bài 2. Trí tuệ nhân tạo trong khoa học và đời sống", "tieu_de_trung_tam": "Bài 2. Trí tuệ nhân tạo trong khoa học và đời sống", "worksheetHtml": "<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 1 — cốt lõi<\/span>\n  <h3>AI trong các lĩnh vực (Hoạt động 1, SGK trang 9)<\/h3>\n  <p>Liệt kê một vài lĩnh vực có ứng dụng AI mà em tìm hiểu được qua phương tiện thông tin đại chúng, Internet. Với mỗi lĩnh vực, nêu rõ AI được ứng dụng như thế nào.<\/p>\n  <table class=\"data-table\">\n    <tr><th>Lĩnh vực<\/th><th>AI được ứng dụng như thế nào?<\/th><\/tr>\n    <tr>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"lv-1-ten\" placeholder=\"Lĩnh vực 1\"><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"lv-1-ud\"><\/td>\n    <\/tr>\n    <tr>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"lv-2-ten\" placeholder=\"Lĩnh vực 2\"><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"lv-2-ud\"><\/td>\n    <\/tr>\n    <tr>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"lv-3-ten\" placeholder=\"Lĩnh vực 3\"><\/td>\n      <td><input type=\"text\" class=\"dien-ngan\" data-id=\"lv-3-ud\"><\/td>\n    <\/tr>\n  <\/table>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Các lĩnh vực tiêu biểu: hệ chuyên gia; y học và chăm sóc sức khoẻ (IBM Watson for Oncology hỗ trợ điều trị ung thư); giao thông vận tải; tài chính, ngân hàng (hỗ trợ quyết định đầu tư, phát hiện gian lận); sản xuất (robot và hệ thống tự động hoá); giáo dục (nền tảng học tập cá nhân hoá); khoa học xã hội và nhân văn, nghệ thuật, thám hiểm không gian vũ trụ.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: viết theo cấu trúc \"lĩnh vực — AI hỗ trợ làm việc gì\", không chỉ ghi tên lĩnh vực.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 2 — cốt lõi<\/span>\n  <h3>AI hẹp hay AI tổng quát?<\/h3>\n  <p>a) Các thành tựu hiện tại của AI, trong đó có ChatGPT, thuộc phạm vi nào?<\/p>\n  <div class=\"lua-chon-item\" data-id=\"phan-loai-ai\">\n    <label><input type=\"radio\" name=\"phan-loai-ai\" value=\"hep\"> AI hẹp (AI yếu)<\/label>\n    <label><input type=\"radio\" name=\"phan-loai-ai\" value=\"tong-quat\"> AI tổng quát (AI mạnh)<\/label>\n  <\/div>\n  <p>b) Quan sát Hình 2.2 (đoạn hội thoại ChatGPT sửa lỗi chương trình tính giai thừa). Chỉ ra biểu hiện tri thức, khả năng suy luận hoặc khả năng học của ChatGPT.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"chatgpt-bieu-hien\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>c) Kể tên một ứng dụng AI khác cũng có khả năng đọc hiểu và trả lời câu hỏi của người dùng.<\/p>\n  <input type=\"text\" class=\"dien-ngan\" data-id=\"ung-dung-hoi-dap\">\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">a) AI hẹp (AI yếu); AI tổng quát vẫn đang trong quá trình nghiên cứu. b) ChatGPT xác định đúng dòng <code>if n = 0:<\/code> bị lỗi cú pháp, giải thích nguyên nhân và đề nghị sửa thành <code>if n == 0:<\/code> — thể hiện tri thức về ngôn ngữ lập trình và khả năng suy luận. c) Trợ lí ảo, chatbot chăm sóc khách hàng.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: AI hẹp chỉ làm tốt một nhiệm vụ cụ thể; AI tổng quát phải áp dụng được tri thức từ lĩnh vực này sang lĩnh vực khác như con người.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 3 — cốt lõi<\/span>\n  <h3>Những nguy cơ cần cảnh báo<\/h3>\n  <p>Nêu các nguy cơ liên quan tới sự phát triển của AI (câu hỏi củng cố 2, SGK trang 13).<\/p>\n  <textarea class=\"dien-dai\" data-id=\"nguy-co\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">Áp lực thất nghiệp; ảnh hưởng quyền riêng tư; khả năng thiếu minh bạch; rủi ro về an ninh, an toàn.<\/div>\n  <\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag\">Nhiệm vụ 4 — luyện tập (SGK trang 13)<\/span>\n  <h3>Ứng dụng AI dùng hình ảnh và vấn đề vũ khí sát thương<\/h3>\n  <p>1) Nêu một vài ứng dụng AI sử dụng hình ảnh để tương tác với con người.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"lt-1\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) Vì sao cần ngăn cấm giao toàn quyền quyết định cho AI điều khiển vũ khí sát thương?<\/p>\n  <textarea class=\"dien-dai\" data-id=\"lt-2\" rows=\"3\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"dap-an-goi-y\">\n    <button type=\"button\" class=\"nut-xem-dap-an\">Xem đáp án gợi ý<\/button>\n    <div class=\"noi-dung-dap-an\">1) Nhận dạng khuôn mặt mở khoá điện thoại; xe tự lái nhận diện biển báo và vật cản; chẩn đoán hình ảnh y tế. 2) Quyết định điều khiển vũ khí sát thương ảnh hưởng trực tiếp tới sinh mạng con người, trong khi AI có thể đưa ra quyết định sai lệch do dữ liệu hoặc mô hình bị lợi dụng, tấn công.<\/div>\n  <\/div>\n  <div class=\"hint\">Gợi ý cho bạn còn lúng túng: nhớ lại các ví dụ ở mục 1 — nhận diện khuôn mặt, xe tự lái.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <span class=\"tag mo-rong\">Câu hỏi mở rộng — vận dụng<\/span>\n  <h3>Tính \"thông minh\" của Google Maps<\/h3>\n  <p>1) Tìm hiểu cách Google Maps gợi ý tuyến đường (có thể liên hệ việc tìm đường đến vùng nuôi tôm, cánh đồng ở địa phương). Chỉ ra ít nhất 2 biểu hiện \"thông minh\" của ứng dụng.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-maps\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <p>2) Sau bài học, em ủng hộ quan điểm nào: AI sẽ thay thế hoàn toàn con người, hay AI làm được nhiều việc nhưng không thể thay thế con người? Nêu căn cứ.<\/p>\n  <textarea class=\"dien-dai\" data-id=\"vd-quan-diem\" rows=\"4\" placeholder=\"Nhập câu trả lời...\"><\/textarea>\n  <div class=\"hint\">Gợi ý: liên hệ đặc trưng AI đã học ở Bài 1 (khả năng học, suy luận) và phân biệt AI hẹp với AI tổng quát.<\/div>\n<\/div>\n\n<div class=\"task\">\n  <h3>Checklist đánh giá cặp đôi A–B<\/h3>\n  <div class=\"checklist\">\n    <label><input type=\"checkbox\" data-id=\"cl-1\"> Nêu đúng ít nhất hai lĩnh vực có ứng dụng AI.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-2\"> Mô tả đúng cách AI được ứng dụng trong từng lĩnh vực, không chỉ ghi tên.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-3\"> Nêu đúng một biểu hiện tri thức, suy luận hoặc khả năng học của ChatGPT.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-4\"> Nêu đúng ít nhất một nguy cơ cần cảnh báo khi phát triển AI.<\/label>\n    <label><input type=\"checkbox\" data-id=\"cl-5\"> Câu Luyện tập 2 có giải thích lí do, không trả lời \"có\"/\"không\".<\/label>\n  <\/div>\n<\/div>\n", "mindmap": [{"title": "1. AI và sự phát triển của một số lĩnh vực", "cls": "b1", "items": ["Hệ chuyên gia", "Y học và chăm sóc sức khoẻ (IBM Watson for Oncology)", "Giao thông vận tải", "Tài chính, ngân hàng: hỗ trợ đầu tư, phát hiện gian lận", "Sản xuất: robot và hệ thống tự động hoá (Hình 2.1)", "Giáo dục", "Lĩnh vực khác: khoa học xã hội và nhân văn, nghệ thuật, thám hiểm không gian vũ trụ", "AI trở thành một phần không thể thiếu của cuộc sống hiện đại"]}, {"title": "2. AI và một vài cảnh báo", "cls": "b2", "items": ["AI hẹp (AI yếu): thực hiện tốt một nhiệm vụ cụ thể", "AI tổng quát (AI mạnh): còn trong quá trình nghiên cứu", "AI tạo sinh — ChatGPT: có tri thức, khả năng suy luận, khả năng học (Hình 2.2)", "Nguy cơ: áp lực thất nghiệp", "Nguy cơ: ảnh hưởng quyền riêng tư", "Nguy cơ: thiếu minh bạch", "Nguy cơ: rủi ro an ninh, an toàn", "Ngăn cấm giao toàn quyền quyết định cho AI điều khiển vũ khí sát thương"]}], "flashcards": [{"id": "fc01", "dir": "Hỏi xuôi", "front": "IBM Watson for Oncology ứng dụng AI trong lĩnh vực nào?", "back": "Y học và chăm sóc sức khoẻ, hỗ trợ nâng cao hiệu quả điều trị ung thư."}, {"id": "fc02", "dir": "Hỏi ngược", "front": "Lĩnh vực nào dùng AI để hỗ trợ quyết định đầu tư, phát hiện và ngăn chặn gian lận?", "back": "Tài chính, ngân hàng."}, {"id": "fc03", "dir": "Hỏi xuôi", "front": "Hình 2.1 (SGK) minh hoạ ứng dụng AI trong lĩnh vực nào?", "back": "Sản xuất — robot và hệ thống tự động hoá."}, {"id": "fc04", "dir": "Hỏi xuôi", "front": "AI hẹp (AI yếu) là gì?", "back": "Hệ thống AI được thiết kế để thực hiện tốt một nhiệm vụ cụ thể."}, {"id": "fc05", "dir": "Hỏi xuôi", "front": "AI tổng quát (AI mạnh) là gì?", "back": "Hệ thống có năng lực trí tuệ như con người, áp dụng được tri thức từ lĩnh vực này sang lĩnh vực khác."}, {"id": "fc06", "dir": "Hỏi ngược", "front": "Các thành tựu hiện tại của AI, kể cả ChatGPT, thuộc phạm vi loại AI nào?", "back": "AI hẹp (AI yếu). AI tổng quát vẫn đang trong quá trình nghiên cứu."}, {"id": "fc07", "dir": "Hỏi ngược", "front": "Loại AI nào tạo nội dung (văn bản, hình ảnh, âm thanh) một cách tự động?", "back": "AI tạo sinh (Generative AI), ví dụ điển hình là ChatGPT."}, {"id": "fc08", "dir": "Hỏi xuôi", "front": "ChatGPT sửa lỗi `if n = 0:` thành `if n == 0:` thể hiện khả năng gì?", "back": "Có tri thức về ngôn ngữ lập trình và khả năng suy luận để tìm ra nguyên nhân lỗi."}, {"id": "fc09", "dir": "Hỏi xuôi", "front": "ChatGPT hoạt động tốt nhất ở những ngôn ngữ nào?", "back": "Ngôn ngữ phổ biến, nhiều dữ liệu huấn luyện như tiếng Anh, Pháp, Đức, Tây Ban Nha, Ý."}, {"id": "fc10", "dir": "Hỏi xuôi", "front": "Nêu bốn nguy cơ cần cảnh báo khi phát triển AI.", "back": "Áp lực thất nghiệp, ảnh hưởng quyền riêng tư, khả năng thiếu minh bạch, rủi ro an ninh - an toàn."}, {"id": "fc11", "dir": "Hỏi ngược", "front": "AI thu thập lượng lớn dữ liệu cá nhân dẫn tới nguy cơ nào?", "back": "Ảnh hưởng đến quyền riêng tư."}, {"id": "fc12", "dir": "Hỏi xuôi", "front": "Vì sao cần ngăn cấm giao toàn quyền quyết định cho AI điều khiển vũ khí sát thương?", "back": "Quyết định ảnh hưởng trực tiếp sinh mạng con người; AI có thể sai lệch do dữ liệu, mô hình bị lợi dụng, tấn công."}, {"id": "fc13", "dir": "Hỏi ngược", "front": "Nêu một ứng dụng AI sử dụng hình ảnh để tương tác với con người.", "back": "Nhận dạng khuôn mặt mở khoá, xe tự lái nhận diện biển báo, chẩn đoán hình ảnh y tế."}], "quiz": [{"id": "q01", "stem": "Trong lĩnh vực nào sau đây, AI được ứng dụng để phân tích, xử lí dữ liệu, hỗ trợ quyết định đầu tư, phát hiện và ngăn chặn gian lận?", "opts": [{"l": "A", "t": "Y học và chăm sóc sức khoẻ"}, {"l": "B", "t": "Tài chính, ngân hàng"}, {"l": "C", "t": "Giao thông vận tải"}, {"l": "D", "t": "Sản xuất"}], "ans": "B", "ngu_canh": null, "explain": "Trong lĩnh vực tài chính, ngân hàng, AI hỗ trợ phân tích và xử lí dữ liệu để hỗ trợ quyết định đầu tư, phát hiện và ngăn chặn gian lận, nâng cao trải nghiệm khách hàng."}, {"id": "q02", "stem": "Phần mềm IBM Watson for Oncology là ví dụ ứng dụng AI trong lĩnh vực nào?", "opts": [{"l": "A", "t": "Giáo dục"}, {"l": "B", "t": "Y học và chăm sóc sức khoẻ"}, {"l": "C", "t": "Sản xuất"}, {"l": "D", "t": "Tài chính, ngân hàng"}], "ans": "B", "ngu_canh": null, "explain": "Phần mềm IBM Watson for Oncology được các chuyên gia y tế đánh giá là đã góp phần nâng cao hiệu quả điều trị ung thư, thuộc lĩnh vực y học và chăm sóc sức khoẻ."}, {"id": "q03", "stem": "Trí tuệ nhân tạo hẹp (Trí tuệ nhân tạo yếu) là hệ thống AI như thế nào?", "opts": [{"l": "A", "t": "Có năng lực trí tuệ như con người, có thể áp dụng tri thức từ lĩnh vực này sang lĩnh vực khác."}, {"l": "B", "t": "Được thiết kế để thực hiện tốt một nhiệm vụ cụ thể."}, {"l": "C", "t": "Không cần dữ liệu để huấn luyện."}, {"l": "D", "t": "Chỉ hoạt động khi có kết nối Internet."}], "ans": "B", "ngu_canh": null, "explain": "Trí tuệ nhân tạo hẹp/AI yếu là hệ thống AI được thiết kế để thực hiện tốt một nhiệm vụ cụ thể, khác với Trí tuệ nhân tạo tổng quát/AI mạnh có năng lực trí tuệ như con người và có thể áp dụng tri thức từ lĩnh vực này sang lĩnh vực khác."}, {"id": "q04", "stem": "Sự phát triển mạnh mẽ của loại hình AI nào trong những năm gần đây tập trung vào việc xây dựng các thuật toán và mô hình có thể tạo nội dung (hình ảnh, âm thanh, văn bản) một cách tự động, với ChatGPT là một ví dụ điển hình?", "opts": [{"l": "A", "t": "AI tạo sinh (Generative AI)"}, {"l": "B", "t": "Hệ thống tự động hoá cơ khí"}, {"l": "C", "t": "Robot công nghiệp"}, {"l": "D", "t": "Cảm biến IoT"}], "ans": "A", "ngu_canh": null, "explain": "AI tạo sinh (Generative AI) tập trung xây dựng thuật toán, mô hình có thể tạo nội dung tự động; ChatGPT là một ví dụ điển hình của hướng phát triển này, dù các thành tựu hiện tại của AI (bao gồm ChatGPT) vẫn thuộc phạm vi Trí tuệ nhân tạo hẹp."}, {"id": "q05", "stem": "Nội dung nào sau đây KHÔNG phải là cảnh báo về nguy cơ và khía cạnh đạo đức khi phát triển AI?", "opts": [{"l": "A", "t": "Áp lực thất nghiệp do tự động hoá nhiều công việc."}, {"l": "B", "t": "Ảnh hưởng đến quyền riêng tư do thu thập lượng lớn dữ liệu cá nhân."}, {"l": "C", "t": "Làm tăng giá bán của các thiết bị lưu trữ dữ liệu cá nhân."}, {"l": "D", "t": "Rủi ro về an ninh, an toàn khi hệ thống AI bị xâm nhập hoặc tấn công."}], "ans": "C", "ngu_canh": null, "explain": "Bốn cảnh báo chính khi phát triển AI gồm: áp lực thất nghiệp, ảnh hưởng quyền riêng tư, khả năng thiếu minh bạch, rủi ro về an ninh - an toàn. Việc tăng giá bán thiết bị lưu trữ không thuộc các cảnh báo này."}, {"id": "q06", "stem": "Trong nông nghiệp, AI được sử dụng tại các trang trại thông minh với chức năng nào sau đây?", "opts": [{"l": "A", "t": "Thay thế toàn bộ công việc gieo trồng của nông dân bằng robot."}, {"l": "B", "t": "Theo dõi điều kiện thời tiết, đất đai, tình trạng vật nuôi và cây trồng để hỗ trợ nông dân tối ưu hoá quy trình chăm sóc, tưới tiêu, dự đoán mùa vụ."}, {"l": "C", "t": "In ấn nhãn mác cho sản phẩm nông nghiệp."}, {"l": "D", "t": "Vận chuyển nông sản đến chợ đầu mối."}], "ans": "B", "ngu_canh": null, "explain": "Trong nông nghiệp, AI được sử dụng trong các trang trại thông minh để theo dõi các yếu tố ảnh hưởng đến hiệu quả nuôi trồng, giúp nông dân tối ưu hoá quy trình chăm sóc, tưới tiêu, dự đoán mùa vụ, xác định thời điểm thu hoạch tối ưu."}, {"id": "q07", "stem": "Chi tiết trên trong đoạn hội thoại với ChatGPT thể hiện rõ nhất khả năng nào của hệ thống?", "opts": [{"l": "A", "t": "Khả năng suy luận: vận dụng tri thức về ngôn ngữ lập trình để xác định đúng nguyên nhân gây lỗi và đề xuất cách sửa phù hợp."}, {"l": "B", "t": "Khả năng tạo hình ảnh minh hoạ cho đoạn mã."}, {"l": "C", "t": "Khả năng dịch đoạn mã sang ngôn ngữ lập trình khác."}, {"l": "D", "t": "Khả năng tự động chạy thử chương trình trên máy chủ."}], "ans": "A", "ngu_canh": "Trong một đoạn hội thoại, người dùng hỏi ChatGPT vì sao chương trình tính giai thừa bị lỗi. ChatGPT xác định đúng dòng lệnh `if n = 0:` bị lỗi cú pháp, giải thích nguyên nhân và đề nghị sửa thành `if n == 0:`.", "explain": "Việc xác định đúng dòng mã lỗi, giải thích nguyên nhân dựa trên tri thức về cú pháp Python và đề xuất cách sửa phù hợp thể hiện khả năng suy luận và tri thức của ChatGPT."}, {"id": "q08", "stem": "Phát biểu nào sau đây mô tả đúng khả năng ngôn ngữ của ChatGPT?", "opts": [{"l": "A", "t": "ChatGPT hoạt động hiệu quả như nhau ở mọi ngôn ngữ, không phụ thuộc vào lượng dữ liệu huấn luyện."}, {"l": "B", "t": "ChatGPT hoạt động tốt nhất ở những ngôn ngữ phổ biến, có nhiều dữ liệu huấn luyện như tiếng Anh, Pháp, Đức, Tây Ban Nha, Ý; hạn chế hơn ở các ngôn ngữ ít phổ biến."}, {"l": "C", "t": "ChatGPT chỉ có thể xử lí tiếng Anh."}, {"l": "D", "t": "ChatGPT không thể trả lời câu hỏi bằng tiếng Việt."}], "ans": "B", "ngu_canh": null, "explain": "ChatGPT hoạt động tốt nhất ở các ngôn ngữ phổ biến, có nhiều dữ liệu huấn luyện; đối với ngôn ngữ ít phổ biến hoặc ít dữ liệu, khả năng hiểu và trả lời có thể hạn chế hơn."}, {"id": "q09", "stem": "Phương án ứng dụng AI nào sau đây phù hợp nhất với mục tiêu tối ưu hoá quy trình chăm sóc và tưới tiêu của hợp tác xã?", "opts": [{"l": "A", "t": "Xây dựng hệ thống thu thập dữ liệu về chất lượng nước, thời tiết, sức đề kháng của tôm nuôi để dự đoán thời điểm thu hoạch và cảnh báo dịch bệnh."}, {"l": "B", "t": "Sử dụng phần mềm dịch máy để giao tiếp với khách hàng nước ngoài."}, {"l": "C", "t": "Lắp đặt hệ thống nhận dạng khuôn mặt tại cổng ra vào khu nuôi."}, {"l": "D", "t": "Sử dụng trợ lí ảo để nhắc lịch họp của hợp tác xã."}], "ans": "A", "ngu_canh": "Một hợp tác xã nuôi tôm tại xã Châu Thới, tỉnh Cà Mau muốn ứng dụng AI để nâng cao hiệu quả sản xuất.", "explain": "Ứng dụng AI trong nông nghiệp để theo dõi các yếu tố ảnh hưởng trực tiếp đến hiệu quả nuôi trồng (điều kiện nước, thời tiết, sức đề kháng) giúp tối ưu hoá quy trình chăm sóc, tưới tiêu, dự đoán mùa vụ, đúng với mục tiêu của hợp tác xã."}, {"id": "q10", "stem": "Khả năng nào của ChatGPT được thể hiện rõ nhất qua tình huống trên?", "opts": [{"l": "A", "t": "Khả năng xử lí thông tin phức tạp, phân tích đồng thời nhiều lỗi khác nhau trong cùng một đoạn chương trình để đưa ra giải pháp phù hợp."}, {"l": "B", "t": "Khả năng tạo hình ảnh minh hoạ cho đoạn mã."}, {"l": "C", "t": "Khả năng tự động triển khai chương trình lên máy chủ."}, {"l": "D", "t": "Khả năng dịch đoạn mã sang ngôn ngữ lập trình khác."}], "ans": "A", "ngu_canh": "Trong một đoạn hội thoại, ChatGPT không chỉ chỉ ra lỗi cú pháp trong chương trình tính giai thừa mà còn phát hiện thêm lỗi kiểu dữ liệu khi đọc số liệu từ bàn phím, đồng thời đưa ra bản sửa hoàn chỉnh.", "explain": "Việc phát hiện đồng thời nhiều loại lỗi khác nhau (cú pháp và kiểu dữ liệu) trong cùng một đoạn chương trình rồi đưa ra giải pháp phù hợp thể hiện khả năng xử lí thông tin phức tạp của ChatGPT."}]}</script>
@@ -398,6 +424,45 @@ function saveStore(s){
 }
 var store = loadStore();
 if(!store.known) store.known = {};
+if(!store.ui) store.ui = {};
+var henGhi = null;
+function ghiTre(){ clearTimeout(henGhi); henGhi = setTimeout(function(){ saveStore(store); }, 300); }
+function ghiNgay(){ clearTimeout(henGhi); saveStore(store); }
+/* Trình duyệt điện thoại có thể đóng tab ngầm: ghi lại khi trang bị ẩn hoặc rời đi */
+window.addEventListener("pagehide", ghiNgay);
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState === "hidden") ghiNgay(); });
+
+/* ---------- Dải báo mất mạng ---------- */
+var daiMang = document.getElementById("dai-mat-mang");
+function capNhatMang(){ daiMang.classList.toggle("an", navigator.onLine !== false); }
+window.addEventListener("offline", capNhatMang);
+window.addEventListener("online", capNhatMang);
+capNhatMang();
+
+/* ---------- Nhắc mở bằng trình duyệt khi đang ở trình duyệt nội bộ Zalo/Messenger ---------- */
+(function(){
+  var ua = navigator.userAgent || "";
+  if(!/Zalo|FBAN|FBAV|FB_IAB|Messenger/i.test(ua)) return;
+  var daDong = false;
+  try{ daDong = sessionStorage.getItem("hls_an_nhac") === "1"; }catch(e){}
+  if(daDong) return;
+  var nhac = document.getElementById("nhac-trinh-duyet");
+  nhac.classList.remove("an");
+  document.getElementById("nhac-dong").addEventListener("click", function(){
+    nhac.classList.add("an");
+    try{ sessionStorage.setItem("hls_an_nhac", "1"); }catch(e){}
+  });
+})();
+
+/* ---------- Cuộn ô đang gõ ra giữa màn hình để bàn phím ảo không che ---------- */
+document.addEventListener("focusin", function(e){
+  var el = e.target;
+  if(!el || !el.tagName) return;
+  var ten = el.tagName.toLowerCase();
+  var kieu = (el.getAttribute("type") || "text").toLowerCase();
+  if(!(ten === "textarea" || (ten === "input" && /^(text|search|number|tel|url|email)$/.test(kieu)))) return;
+  setTimeout(function(){ thu(function(){ el.scrollIntoView({block:"center", behavior:"smooth"}); }); }, 300);
+});
 
 /* ---------- In / Xuất PDF ---------- */
 document.getElementById("print-btn").addEventListener("click", function(){ window.print(); });
@@ -406,15 +471,32 @@ document.getElementById("print-btn").addEventListener("click", function(){ windo
 var tabBtns = document.querySelectorAll(".tab-btn");
 var panels = document.querySelectorAll(".panel");
 var khiMoTab = {};
+/* Tab đang xem ghi trên đường link: gửi được link mở thẳng một khối, nút Quay lại về tab trước */
+var TAB_HASH = {p1:"so-do", p2:"phieu", p3:"the-nho", p4:"quiz"};
+var HASH_TAB = {"so-do":"p1", "phieu":"p2", "the-nho":"p3", "quiz":"p4"};
+function tabTuHash(){ return HASH_TAB[(location.hash || "").replace(/^#/, "")] || null; }
+function moTab(id){
+  if(!TAB_HASH[id]) id = "p1";
+  moiPhanTu(tabBtns, function(b){ b.classList.toggle("active", b.dataset.panel === id); });
+  moiPhanTu(panels, function(p){ p.classList.toggle("active", p.id === id); });
+  store.ui.tab = id;
+  ghiTre();
+  if(khiMoTab[id]) khiMoTab[id]();
+}
 moiPhanTu(tabBtns, function(btn){
   btn.addEventListener("click", function(){
-    moiPhanTu(tabBtns, function(b){ b.classList.remove("active"); });
-    moiPhanTu(panels, function(p){ p.classList.remove("active"); });
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.panel).classList.add("active");
-    if(khiMoTab[btn.dataset.panel]) khiMoTab[btn.dataset.panel]();
+    var id = btn.dataset.panel;
+    if(tabTuHash() !== id && window.history && history.pushState){
+      thu(function(){ history.pushState(null, "", "#" + TAB_HASH[id]); });
+    }
+    moTab(id);
+    var hd = document.querySelector("header.hd");
+    var cao = hd ? hd.offsetHeight : 0;
+    if((window.pageYOffset || 0) > cao) window.scrollTo(0, cao);
   });
 });
+window.addEventListener("popstate", function(){ moTab(tabTuHash() || "p1"); });
+window.addEventListener("hashchange", function(){ var t = tabTuHash(); if(t) moTab(t); });
 
 /* Tô nền lựa chọn đang chọn (thay cho :has, chạy cả trình duyệt cũ) */
 function danhDauChon(goc){
@@ -500,7 +582,11 @@ updateMmCounter();
 /* ===================== KHỐI 3 — THẺ GHI NHỚ ===================== */
 var flashcards = payload.flashcards || [];
 var fcOrder = flashcards.map(function(c,i){ return i; });
-var fcPos = 0;
+if(Array.isArray(store.ui.fcOrder) && store.ui.fcOrder.length === fcOrder.length
+   && store.ui.fcOrder.slice().sort(function(a,b){ return a-b; }).join(",") === fcOrder.join(",")){
+  fcOrder = store.ui.fcOrder.slice();
+}
+var fcPos = typeof store.ui.fcPos === "number" ? store.ui.fcPos : 0;
 var fc = { swiper:null };
 
 function fcVisibleOrder(){
@@ -513,6 +599,8 @@ function fcVisibleOrder(){
 }
 function fcCapNhatDem(order){
   document.getElementById("fc-counter").textContent = order.length ? (fcPos+1) + "/" + order.length : "0/0";
+  store.ui.fcPos = fcPos;
+  ghiTre();
   var knownCount = flashcards.filter(function(c){ return store.known[c.id]; }).length;
   document.getElementById("fc-status").textContent = "Đã thuộc " + knownCount + "/" + flashcards.length + " thẻ";
 }
@@ -579,6 +667,7 @@ function xaoTron(arr){
 }
 document.getElementById("fc-shuffle").addEventListener("click", function(){
   xaoTron(fcOrder);
+  store.ui.fcOrder = fcOrder.slice();
   fcPos = 0;
   fcRender();
 });
@@ -693,6 +782,7 @@ function renderQuiz(){
   document.getElementById("qz-result").classList.remove("show");
   document.getElementById("qz-submit").disabled = false;
   capNhatTienDoQuiz();
+  boBangCuon(form);
   if(app && app.toMauMa) app.toMauMa(form);
 }
 document.getElementById("qz-form").addEventListener("change", function(){
@@ -734,16 +824,44 @@ document.getElementById("qz-shuffle").addEventListener("click", function(){
 renderQuiz();
 
 /* Pháo giấy khi đạt từ 80% (chỉ khi đã tải canvas-confetti) */
+/* Pháo giấy khi đạt từ 80%: chỉ tải canvas-confetti vào lúc cần, máy bật giảm chuyển động thì bỏ qua */
 function chucMung(pct){
-  if(pct >= 80 && typeof window.confetti === "function"){
-    thu(function(){ window.confetti({particleCount:120, spread:75, origin:{y:.7}, disableForReducedMotion:true}); });
-  }
+  if(pct < 80) return;
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function ban(){ thu(function(){ window.confetti({particleCount:120, spread:75, origin:{y:.7}, disableForReducedMotion:true}); }); }
+  if(typeof window.confetti === "function"){ ban(); return; }
+  if(window.Promise && navigator.onLine !== false) taiJS(THU_VIEN.confetti).then(ban, function(){});
+}
+
+/* Bảng rộng cuộn ngang trong khung riêng, trang chính không cuộn ngang */
+function boBangCuon(goc){
+  moiPhanTu(goc.querySelectorAll("table"), function(tb){
+    var cha = tb.parentNode;
+    if(cha.classList && cha.classList.contains("bang-cuon")) return;
+    var w = document.createElement("div");
+    w.className = "bang-cuon";
+    cha.insertBefore(w, tb);
+    w.appendChild(tb);
+  });
 }
 
 /* ========== Phiếu học tập — điền/chọn đáp án, kéo thả sắp xếp, lưu tạm ========== */
 function enhanceWorksheet(){
   var scope = document.getElementById("p2-content");
   if(!scope) return;
+
+  boBangCuon(scope);
+
+  /* Thuộc tính bàn phím điện thoại cho ô nhập (không ghi đè nếu người soạn đã đặt) */
+  function datNeuChua(el, ten, gt){ if(!el.hasAttribute(ten)) el.setAttribute(ten, gt); }
+  moiPhanTu(scope.querySelectorAll("input.dien-ngan"), function(el){
+    datNeuChua(el, "autocomplete", "off");
+    datNeuChua(el, "autocapitalize", "off");
+    datNeuChua(el, "spellcheck", "false");
+    datNeuChua(el, "enterkeyhint", "done");
+    el.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); el.blur(); } });
+  });
+  moiPhanTu(scope.querySelectorAll("textarea.dien-dai"), function(el){ datNeuChua(el, "autocomplete", "off"); });
 
   /* Ô nhập câu trả lời (ngắn: input, dài: textarea) */
   moiPhanTu(scope.querySelectorAll(".dien-ngan[data-id], .dien-dai[data-id]"), function(el){
@@ -897,6 +1015,16 @@ window.addEventListener("afterprint", function(){
   });
 });
 
+/* Mở đúng tab: theo đường link (#quiz...), không có thì theo lần học trước */
+(function(){
+  var t = tabTuHash();
+  if(!t && store.ui.tab && store.ui.tab !== "p1" && TAB_HASH[store.ui.tab]){
+    t = store.ui.tab;
+    if(window.history && history.replaceState) thu(function(){ history.replaceState(null, "", "#" + TAB_HASH[t]); });
+  }
+  moTab(t || "p1");
+})();
+
 return {
   mm:mm, mindmapData:mindmapData, tieuDeTrungTam:tieuDeTrungTam,
   updateMmCounter:updateMmCounter, veDanhSach:veDanhSach,
@@ -943,9 +1071,6 @@ function nangCapThuVien(app){
       app.toMauMa(document);
     }));
   }
-
-  /* Pháo giấy */
-  viec.push(sau(taiJS(THU_VIEN.confetti), function(){}));
 
   Promise.all(viec).then(function(){
     var el = document.getElementById("che-do-thu-vien");
